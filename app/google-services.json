@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1096631451357",
+    "project_id": "geeks-job-b0e71",
+    "storage_bucket": "geeks-job-b0e71.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1096631451357:android:4de14fca52aad99c2d6534",
+        "android_client_info": {
+          "package_name": "com.defenderstudio.geeksjob"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1096631451357-nm97s6b45hllm30r8ij6935bdg40seii.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkUiKu7zDgenqKystki4urkxXyflBjJ0I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1096631451357-nm97s6b45hllm30r8ij6935bdg40seii.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

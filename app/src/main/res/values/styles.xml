@@ -1,0 +1,27 @@
+<resources>
+
+    <style name="Widget.Theme.GeeksJob.ActionBar.Fullscreen" parent="Widget.AppCompat.ActionBar">
+        <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="Widget.Theme.GeeksJob.ButtonBar.Fullscreen" parent="">
+        <item name="android:background">@color/black_overlay</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+    </style>
+
+    <style name="geeks_job_small" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/geeks_job_regular</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="geeks_job_large" parent="android:Widget.TextView">
+        <item name="android:fontFamily">@font/geeks_job_regular</item>
+        <item name="android:textSize">24sp</item>
+    </style>
+
+    <style name="ProgressDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/orange</item>
+    </style>
+
+
+</resources>

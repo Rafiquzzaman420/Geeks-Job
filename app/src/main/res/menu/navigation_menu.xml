@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single" tools:targetApi="o">
+
+        <item
+            android:id="@+id/home"
+            android:icon="@drawable/doghouse"
+            android:title="@string/home"
+            android:tooltipText="@string/home"/>
+
+        <item android:id="@+id/profile"
+            android:icon="@drawable/profile"
+            android:title="@string/profile"
+            android:tooltipText="@string/profile"/>
+
+
+        <item
+            android:id="@+id/exchange"
+            android:icon="@drawable/exchange"
+            android:title="@string/exchange"
+            android:tooltipText="@string/exchange"/>
+
+        <item android:id="@+id/faq"
+            android:icon="@drawable/qa"
+            android:title="@string/faq"
+            android:tooltipText="@string/faq"/>
+
+    </group>
+
+    <item android:title="@string/community" tools:targetApi="o">
+
+        <menu>
+            <item
+                android:id="@+id/share"
+                android:icon="@drawable/share"
+                android:title="@string/share"
+                android:tooltipText="@string/share"
+                />
+
+            <item android:id="@+id/sign_out"
+                android:title="@string/sign_out"
+                android:tooltipText="@string/sign_out"
+                android:icon="@drawable/logout"/>
+        </menu>
+    </item>
+
+</menu>

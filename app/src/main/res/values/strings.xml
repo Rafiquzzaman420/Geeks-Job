@@ -1,0 +1,119 @@
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyEllipsis">
+    <string name="app_name">Geeks Job</string>
+    <string name="answer_one">Answer 1</string>
+    <string name="answer_two">Answer 2</string>
+    <string name="answer_three">Answer 3</string>
+    <string name="answer_four">Answer 4</string>
+    <string name="leave">Leave</string>
+    <string name="previous">&lt;&lt; Prev</string>
+    <string name="next">Next &gt;&gt;</string>
+    <string name="pass">Pass</string>
+    <string name="questionVIew">Question goes here!</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="adView">Ad Goes here!</string>
+    <string name="login">Login</string>
+    <string name="hint">Hint</string>
+    <string name="google_login">Google Login</string>
+    <string name="exchange">Exchange</string>
+    <string name="privacy">Privacy Policy</string>
+    <string name="exchange_policy">Exchange Policy</string>
+    <string name="help">Help</string>
+    <string name="home">Home</string>
+    <string name="premium">Premium</string>
+    <string name="community">Community</string>
+    <string name="share">Share</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="sign_out">Sign Out</string>
+    <string name="faq">FAQ</string>
+    <string name="profile">Profile</string>
+    <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="company_name">Defender Studio</string>
+    <string name="competition">Competition</string>
+    <string name="quiz">Quiz</string>
+    <string name="leader_board">Leader Board</string>
+    <string name="coming_soon">Coming Soon!</string>
+    <string name="quiz_title">Quiz Title</string>
+    <string name="quiz_description">Quiz Description</string>
+    <string name="curriculum">Curriculum</string>
+    <string name="history">History</string>
+    <string name="iot">IOT</string>
+    <string name="religion">Religion</string>
+    <string name="sports">Sports</string>
+    <string name="movies">Movies</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sign_in">Sign in</string>
+    <string name="not_registered">Are you not registered?</string>
+    <string name="already_registered">Already registered?</string>
+    <string name="not_applicable">N/A</string>
+    <string name="profile_name">Name: </string>
+    <string name="profile_email">Email: </string>
+    <string name="total_earning">Total Earned: (Points)</string>
+    <string name="answered_question">Quiz Completed: </string>
+    <string name="correct_answer">Correct Answer: </string>
+    <string name="wrong_answer">Wrong Answer: </string>
+    <string name="browser">Browser</string>
+    <string name="initial_number">0</string>
+    <string name="topic_name">Topic Name</string>
+    <string name="fifty_fifty">50/50</string>
+    <string name="submit">Submit</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="science">Science</string>
+    <string name="economy">Economy</string>
+    <string name="withdrawal_amount">Withdrawal Amount: (Points)</string>
+    <string name="bkash">Bkash Account...</string>
+    <string name="paypal">Paypal Email...</string>
+    <string name="ten_thousand">10000</string>
+    <string name="twenty_thousand">20000</string>
+    <string name="fifty_thousand">50000</string>
+    <string name="points_Info">You have (Points):</string>
+    <string name="reward">Rewards</string>
+    <string name="chance">Chances left: </string>
+    <string name="watch_ad">Watch</string>
+    <string name="note_rewards">Note: You can watch 20 ads per day and after
+        that you\'ll have 24 hour cool down.</string>
+
+    <string name="points">Points:</string>
+    <string name="userName">Name:</string>
+    <string name="twenty">20</string>
+    <string name="zero">0</string>
+    <string name="timer">00:00</string>
+    <string name="reward_Button">Reward</string>
+
+
+    <string name="select_one_or_both"><u>Select one or both method</u></string>
+
+
+    <string-array name="question_title">
+        <item>Curriculum</item>
+        <item>Religion</item>
+        <item>Sports</item>
+        <item>Movies</item>
+        <item>Science</item>
+        <item>History</item>
+        <item>IOT</item>
+    </string-array>
+
+    <string-array name="question_description">
+        <item>Curriculum section</item>
+        <item>Religion section</item>
+        <item>Sports section</item>
+        <item>Movies section</item>
+        <item>Science section</item>
+        <item>History section</item>
+        <item>IOT section</item>
+    </string-array>
+
+    <string name="faq_description" formatted="true">
+        <b>Confused? Read!</b>
+
+        # How to use "Geeks Job"?
+        Answer: First go to the "Quiz" section and select your preferred field. Then your question will
+        automatically load and then you can give all the answers :)
+    </string>
+
+
+</resources>
