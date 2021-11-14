@@ -139,7 +139,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         .addToBackStack(null).commit();
                 break;
             case R.id.share:
-                Toast.makeText(this, R.string.share, Toast.LENGTH_SHORT).show();
+                Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+                sharingIntent.setType("text/plain");
+                // TODO : NEED TO CHANGE THE SHAREBODY HERE. CHANGE SHAREBODY WITH THE APPLICATION GOOGLE PLAY ADDRESS
+                String shareBody = "Download Geeks Job and Earn Real Money.\nLink:Blah!";
+                sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share");
+                sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
+                startActivity(Intent.createChooser(sharingIntent, "Share via"));
                 break;
             case R.id.sign_out:
                 FirebaseAuth.getInstance().signOut();
