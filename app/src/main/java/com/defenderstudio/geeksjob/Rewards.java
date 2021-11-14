@@ -33,6 +33,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Rewards extends AppCompatActivity {
@@ -60,7 +61,6 @@ public class Rewards extends AppCompatActivity {
             chancesLeft = value;
             dialog.dismiss();
             if (value == 0) {
-                Log.d("Rewards", "Rafiq...Value is : "+value);
                 informationValidation();
             }
             else {
@@ -174,6 +174,7 @@ public class Rewards extends AppCompatActivity {
     private void UserPointsValueUpdate() {
         TextView rewardsPointText = findViewById(R.id.rewards_text_view_point);
         rewardsPointText.setText(String.valueOf(initialPointValue));
+        scoreUpdate();
         rewardsPointText.invalidate();
     }
     //==============================================================================================================================
@@ -251,7 +252,6 @@ public class Rewards extends AppCompatActivity {
                                 chancesLeftText.invalidate();
                                 if ((chancesLeft - 1) >= 1) {
                                     chancesLeft--;
-                                    Log.d("Rewards", "Method Chances Left : " + chancesLeft);
                                     userChancesLeftSendToServer(chancesLeft);
                                 } else {
                                     userChancesLeftSendToServer(0);
@@ -415,5 +415,39 @@ public class Rewards extends AppCompatActivity {
 
     private interface userChancesLeft {
         void userChancesLeftMethod(Long value);
+    }
+
+    private void scoreUpdate(){
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        assert firebaseUser != null;
+
+        DatabaseReference userName = firebaseDatabase.child("AllUsers").
+                child("Competition").child("UserList").
+                child(Objects.requireNonNull((firebaseUser.getDisplayName() + " " +
+                        firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).
+                        replace(".", " ").
+                        replace("#", " ").
+                        replace("$", " ").
+                        replace("[", " ").
+                        replace("]", " "))).child("userName");
+
+
+        userName.setValue(Objects.requireNonNull(firebaseUser.getDisplayName()).replace(".", " ").
+                replace("#", " ").
+                replace("$", " ").
+                replace("[", " ").
+                replace("]", " "));
+
+        DatabaseReference pointsValue = firebaseDatabase.child("AllUsers").
+                child("Competition").child("UserList").
+                child(Objects.requireNonNull(firebaseUser.getDisplayName()).replace(".", " ").
+                        replace("#", " ").
+                        replace("$", " ").
+                        replace("[", " ").
+                        replace("]", " ") + " " +
+                        firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).child("pointsValue");
+
+        pointsValue.setValue(ServerValue.increment(50));
     }
 }
