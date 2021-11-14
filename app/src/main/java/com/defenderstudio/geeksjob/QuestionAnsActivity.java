@@ -601,6 +601,9 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         option1.setOnClickListener(v -> {
             if (questions.getOption1().equals(questions.getAnswer())) {
 
+                option1.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
                 if (index < arrayList.size() - 1) {
                     submitButton.setClickable(false);
                     correctAnswer(option1, arrayList);
@@ -644,10 +647,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             if (questions.getOption2().equals(questions.getAnswer())) {
 
                 option2.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
 
                 if (index < arrayList.size() - 1) {
                     submitButton.setClickable(false);
-                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
                     correctAnswer(option2, arrayList);
                     disableButton();
 
@@ -691,6 +694,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             if (questions.getOption3().equals(questions.getAnswer())) {
 
                 option3.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
 
                 if (index < arrayList.size() - 1) {
                     submitButton.setClickable(false);
@@ -737,6 +741,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             if (questions.getOption4().equals(questions.getAnswer())) {
 
                 option4.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
 
                 if (index < arrayList.size() - 1) {
                     submitButton.setClickable(false);
