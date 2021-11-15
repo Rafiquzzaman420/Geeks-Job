@@ -49,12 +49,10 @@ public class Rewards extends AppCompatActivity {
         setContentView(R.layout.activity_rewards);
 
         blockRewardButton();
-        Log.d("Rewards", "Rafiq...Blocking the reward Button...");
         ProgressDialog dialog = new ProgressDialog(Rewards.this, R.style.ProgressDialogStyle);
         dialog.setMessage("Loading. Please wait...");
         dialog.setCancelable(false);
         dialog.show();
-        Log.d("Rewards", "Rafiq...Showing the Progress Dialog windows...");
         TextView chancesLeftText = findViewById(R.id.chancesLeft);
         userChancesLeftCallBack(value -> {
             chancesLeftText.setText(String.valueOf(value));

@@ -60,11 +60,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 //        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
-        progressDialog.setCancelable(false);
-        progressDialog.setMessage("Loading. Please wait...");
-        progressDialog.show();
-        new Handler().postDelayed(() -> {
             @SuppressLint("HardwareIds")
             String ANDROID_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             userSignInInformationCallBack(value -> {
@@ -84,8 +79,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
             });
-            progressDialog.dismiss();
-        }, 3000);
 
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
