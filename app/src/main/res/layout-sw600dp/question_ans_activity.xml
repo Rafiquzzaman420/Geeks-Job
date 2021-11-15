@@ -298,13 +298,13 @@
         </LinearLayout>
 
     </LinearLayout>
-<!--    <com.google.android.material.navigation.NavigationView-->
-<!--        android:id="@+id/browser_navigation_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        android:layout_gravity="right"-->
-<!--        android:layout_marginEnd="-65dp"-->
-<!--        app:headerLayout="@layout/activity_browser"-->
-<!--        tools:ignore="RtlHardcoded" />-->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/browser_navigation_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="right"
+        android:layout_marginEnd="-65dp"
+        app:headerLayout="@layout/activity_browser"
+        tools:ignore="RtlHardcoded" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

@@ -67,7 +67,7 @@
                         android:gravity="center"
                         android:text="@string/quiz"
                         android:textColor="@color/orange"
-                        android:textSize="26sp" />
+                        android:textSize="30sp" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -110,7 +110,7 @@
                         android:gravity="center"
                         android:text="@string/reward"
                         android:textColor="@color/orange"
-                        android:textSize="26sp" />
+                        android:textSize="30sp" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
