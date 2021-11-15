@@ -116,10 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     Uri photo = profile.getPhotoUrl();
                     user_name_text_view.setText(name);
                     Glide.with(this).load(photo).apply(RequestOptions.circleCropTransform()).into(user_image);
-
-
                 }
-
             }
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "Error Occurred...", Toast.LENGTH_LONG).show();

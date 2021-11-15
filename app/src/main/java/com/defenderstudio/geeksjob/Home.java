@@ -1,14 +1,23 @@
 package com.defenderstudio.geeksjob;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 
 
 /**
@@ -68,6 +77,19 @@ public class Home extends Fragment {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
         CardView leaderBoardActivity = view.findViewById(R.id.leader_board_activity);
         CardView quizActivity = view.findViewById(R.id.quiz_intent);
+        ImageView userImageView = view.findViewById(R.id.userImageInHomeFragment);
+        TextView userName = view.findViewById(R.id.userNameInHomeFragment);
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        if (firebaseUser != null) {
+            for (UserInfo profile : firebaseUser.getProviderData()) {
+
+                // Name, email address, and profile photo Url
+                String name = profile.getDisplayName();
+                Uri photo = profile.getPhotoUrl();
+                userName.setText(name);
+                Glide.with(this).load(photo).apply(RequestOptions.circleCropTransform()).into(userImageView);
+            }
+        }
         quizActivity.setOnClickListener(v -> {
             Intent quizActivityIntent = new Intent(Home.this.getActivity(), QuizActivity.class);
             startActivity(quizActivityIntent);
