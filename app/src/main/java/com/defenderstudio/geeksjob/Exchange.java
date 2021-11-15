@@ -3,12 +3,6 @@ package com.defenderstudio.geeksjob;
 import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.Bundle;
-
-
-import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
-import androidx.fragment.app.Fragment;
-
 import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +12,10 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -94,8 +92,6 @@ public class Exchange extends Fragment {
         pointAmount = view.findViewById(R.id.pointAmount);
 
 
-
-
         setSubmitButton(view);
 
 
@@ -113,7 +109,7 @@ public class Exchange extends Fragment {
 
                 setFiftyThousandButton(value);
 
-                if (value < 10000){
+                if (value < 10000) {
                     submitButton.setClickable(false);
                 }
             } else {

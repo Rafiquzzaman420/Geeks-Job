@@ -2,19 +2,13 @@ package com.defenderstudio.geeksjob;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.cardview.widget.CardView;
-import androidx.core.view.GravityCompat;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.firebase.database.DatabaseError;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
 
 
 /**
@@ -81,17 +75,16 @@ public class Home extends Fragment {
 
         CardView rewards = view.findViewById(R.id.rewards);
         rewards.setOnClickListener(v -> {
-                    Intent rewardsIntent = new Intent(Home.this.getActivity(), Rewards.class);
-                    startActivity(rewardsIntent);
-                });
+            Intent rewardsIntent = new Intent(Home.this.getActivity(), Rewards.class);
+            startActivity(rewardsIntent);
+        });
 
 
         leaderBoardActivity.setOnClickListener(v -> {
             try {
                 Intent leaderBoardIntent = new Intent(Home.this.getActivity(), LeaderBoard.class);
                 startActivity(leaderBoardIntent);
-            }
-            catch (Exception exception){
+            } catch (Exception exception) {
                 Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_SHORT).show();
             }
 

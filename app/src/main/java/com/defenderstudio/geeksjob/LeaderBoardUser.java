@@ -5,7 +5,8 @@ public class LeaderBoardUser {
     String userName;
     long pointsValue;
 
-    public LeaderBoardUser(){}
+    public LeaderBoardUser() {
+    }
 
     public LeaderBoardUser(String userName, long pointsValue) {
         this.userName = userName;
@@ -20,8 +21,6 @@ public class LeaderBoardUser {
     public long getPointsValue() {
         return pointsValue;
     }
-
-
 
 
 }

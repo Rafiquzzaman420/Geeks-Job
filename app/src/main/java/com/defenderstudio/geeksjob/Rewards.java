@@ -62,8 +62,7 @@ public class Rewards extends AppCompatActivity {
             dialog.dismiss();
             if (value == 0) {
                 informationValidation();
-            }
-            else {
+            } else {
                 informationValidation();
                 dialog.dismiss();
                 freeRewardButton();
@@ -409,15 +408,7 @@ public class Rewards extends AppCompatActivity {
 
     }
 
-    private interface userInfoCallBack {
-        void userInfo(Long value);
-    }
-
-    private interface userChancesLeft {
-        void userChancesLeftMethod(Long value);
-    }
-
-    private void scoreUpdate(){
+    private void scoreUpdate() {
         DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         assert firebaseUser != null;
@@ -449,5 +440,13 @@ public class Rewards extends AppCompatActivity {
                         firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).child("pointsValue");
 
         pointsValue.setValue(ServerValue.increment(50));
+    }
+
+    private interface userInfoCallBack {
+        void userInfo(Long value);
+    }
+
+    private interface userChancesLeft {
+        void userChancesLeftMethod(Long value);
     }
 }

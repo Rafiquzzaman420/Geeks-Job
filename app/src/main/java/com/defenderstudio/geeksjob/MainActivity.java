@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -68,9 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         new Handler().postDelayed(() -> {
             @SuppressLint("HardwareIds")
             String ANDROID_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-            Log.d("Sign", "Value is : " + ANDROID_ID);
             userSignInInformationCallBack(value -> {
-                Log.d("Sign", "Value is : " + value);
                 // If value doesn't match with the device ID then it'll sign out the user
                 if (!value.equals(ANDROID_ID) && !value.equals("NULL")) {
                     FirebaseAuth.getInstance().signOut();
@@ -83,7 +80,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     // Otherwise it'll do nothing and send the information to the server
                     if (BREAK.equals("BREAK")) {
                         BREAK = "DO NOTHING";
-                        Log.d("", "BREAK Value is in ELSE:" + BREAK);
                         userSignInInformationSendToServer(BREAK);
                     }
                 }
@@ -142,7 +138,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     public void onBackPressed() {
         String BREAK = "BREAK";
-        Log.d("SIGN", "BREAK Value is : "+BREAK);
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
@@ -150,7 +145,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .setMessage("Are you sure you want to exit?")
                 .setCancelable(false)
                 .setPositiveButton("Yes", (dialog, id) -> {
-                    Log.d("SIGN", "Sending BREAK Value is : "+BREAK);
                     userSignInInformationSendToServer(BREAK);
                     userSignOutInformationSendToServer();
                     FirebaseAuth.getInstance().signOut();
@@ -231,7 +225,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 try {
                     userSignInInformation.userSignInInfo(stringValue);
                 } catch (Exception e) {
-                    Log.d("Sign", "Setting the value to NULL");
                     userSignInInformation.userSignInInfo("NULL");
                 }
             }
@@ -254,7 +247,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void userSignInInformationSendToServer(String endMethod) {
         if (!endMethod.equals("BREAK")) {
-            Log.d("Sign", "BREAK Value is in endMethod : " + endMethod);
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
             assert firebaseUser != null;
@@ -263,8 +255,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @SuppressLint("HardwareIds")
             String ANDROID_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             signInInformation.setValue(ANDROID_ID);
-        }
-        else return;
+        } else return;
     }
 
 

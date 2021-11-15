@@ -1,10 +1,8 @@
 package com.defenderstudio.geeksjob;
 
 import android.content.Intent;
-
 import android.content.SharedPreferences;
 import android.os.Bundle;
-
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.TextView;
@@ -46,7 +44,7 @@ public class SplashScreen extends AppCompatActivity {
             mainAnim.setAnimationListener((new Animation.AnimationListener() {
                 @Override
                 public void onAnimationStart(Animation animation) {
-                   // Auto-generated method stub
+                    // Auto-generated method stub
                 }
 
                 @Override

@@ -1,15 +1,7 @@
 package com.defenderstudio.geeksjob;
 
-import android.app.ProgressDialog;
-import android.content.Intent;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +9,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.annotation.GlideModule;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,10 +22,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -114,8 +104,7 @@ public class Profile extends Fragment {
                 readQuizInformation(value -> {
                     if (value != null) {
                         quiz_answered.setText(String.valueOf(value));
-                    }
-                    else{
+                    } else {
                         quiz_answered.setText("N/A");
                     }
                 });
@@ -123,8 +112,7 @@ public class Profile extends Fragment {
                 readDataFromFirebase(value -> {
                     if (value != null) {
                         total_earning.setText(String.valueOf(value));
-                    }
-                    else{
+                    } else {
                         total_earning.setText("N/A");
                     }
                 });
@@ -161,10 +149,6 @@ public class Profile extends Fragment {
         });
     }
 
-    public interface databaseInfoCallBack {
-        void onCallback(Long value);
-    }
-
     public void readQuizInformation(quizInformationCallBack quizInformationCallBack) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference databaseEarningReference;
@@ -183,6 +167,10 @@ public class Profile extends Fragment {
 
             }
         });
+    }
+
+    public interface databaseInfoCallBack {
+        void onCallback(Long value);
     }
 
     public interface quizInformationCallBack {

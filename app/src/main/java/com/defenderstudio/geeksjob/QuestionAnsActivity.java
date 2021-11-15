@@ -78,6 +78,17 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     private InterstitialAd mInterstitialAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
     private Handler adHandler;
+    Runnable statusChecker = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                interstitialAdLoader();
+            } finally {
+                int interval = 300000;
+                adHandler.postDelayed(statusChecker, interval);
+            }
+        }
+    };
 
     //==============================================================================================
 //                                      onCreate() activity
@@ -194,22 +205,9 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     }
 
-    Runnable statusChecker = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                interstitialAdLoader();
-            } finally {
-                int interval = 300000;
-                adHandler.postDelayed(statusChecker , interval);
-            }
-        }
-    };
-
     void startRepeatingTask() {
         statusChecker.run();
     }
-
 
 
     private void interstitialAdLoader() {

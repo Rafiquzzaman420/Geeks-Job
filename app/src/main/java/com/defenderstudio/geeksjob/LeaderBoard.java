@@ -1,13 +1,13 @@
 package com.defenderstudio.geeksjob;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.os.Bundle;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,31 +34,31 @@ public class LeaderBoard extends AppCompatActivity {
         databaseReference = FirebaseDatabase.getInstance().
                 getReference("AllUsers/Competition/UserList");
 
-            recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-            leaderBoardUserArrayList = new ArrayList<>();
+        leaderBoardUserArrayList = new ArrayList<>();
 
-            leaderBoardAdapter = new LeaderBoardAdapter(this, leaderBoardUserArrayList);
-            recyclerView.setAdapter(leaderBoardAdapter);
+        leaderBoardAdapter = new LeaderBoardAdapter(this, leaderBoardUserArrayList);
+        recyclerView.setAdapter(leaderBoardAdapter);
 
-            databaseReference.orderByChild("pointsValue").addValueEventListener(new ValueEventListener() {
-                @SuppressLint("NotifyDataSetChanged")
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
+        databaseReference.orderByChild("pointsValue").addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        LeaderBoardUser leaderBoardUser = dataSnapshot.getValue(LeaderBoardUser.class);
-                        leaderBoardUserArrayList.add(leaderBoardUser);
-                    }
-                    Collections.reverse(leaderBoardUserArrayList);
-                    leaderBoardAdapter.notifyDataSetChanged();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                    LeaderBoardUser leaderBoardUser = dataSnapshot.getValue(LeaderBoardUser.class);
+                    leaderBoardUserArrayList.add(leaderBoardUser);
                 }
+                Collections.reverse(leaderBoardUserArrayList);
+                leaderBoardAdapter.notifyDataSetChanged();
+            }
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
     }
 
     @Override

@@ -14,13 +14,12 @@ import java.util.ArrayList;
 public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.ViewHolder> {
 
     Context context;
+    ArrayList<LeaderBoardUser> list;
 
     public LeaderBoardAdapter(Context context, ArrayList<LeaderBoardUser> list) {
         this.context = context;
         this.list = list;
     }
-
-    ArrayList<LeaderBoardUser> list;
 
     @NonNull
     @Override

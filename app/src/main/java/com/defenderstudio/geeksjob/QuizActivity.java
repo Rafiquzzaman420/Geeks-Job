@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -26,14 +25,10 @@ import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
 
+    public static ArrayList<Questions> historyList, curriculumList, sportsList, moviesList, scienceList, religionList, iotList, economyList;
+    private final int index = 0;
     List<Questions> allQuestionsList = new ArrayList<>();
     Questions questions;
-
-    public static ArrayList<Questions> historyList, curriculumList, sportsList, moviesList, scienceList
-            , religionList, iotList, economyList;
-
-    private final int index = 0;
-
 
     //==================================================================================================
     // onCreate() activity starts here
@@ -47,9 +42,9 @@ public class QuizActivity extends AppCompatActivity {
                 this,
                 new OnInitializationCompleteListener() {
                     @Override
-                    public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {}
+                    public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
+                    }
                 });
-
 
 
         historyList = new ArrayList<>();
@@ -113,7 +108,7 @@ public class QuizActivity extends AppCompatActivity {
 
         economyButton.setOnClickListener(v -> questionAnswerLoadingIntent("Economy", "Economy", economyList));
 
-    //==============================================================================================
+        //==============================================================================================
 
     }
 
