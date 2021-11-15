@@ -512,6 +512,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     public void wrongAnswer(Button button, ArrayList<Questions> arrayList) {
         button.setBackgroundColor(getResources().getColor(R.color.red));
+        button.setClickable(false);
         button.setTextColor(getResources().getColor(R.color.white));
         submitButton.setOnClickListener(v -> {
             correctCount++;

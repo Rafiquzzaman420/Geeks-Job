@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -40,6 +41,12 @@ public class Home extends Fragment {
         // Required empty public constructor
     }
 
+    // This callback will only be called when MyFragment is at least Started.
+
+
+    // The callback can be enabled or disabled here or in handleOnBackPressed()
+
+
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -68,8 +75,7 @@ public class Home extends Fragment {
         }
 
     }
-
-
+    
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

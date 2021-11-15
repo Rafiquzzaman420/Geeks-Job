@@ -59,7 +59,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
 //        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-
+//        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
+//        progressDialog.setCancelable(false);
+//        progressDialog.setMessage("Loading...");
+//        progressDialog.show();
+//        new Handler().postDelayed(() -> {
             @SuppressLint("HardwareIds")
             String ANDROID_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             userSignInInformationCallBack(value -> {
@@ -79,6 +83,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     }
                 }
             });
+//
+//            progressDialog.dismiss();
+//        }, 2000);
 
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -156,19 +163,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (item.getItemId()) {
             case R.id.home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new Home())
-                        .addToBackStack(null).commit();
+                        .commit();
                 break;
             case R.id.profile:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment,
-                        new Profile()).addToBackStack(null).commit();
+                        new Profile()).commit();
                 break;
             case R.id.exchange:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new Exchange()).
-                        addToBackStack(null).commit();
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new Exchange()).commit();
                 break;
             case R.id.faq:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new Faq())
-                        .addToBackStack(null).commit();
+                        .commit();
                 break;
             case R.id.share:
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
