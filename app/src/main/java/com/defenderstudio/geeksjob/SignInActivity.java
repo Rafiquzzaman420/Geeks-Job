@@ -1,13 +1,13 @@
 package com.defenderstudio.geeksjob;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -16,6 +16,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -25,17 +29,24 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class SignInActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 100;
+    TextView appNameTextView, companyNameTextView;
     // [START declare_auth]
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
-    TextView appNameTextView, companyNameTextView;
     private GoogleSignInClient mGoogleSignInClient;
     private ImageView googleIcon;
+    private String valueFromServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +55,6 @@ public class SignInActivity extends AppCompatActivity {
         // [START config_signin]
         // Configure Google Sign In
         overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
-
 
 
         CardView signInButton = findViewById(R.id.sign_in_button);
@@ -77,10 +87,7 @@ public class SignInActivity extends AppCompatActivity {
             googleIconSpinner.googleIconSpinnerStart();
             signIn();
             progressBar.setVisibility(View.VISIBLE);
-
         });
-
-
     }
 
     // [START on_start_check_user]
@@ -147,19 +154,7 @@ public class SignInActivity extends AppCompatActivity {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-    // [END signin]
-
-
-    private class googleIconSpinner {
-        @SuppressLint("Recycle")
-        ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(googleIcon, "rotation", 0, 360);
-        private void googleIconSpinnerStart() {
-            this.rotateAnimation.start();
-            this.rotateAnimation.setDuration(1000);
-            this.rotateAnimation.setRepeatCount(15);
-        }
-
-    }
+    // [END signing]
 
     @Override
     public void onBackPressed() {
@@ -169,6 +164,18 @@ public class SignInActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", (dialog, id) -> SignInActivity.super.onBackPressed())
                 .setNegativeButton("No", null)
                 .show();
+    }
+
+    private class googleIconSpinner {
+        @SuppressLint("Recycle")
+        ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(googleIcon, "rotation", 0, 360);
+
+        private void googleIconSpinnerStart() {
+            this.rotateAnimation.start();
+            this.rotateAnimation.setDuration(1000);
+            this.rotateAnimation.setRepeatCount(15);
+        }
+
     }
 
 }

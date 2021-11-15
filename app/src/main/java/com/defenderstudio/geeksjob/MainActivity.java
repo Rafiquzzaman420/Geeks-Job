@@ -1,55 +1,95 @@
 package com.defenderstudio.geeksjob;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
-import android.view.MenuItem;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    private DrawerLayout drawerLayout;
     TextView user_name_text_view;
     ImageView user_image;
     GoogleSignInClient mGoogleSignInClient;
-    String earningPointAmount;
     TextView total_earning;
+    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    String BREAK = "BREAK";
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        FirebaseAuth.getInstance().getCurrentUser();
         overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
         total_earning = findViewById(R.id.total_earning);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+//        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading. Please wait...");
+        progressDialog.show();
+        new Handler().postDelayed(() -> {
+            @SuppressLint("HardwareIds")
+            String ANDROID_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            Log.d("Sign", "Value is : " + ANDROID_ID);
+            userSignInInformationCallBack(value -> {
+                Log.d("Sign", "Value is : " + value);
+                // If value doesn't match with the device ID then it'll sign out the user
+                if (!value.equals(ANDROID_ID) && !value.equals("NULL")) {
+                    FirebaseAuth.getInstance().signOut();
+                    Toast.makeText(getApplicationContext(),
+                            "Please sign out from other device and try again!",
+                            Toast.LENGTH_LONG).show();
+                    Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
+                    startActivity(logOut);
+                } else {
+                    // Otherwise it'll do nothing and send the information to the server
+                    if (BREAK.equals("BREAK")) {
+                        BREAK = "DO NOTHING";
+                        Log.d("", "BREAK Value is in ELSE:" + BREAK);
+                        userSignInInformationSendToServer(BREAK);
+                    }
+                }
+            });
+            progressDialog.dismiss();
+        }, 3000);
 
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -101,15 +141,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     public void onBackPressed() {
+        String BREAK = "BREAK";
+        Log.d("SIGN", "BREAK Value is : "+BREAK);
         if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
             drawerLayout.closeDrawer(GravityCompat.START);
         }
         new AlertDialog.Builder(this)
                 .setMessage("Are you sure you want to exit?")
                 .setCancelable(false)
-                .setPositiveButton("Yes", (dialog, id) -> MainActivity.super.onBackPressed())
-                .setNegativeButton("No", null)
+                .setPositiveButton("Yes", (dialog, id) -> {
+                    Log.d("SIGN", "Sending BREAK Value is : "+BREAK);
+                    userSignInInformationSendToServer(BREAK);
+                    userSignOutInformationSendToServer();
+                    FirebaseAuth.getInstance().signOut();
+                    MainActivity.super.onBackPressed();
+                }).setNegativeButton("No", null)
                 .show();
+
         overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
     }
 
@@ -142,12 +190,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
                 // TODO : NEED TO CHANGE THE SHAREBODY HERE. CHANGE SHAREBODY WITH THE APPLICATION GOOGLE PLAY ADDRESS
-                String shareBody = "Download Geeks Job and Earn Real Money.\nLink:Blah!";
+                String shareBody = "Download Geeks Job and Earn Real Money.";
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
                 break;
             case R.id.sign_out:
+                userSignOutInformationSendToServer();
                 FirebaseAuth.getInstance().signOut();
                 mGoogleSignInClient.signOut().addOnCompleteListener(this,
                         task -> {
@@ -169,5 +218,58 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onPointerCaptureChanged(hasCapture);
     }
 
+    private void userSignInInformationCallBack(MainActivity.userSignInInformation userSignInInformation) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        assert firebaseUser != null;
+        DatabaseReference userSignInInfoReference = databaseReference.child("User Information").
+                child("Users").child("Sign In Info").child(firebaseUser.getUid()).child("Info");
+        userSignInInfoReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String stringValue = snapshot.getValue(String.class);
+                try {
+                    userSignInInformation.userSignInInfo(stringValue);
+                } catch (Exception e) {
+                    Log.d("Sign", "Setting the value to NULL");
+                    userSignInInformation.userSignInInfo("NULL");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    private void userSignOutInformationSendToServer() {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        assert firebaseUser != null;
+        DatabaseReference signOutInfoReference = databaseReference.child("User Information").
+                child("Users").child("Sign In Info").child(firebaseUser.getUid()).child("Info");
+
+        signOutInfoReference.setValue("NULL");
+    }
+
+    private void userSignInInformationSendToServer(String endMethod) {
+        if (!endMethod.equals("BREAK")) {
+            Log.d("Sign", "BREAK Value is in endMethod : " + endMethod);
+            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+            assert firebaseUser != null;
+            DatabaseReference signInInformation = databaseReference.child("User Information").
+                    child("Users").child("Sign In Info").child(firebaseUser.getUid()).child("Info");
+            @SuppressLint("HardwareIds")
+            String ANDROID_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            signInInformation.setValue(ANDROID_ID);
+        }
+        else return;
+    }
+
+
+    private interface userSignInInformation {
+        void userSignInInfo(String value);
+    }
 
 }
