@@ -94,7 +94,11 @@ public class Home extends Fragment {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         TextView userPointReference = view.findViewById(R.id.userPointReference);
         readPointDataFromFirebase(value -> {
-            userPointReference.setText(String.valueOf(value));
+            if (value != null) {
+                userPointReference.setText(String.valueOf(value));
+            }else{
+                userPointReference.setText(String.valueOf(0));
+            }
             userPointReference.invalidate();
         });
 
@@ -145,9 +149,7 @@ public class Home extends Fragment {
                 Long longValue = snapshot.getValue(Long.class);
                 try {
                     userPointInfoCallBack.userPointInfo(longValue);
-                }catch (Exception exception){
-                    userPointInfoCallBack.userPointInfo(0L);
-                }
+                }catch (Exception ignored){}
 
             }
 

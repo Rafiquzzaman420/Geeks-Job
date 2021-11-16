@@ -32,13 +32,13 @@
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/font/custom_font.xml" value="0.234375" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/activity_rewards.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/activity_sign_in.xml" value="0.20416666666666666" />
-        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/fragment_exchange.xml" value="0.20416666666666666" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/fragment_exchange.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/fragment_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/home_fragment.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/question_ans_activity.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/quiz_activity.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/splash_screen.xml" value="0.20416666666666666" />
-        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw480dp/fragment_exchange.xml" value="0.18" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw480dp/fragment_exchange.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw480dp/home_fragment.xml" value="0.22" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/activity_rewards.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/activity_sign_in.xml" value="0.20416666666666666" />
@@ -70,12 +70,12 @@
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/competition_activity.xml" value="0.1814814814814815" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/empty_layout_background.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/fifty_fifty_dialog_layout.xml" value="0.20416666666666666" />
-        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/fragment_exchange.xml" value="0.22" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/fragment_exchange.xml" value="0.33" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/fragment_faq.xml" value="0.1" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/fragment_premium.xml" value="0.1" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/fragment_share.xml" value="0.1" />
-        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/home_fragment.xml" value="0.33" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/home_fragment.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/leaderboard_activity.xml" value="0.1814814814814815" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/navigation_header.xml" value="0.2" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/penalty_dialog_window.xml" value="0.22" />
