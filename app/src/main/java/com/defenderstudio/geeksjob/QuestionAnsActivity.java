@@ -436,17 +436,22 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setMessage("Are you sure you want to go back?")
-                .setCancelable(false)
-                .setPositiveButton("Yes", (dialog, which) -> {
-                    Intent intent = new Intent(QuestionAnsActivity.this,
-                            QuizActivity.class);
-                    startActivity(intent);
-                })
-                .setNegativeButton("No", null)
-                .show();
-        overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
+        browserView = findViewById(R.id.browser_web_view);
+        if (browserView.canGoBack()) {
+            browserView.goBack();
+        } else {
+            new AlertDialog.Builder(this)
+                    .setMessage("Are you sure you want to go back?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        Intent intent = new Intent(QuestionAnsActivity.this,
+                                QuizActivity.class);
+                        startActivity(intent);
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+            overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
+        }
     }
     //==============================================================================================
 
