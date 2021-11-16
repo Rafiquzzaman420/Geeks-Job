@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="167sp"
+    android:layout_height="220dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/orange"
@@ -13,7 +13,8 @@
         android:background="@color/white"
         app:cardCornerRadius="100dp"
         android:elevation="10dp"
-        android:translationZ="10dp">
+        android:translationZ="10dp"
+        android:layout_marginTop="20dp">
     <ImageView
         android:id="@+id/user_image"
         android:contentDescription="@string/app_name"
@@ -41,6 +42,7 @@
         android:text="@string/not_applicable"
         android:textColor="@color/orange"
         android:textSize="18sp"
+        android:layout_margin="10dp"
         android:gravity="center"
         android:fontFamily="@font/geeks_job_regular"/>
     </androidx.cardview.widget.CardView>

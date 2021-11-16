@@ -6,13 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".Profile"
+    android:background="@drawable/home_480"
     tools:ignore="NestedWeights">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight=".65"
-        android:background="@drawable/color_gradient"
         android:gravity="center"
         android:orientation="vertical">
 
@@ -21,7 +21,8 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             android:layout_gravity="center"
-            android:src="@drawable/profile_white" />
+            android:src="@drawable/profile_white"
+            android:contentDescription="@string/profile"/>
 
         <TextView
             android:id="@+id/profile_user_name"
