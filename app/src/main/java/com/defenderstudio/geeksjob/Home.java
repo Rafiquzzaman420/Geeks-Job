@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 
@@ -19,6 +20,11 @@ import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 
 /**
@@ -86,6 +92,12 @@ public class Home extends Fragment {
         ImageView userImageView = view.findViewById(R.id.userImageInHomeFragment);
         TextView userName = view.findViewById(R.id.userNameInHomeFragment);
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        TextView userPointReference = view.findViewById(R.id.userPointReference);
+        readPointDataFromFirebase(value -> {
+            userPointReference.setText(String.valueOf(value));
+            userPointReference.invalidate();
+        });
+
         if (firebaseUser != null) {
             for (UserInfo profile : firebaseUser.getProviderData()) {
 
@@ -119,5 +131,36 @@ public class Home extends Fragment {
         });
         return view;
     }
+
+
+    public void readPointDataFromFirebase(Home.userPointInfoCallBack userPointInfoCallBack) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference databaseEarningReference;
+        assert firebaseUser != null;
+        databaseEarningReference = FirebaseDatabase.getInstance().
+                getReference("AllUsers/User/" + firebaseUser.getUid() + "/Earned_Point_Amount");
+        databaseEarningReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Long longValue = snapshot.getValue(Long.class);
+                try {
+                    userPointInfoCallBack.userPointInfo(longValue);
+                }catch (Exception exception){
+                    userPointInfoCallBack.userPointInfo(0L);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public interface userPointInfoCallBack {
+        void userPointInfo(Long value);
+    }
+
 
 }

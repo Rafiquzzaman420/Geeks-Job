@@ -281,6 +281,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                             @Override
                             public void onAdDismissedFullScreenContent() {
                                 blockRewardButton();
+                                rewardInformationToServer();
                                 timerTimeSendToServer();
                                 ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this,
                                         R.style.ProgressDialogStyle);
@@ -880,6 +881,36 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     private interface userTimerInformation {
         void timerInfo(Long value);
+    }
+
+
+    private void rewardInformationToServer() {
+
+        // This method will send the rewarded point information directly to the server and merge it down with the
+        // answer point value
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        assert firebaseUser != null;
+
+        // Firebase Database paths must not contain '.', '#', '$', '[', or ']'
+
+        DatabaseReference pointsValue = firebaseDatabase.child("AllUsers").
+                child("Competition").child("UserList").
+                child(Objects.requireNonNull(firebaseUser.getDisplayName()).replace(".", " ").
+                        replace("#", " ").
+                        replace("$", " ").
+                        replace("[", " ").
+                        replace("]", " ") + " " +
+                        firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).child("pointsValue");
+
+        DatabaseReference EarnedPointAmount = firebaseDatabase.child("AllUsers").
+                child("User").child(firebaseUser.getUid()).child("Earned_Point_Amount");
+
+        pointsValue.setValue(ServerValue.increment(30));
+        EarnedPointAmount.setValue(ServerValue.increment(30));
+
+        //==============================================================================================
     }
 
 }

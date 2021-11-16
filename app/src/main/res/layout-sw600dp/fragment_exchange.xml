@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/exchange_720"
+    android:background="@drawable/home_600"
     android:orientation="vertical"
     tools:context=".Exchange"
     tools:ignore="NestedWeights">
@@ -46,6 +46,8 @@
                     />
 
                 <EditText
+                    android:maxLength="15"
+                    android:maxLines="1"
                     android:inputType="numberDecimal"
                     android:textCursorDrawable="@null"
                     android:id="@+id/bkashAccountNumber"

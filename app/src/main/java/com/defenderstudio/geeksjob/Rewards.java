@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -48,26 +47,28 @@ public class Rewards extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rewards);
 
-        blockRewardButton();
-        ProgressDialog dialog = new ProgressDialog(Rewards.this, R.style.ProgressDialogStyle);
-        dialog.setMessage("Loading. Please wait...");
+        ProgressDialog dialog = new ProgressDialog(Rewards.this,
+                R.style.ProgressDialogStyle);
+        dialog.setMessage("Loading...");
         dialog.setCancelable(false);
         dialog.show();
+        new Handler().postDelayed(() -> {
+            rewardedAdLoader();
+            dialog.dismiss();
+        }, 3000);
+
+        blockRewardButton();
         TextView chancesLeftText = findViewById(R.id.chancesLeft);
         userChancesLeftCallBack(value -> {
             chancesLeftText.setText(String.valueOf(value));
             chancesLeft = value;
-            dialog.dismiss();
             if (value == 0) {
                 informationValidation();
             } else {
                 informationValidation();
-                dialog.dismiss();
                 freeRewardButton();
             }
         });
-
-//        informationValidation();
 
         MobileAds.initialize(this, initializationStatus -> rewardedAdLoader());
 
@@ -250,6 +251,15 @@ public class Rewards extends AppCompatActivity {
                                 if ((chancesLeft - 1) >= 1) {
                                     chancesLeft--;
                                     userChancesLeftSendToServer(chancesLeft);
+                                    ProgressDialog dialog = new ProgressDialog(Rewards.this,
+                                            R.style.ProgressDialogStyle);
+                                    dialog.setMessage("Loading...");
+                                    dialog.setCancelable(false);
+                                    dialog.show();
+                                    new Handler().postDelayed(() -> {
+                                        rewardedAdLoader();
+                                        dialog.dismiss();
+                                    }, 2000);
                                 } else {
                                     userChancesLeftSendToServer(0);
                                     blockRewardButton();
