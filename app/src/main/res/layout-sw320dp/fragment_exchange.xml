@@ -60,6 +60,7 @@
                     android:layout_marginBottom="10dp"
                     android:textColorHint="@color/orange"
                     android:textSize="15sp"
+                    android:textColor="@color/orange"
                     android:backgroundTint="@color/orange"/>
             </LinearLayout>
 

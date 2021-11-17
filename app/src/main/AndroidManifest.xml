@@ -15,12 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GeeksJob"
         tools:ignore="LockedOrientationActivity">
-
         <activity
             android:name=".LeaderBoard"
             android:exported="false"
             android:noHistory="true"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"

@@ -55,6 +55,7 @@
                     android:layout_height="match_parent"
                     android:hint="@string/bkash"
                     android:layout_margin="10dp"
+                    android:textColor="@color/orange"
                     android:textColorHint="@color/orange"
                     android:textSize="15sp"
                     android:backgroundTint="@color/orange"/>

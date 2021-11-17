@@ -48,6 +48,7 @@
                 <EditText
                     android:maxLength="15"
                     android:maxLines="1"
+                    android:textColor="@color/orange"
                     android:inputType="numberDecimal"
                     android:textCursorDrawable="@null"
                     android:id="@+id/bkashAccountNumber"

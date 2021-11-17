@@ -25,7 +25,7 @@ import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
 
-    public static ArrayList<Questions> historyList, curriculumList, sportsList, moviesList, scienceList, religionList, iotList, economyList;
+    public static ArrayList<Questions>  curriculumList, moviesList, scienceList, religionList;
     private final int index = 0;
     List<Questions> allQuestionsList = new ArrayList<>();
     Questions questions;
@@ -36,35 +36,24 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.quiz_activity);
+        setContentView(R.layout.quiz_section_activity);
         overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
         MobileAds.initialize(
                 this,
-                new OnInitializationCompleteListener() {
-                    @Override
-                    public void onInitializationComplete(@NonNull InitializationStatus initializationStatus) {
-                    }
+                initializationStatus -> {
                 });
 
 
-        historyList = new ArrayList<>();
-        economyList = new ArrayList<>();
         curriculumList = new ArrayList<>();
         religionList = new ArrayList<>();
-        sportsList = new ArrayList<>();
         moviesList = new ArrayList<>();
         scienceList = new ArrayList<>();
-        iotList = new ArrayList<>();
 
 
-        allQuestionsList = historyList;
-        allQuestionsList = economyList;
         allQuestionsList = curriculumList;
         allQuestionsList = religionList;
-        allQuestionsList = sportsList;
         allQuestionsList = moviesList;
         allQuestionsList = scienceList;
-        allQuestionsList = iotList;
 
         DatabaseLoadWithAsyncTask databaseLoadWithAsyncTask = new DatabaseLoadWithAsyncTask();
         databaseLoadWithAsyncTask.execute();
@@ -75,13 +64,9 @@ public class QuizActivity extends AppCompatActivity {
 //==================================================================================================
 
         CardView curriculumButton = findViewById(R.id.curriculum);
-        CardView iotButton = findViewById(R.id.iot);
-        CardView historyButton = findViewById(R.id.history);
         CardView religionButton = findViewById(R.id.religion);
-        CardView sportsButton = findViewById(R.id.sports);
         CardView moviesButton = findViewById(R.id.movies);
         CardView scienceButton = findViewById(R.id.science);
-        CardView economyButton = findViewById(R.id.economy);
 
 //==================================================================================================
         // Common intent for all the question buttons
@@ -94,19 +79,11 @@ public class QuizActivity extends AppCompatActivity {
 
         curriculumButton.setOnClickListener(v -> Toast.makeText(getApplicationContext(), "Coming soon!", Toast.LENGTH_SHORT).show());
 
-        historyButton.setOnClickListener(v -> questionAnswerLoadingIntent("History", "History", historyList));
-
         religionButton.setOnClickListener(v -> Toast.makeText(getApplicationContext(), "Coming soon!", Toast.LENGTH_SHORT).show());
 
-        iotButton.setOnClickListener(v -> questionAnswerLoadingIntent("IOT", "IOT", iotList));
+        moviesButton.setOnClickListener(v -> questionAnswerLoadingIntent("Movies & Sports", "Movies & Sports", moviesList));
 
-        sportsButton.setOnClickListener(v -> questionAnswerLoadingIntent("Sports", "Sports", sportsList));
-
-        moviesButton.setOnClickListener(v -> questionAnswerLoadingIntent("Movies", "Movies", moviesList));
-
-        scienceButton.setOnClickListener(v -> questionAnswerLoadingIntent("Science", "Science", scienceList));
-
-        economyButton.setOnClickListener(v -> questionAnswerLoadingIntent("Economy", "Economy", economyList));
+        scienceButton.setOnClickListener(v -> questionAnswerLoadingIntent("Science & History", "Science & History", scienceList));
 
         //==============================================================================================
 
@@ -151,49 +128,10 @@ public class QuizActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Questions... lists) {
 
-            historyReference = FirebaseDatabase.getInstance().getReference("Questions/AllQuestions/History");
             curriculumReference = FirebaseDatabase.getInstance().getReference("Questions/AllQuestions/Curriculum");
-            sportsReference = FirebaseDatabase.getInstance().getReference("Questions/AllQuestions/Sports");
-            iotReference = FirebaseDatabase.getInstance().getReference("Questions/AllQuestions/IOT");
             religionReference = FirebaseDatabase.getInstance().getReference("Questions/AllQuestions/Religion");
             moviesReference = FirebaseDatabase.getInstance().getReference("Questions/AllQuestions/Movies");
-            economyReference = FirebaseDatabase.getInstance().getReference("Questions/AllQuestions/Economy");
             scienceReference = FirebaseDatabase.getInstance().getReference("Questions/AllQuestions/Science");
-
-            historyReference.addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    historyList = new ArrayList<>();
-                    allQuestionsList = historyList;
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Questions questions = dataSnapshot.getValue(Questions.class);
-                        historyList.add(questions);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-
-            economyReference.addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    economyList = new ArrayList<>();
-                    allQuestionsList = economyList;
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Questions questions = dataSnapshot.getValue(Questions.class);
-                        economyList.add(questions);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-
 
             scienceReference.addValueEventListener(new ValueEventListener() {
 
@@ -263,39 +201,6 @@ public class QuizActivity extends AppCompatActivity {
                 }
             });
 
-            sportsReference.addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    sportsList = new ArrayList<>();
-                    allQuestionsList = sportsList;
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Questions questions = dataSnapshot.getValue(Questions.class);
-                        sportsList.add(questions);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-
-            iotReference.addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    iotList = new ArrayList<>();
-                    allQuestionsList = iotList;
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        Questions questions = dataSnapshot.getValue(Questions.class);
-                        iotList.add(questions);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
             return null;
         }
     }

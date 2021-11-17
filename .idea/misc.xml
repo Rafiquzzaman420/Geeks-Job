@@ -36,7 +36,7 @@
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/fragment_profile.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/home_fragment.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/question_ans_activity.xml" value="0.20416666666666666" />
-        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/quiz_activity.xml" value="0.20416666666666666" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/quiz_activity.xml" value="0.22" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw320dp/splash_screen.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw480dp/fragment_exchange.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw480dp/home_fragment.xml" value="0.22" />
@@ -48,6 +48,7 @@
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/navigation_header.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/question_ans_activity.xml" value="0.22" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/quiz_activity.xml" value="0.20416666666666666" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/quiz_section_activity.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/splash_screen.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/activity_rewards.xml" value="0.19140625" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/activity_sign_in.xml" value="0.19140625" />
@@ -57,6 +58,7 @@
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/navigation_header.xml" value="0.19140625" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/question_ans_activity.xml" value="0.22" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/quiz_activity.xml" value="0.19140625" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/quiz_section_activity.xml" value="0.19140625" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/splash_screen.xml" value="0.19140625" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-v23/question_ans_activity.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-v26/home_fragment.xml" value="0.20416666666666666" />
@@ -80,8 +82,9 @@
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/navigation_header.xml" value="0.2" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/penalty_dialog_window.xml" value="0.22" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/question_ans_activity.xml" value="0.25" />
-        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/quiz_activity.xml" value="0.2" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/quiz_activity.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/quiz_recycler_activity.xml" value="0.18" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/quiz_section_activity.xml" value="0.1814814814814815" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/recycler_layout.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/result_activity.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/splash_screen.xml" value="0.2" />

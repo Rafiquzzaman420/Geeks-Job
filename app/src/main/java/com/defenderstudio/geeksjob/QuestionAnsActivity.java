@@ -1,13 +1,9 @@
 package com.defenderstudio.geeksjob;
 
 import static com.defenderstudio.geeksjob.QuizActivity.curriculumList;
-import static com.defenderstudio.geeksjob.QuizActivity.economyList;
-import static com.defenderstudio.geeksjob.QuizActivity.historyList;
-import static com.defenderstudio.geeksjob.QuizActivity.iotList;
 import static com.defenderstudio.geeksjob.QuizActivity.moviesList;
 import static com.defenderstudio.geeksjob.QuizActivity.religionList;
 import static com.defenderstudio.geeksjob.QuizActivity.scienceList;
-import static com.defenderstudio.geeksjob.QuizActivity.sportsList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -70,14 +66,15 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             goBackFromBrowser,
             rewardedAdButton;
     WebView browserView;
-    List<Questions> historyQuestionsList, curriculumQuestionsList, sportsQuestionsList, moviesQuestionsList,
-            scienceQuestionsList, economyQuestionsList, religionQuestionsList, iotQuestionsList;
+    List<Questions> curriculumQuestionsList, moviesQuestionsList,
+            scienceQuestionsList, religionQuestionsList;
     Questions questions;
     int index = 0;
     long correctCount = 0;
     private InterstitialAd mInterstitialAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
     private Handler adHandler;
+
     Runnable statusChecker = new Runnable() {
         @Override
         public void run() {
@@ -173,33 +170,22 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         //==============================================================================================
 
 // Assigning list (Question) into ArrayList
-        historyQuestionsList = historyList;
-        economyQuestionsList = economyList;
         curriculumQuestionsList = curriculumList;
         religionQuestionsList = religionList;
-        sportsQuestionsList = sportsList;
         moviesQuestionsList = moviesList;
         scienceQuestionsList = scienceList;
-        iotQuestionsList = iotList;
 
 // Shuffling all the questions taken from the server
-        Collections.shuffle(historyQuestionsList);
-        Collections.shuffle(economyQuestionsList);
+
         Collections.shuffle(curriculumQuestionsList);
-        Collections.shuffle(sportsQuestionsList);
         Collections.shuffle(religionQuestionsList);
         Collections.shuffle(moviesQuestionsList);
         Collections.shuffle(scienceQuestionsList);
-        Collections.shuffle(iotQuestionsList);
 
 // Trying to get information from the server. If connection is slow then it'll show error Toast to
 //        the user.
-        quizCallFromFirebase(historyList);
-        quizCallFromFirebase(economyList);
         quizCallFromFirebase(religionList);
-        quizCallFromFirebase(sportsList);
         quizCallFromFirebase(scienceList);
-        quizCallFromFirebase(iotList);
         quizCallFromFirebase(moviesList);
         quizCallFromFirebase(curriculumList);
 
