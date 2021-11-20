@@ -2,12 +2,12 @@ package com.defenderstudio.geeksjob;
 
 public class MoviesQuestion {
 
-    String question;
-    String option1;
-    String option2;
-    String option3;
-    String option4;
-    String answer;
+    String moviesQuestion;
+    String moviesOption1;
+    String moviesOption2;
+    String moviesOption3;
+    String moviesOption4;
+    String moviesAnswer;
 
     //==================================================================================================
 //                                      Empty constructor
@@ -19,65 +19,65 @@ public class MoviesQuestion {
     //==================================================================================================
 //                                       Constructor
 //==================================================================================================
-    public MoviesQuestion(String question, String option1, String option2,
-                          String option3, String option4, String answer) {
-        this.question = question;
-        this.option1 = option1;
-        this.option2 = option2;
-        this.option3 = option3;
-        this.option4 = option4;
-        this.answer = answer;
+    public MoviesQuestion(String moviesQuestion, String moviesOption1, String moviesOption2,
+                          String moviesOption3, String moviesOption4, String moviesAnswer) {
+        this.moviesQuestion = moviesQuestion;
+        this.moviesOption1 = moviesOption1;
+        this.moviesOption2 = moviesOption2;
+        this.moviesOption3 = moviesOption3;
+        this.moviesOption4 = moviesOption4;
+        this.moviesAnswer = moviesAnswer;
     }
 
     //==================================================================================================
     // Getter and setter methods starts here
 //==================================================================================================
-    public String getQuestion() {
-        return question;
+    public String getMoviesQuestion() {
+        return moviesQuestion;
     }
 
-    public void setQuestion(String question) {
-        this.question = question;
+    public void setMoviesQuestion(String moviesQuestion) {
+        this.moviesQuestion = moviesQuestion;
     }
 
-    public String getOption1() {
-        return option1;
+    public String getMoviesOption1() {
+        return moviesOption1;
     }
 
-    public void setOption1(String option1) {
-        this.option1 = option1;
+    public void setMoviesOption1(String moviesOption1) {
+        this.moviesOption1 = moviesOption1;
     }
 
-    public String getOption2() {
-        return option2;
+    public String getMoviesOption2() {
+        return moviesOption2;
     }
 
-    public void setOption2(String option2) {
-        this.option2 = option2;
+    public void setMoviesOption2(String moviesOption2) {
+        this.moviesOption2 = moviesOption2;
     }
 
-    public String getOption3() {
-        return option3;
+    public String getMoviesOption3() {
+        return moviesOption3;
     }
 
-    public void setOption3(String option3) {
-        this.option3 = option3;
+    public void setMoviesOption3(String moviesOption3) {
+        this.moviesOption3 = moviesOption3;
     }
 
-    public String getOption4() {
-        return option4;
+    public String getMoviesOption4() {
+        return moviesOption4;
     }
 
-    public void setOption4(String option4) {
-        this.option4 = option4;
+    public void setMoviesOption4(String moviesOption4) {
+        this.moviesOption4 = moviesOption4;
     }
 
-    public String getAnswer() {
-        return answer;
+    public String getMoviesAnswer() {
+        return moviesAnswer;
     }
 
-    public void setAnswer(String answer) {
-        this.answer = answer;
+    public void setMoviesAnswer(String moviesAnswer) {
+        this.moviesAnswer = moviesAnswer;
     }
 
 //==================================================================================================

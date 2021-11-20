@@ -13,6 +13,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -191,10 +192,16 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
 // Trying to get information from the server. If connection is slow then it'll show error Toast to
 //        the user.
-        religionQuizCallFromFirebase(religionList);
-        scienceQuizCallFromFirebase(scienceList);
-        moviesQuizCallFromFirebase(moviesList);
-        curriculumQuizCallFromFirebase(curriculumList);
+//        religionQuizCallFromFirebase(religionList);
+        // TODO: NEED TO PUT STRING EXTRA TO CALL THESE INFORMATION DAH!
+        // Most important thing in this project I think
+        String topicInfo = getIntent().getStringExtra("topicName");
+        if (topicInfo.equals("Science & History")){
+            scienceQuizCallFromFirebase(scienceList, topicInfo);
+        }else if (topicInfo.equals("Movies & Sports")) {
+            moviesQuizCallFromFirebase(moviesList, topicInfo);
+        }
+//        curriculumQuizCallFromFirebase(curriculumList);
 
     }
 
@@ -303,7 +310,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 });
     }
 
-    private void scienceQuizCallFromFirebase(ArrayList<ScienceQuestion> arrayList) {
+    private void scienceQuizCallFromFirebase(ArrayList<ScienceQuestion> arrayList, String extraInfo) {
         try {
             scienceQuestion = arrayList.get(index);
 
@@ -320,40 +327,40 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
 
-    private void religionQuizCallFromFirebase(ArrayList<ReligionQuestion> arrayList) {
-        try {
-            religionQuestion = arrayList.get(index);
+//    private void religionQuizCallFromFirebase(ArrayList<ReligionQuestion> arrayList) {
+//        try {
+//            religionQuestion = arrayList.get(index);
+//
+//            // Calling the optionClick methods after assigning them with information from the server
+//            religionOption1ClickMethod(arrayList);
+//            religionOption2ClickMethod(arrayList);
+//            religionOption3ClickMethod(arrayList);
+//            religionOption4ClickMethod(arrayList);
+//
+//            // If fails to get data from server, then it'll try again and after that show
+//            // connection error message
+//        } catch (Exception ignored) {
+//        }
+//    }
+//
+//    private void curriculumQuizCallFromFirebase(ArrayList<CurriculumQuestion> arrayList) {
+//        try {
+//            curriculumQuestion = arrayList.get(index);
+//
+//            // Calling the optionClick methods after assigning them with information from the server
+//            curriculumOption1ClickMethod(arrayList);
+//            curriculumOption2ClickMethod(arrayList);
+//            curriculumOption3ClickMethod(arrayList);
+//            curriculumOption4ClickMethod(arrayList);
+//
+//            // If fails to get data from server, then it'll try again and after that show
+//            // connection error message
+//        } catch (Exception ignored) {
+//        }
+//    }
 
-            // Calling the optionClick methods after assigning them with information from the server
-            religionOption1ClickMethod(arrayList);
-            religionOption2ClickMethod(arrayList);
-            religionOption3ClickMethod(arrayList);
-            religionOption4ClickMethod(arrayList);
 
-            // If fails to get data from server, then it'll try again and after that show
-            // connection error message
-        } catch (Exception ignored) {
-        }
-    }
-
-    private void curriculumQuizCallFromFirebase(ArrayList<CurriculumQuestion> arrayList) {
-        try {
-            curriculumQuestion = arrayList.get(index);
-
-            // Calling the optionClick methods after assigning them with information from the server
-            curriculumOption1ClickMethod(arrayList);
-            curriculumOption2ClickMethod(arrayList);
-            curriculumOption3ClickMethod(arrayList);
-            curriculumOption4ClickMethod(arrayList);
-
-            // If fails to get data from server, then it'll try again and after that show
-            // connection error message
-        } catch (Exception ignored) {
-        }
-    }
-
-
-    private void moviesQuizCallFromFirebase(ArrayList<MoviesQuestion> arrayList) {
+    private void moviesQuizCallFromFirebase(ArrayList<MoviesQuestion> arrayList, String extraInfo) {
         try {
             moviesQuestion = arrayList.get(index);
 
@@ -504,18 +511,18 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     // Setting all the question taken from the server with the questions textview in the application
     //==============================================================================================
     private void setMoviesQuestionData() {
-
-        question.setText(moviesQuestion.getQuestion());
-        option1.setText(moviesQuestion.getOption1());
-        option2.setText(moviesQuestion.getOption2());
-        option3.setText(moviesQuestion.getOption3());
-        option4.setText(moviesQuestion.getOption4());
+        Log.d("Question", "Setting All the Movies Question...");
+        question.setText(moviesQuestion.getMoviesQuestion());
+        option1.setText(moviesQuestion.getMoviesOption1());
+        option2.setText(moviesQuestion.getMoviesOption2());
+        option3.setText(moviesQuestion.getMoviesOption3());
+        option4.setText(moviesQuestion.getMoviesOption4());
         submitButton.setClickable(false);
 
     }
 
     private void setScienceQuestionData() {
-
+        Log.d("Question", "Setting All the Science Question...");
         question.setText(scienceQuestion.getQuestion());
         option1.setText(scienceQuestion.getOption1());
         option2.setText(scienceQuestion.getOption2());
@@ -784,7 +791,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
         setMoviesQuestionData();
         option1.setOnClickListener(v -> {
-            if (moviesQuestion.getOption1().equals(moviesQuestion.getAnswer())) {
+            if (moviesQuestion.getMoviesOption1().equals(moviesQuestion.getMoviesAnswer())) {
 
                 option1.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -829,7 +836,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
         setMoviesQuestionData();
         option2.setOnClickListener(v -> {
-            if (moviesQuestion.getOption2().equals(moviesQuestion.getAnswer())) {
+            if (moviesQuestion.getMoviesOption2().equals(moviesQuestion.getMoviesAnswer())) {
 
                 option2.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -876,7 +883,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         setMoviesQuestionData();
         option3.setOnClickListener(v -> {
 
-            if (moviesQuestion.getOption3().equals(moviesQuestion.getAnswer())) {
+            if (moviesQuestion.getMoviesOption3().equals(moviesQuestion.getMoviesAnswer())) {
 
                 option3.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -923,7 +930,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         setMoviesQuestionData();
         option4.setOnClickListener(v -> {
 
-            if (moviesQuestion.getOption4().equals(moviesQuestion.getAnswer())) {
+            if (moviesQuestion.getMoviesOption4().equals(moviesQuestion.getMoviesAnswer())) {
 
                 option4.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -1106,7 +1113,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         setMoviesQuestionData();
         option1.setOnClickListener(v -> {
             // TODO: NEED TO CHANGE THE NAME HERE
-            if (moviesQuestion.getOption1().equals(moviesQuestion.getAnswer())) {
+            if (moviesQuestion.getMoviesOption1().equals(moviesQuestion.getMoviesAnswer())) {
 
                 option1.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -1153,7 +1160,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         setMoviesQuestionData();
         option2.setOnClickListener(v -> {
             // TODO: NEED TO CHANGE THE NAME HERE
-            if (moviesQuestion.getOption2().equals(moviesQuestion.getAnswer())) {
+            if (moviesQuestion.getMoviesOption2().equals(moviesQuestion.getMoviesAnswer())) {
 
                 option2.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -1201,7 +1208,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         setMoviesQuestionData();
         option3.setOnClickListener(v -> {
 // TODO: NEED TO CHANGE THE NAME HERE
-            if (moviesQuestion.getOption3().equals(moviesQuestion.getAnswer())) {
+            if (moviesQuestion.getMoviesOption3().equals(moviesQuestion.getMoviesAnswer())) {
 
                 option3.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -1249,7 +1256,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         setMoviesQuestionData();
         option4.setOnClickListener(v -> {
 // TODO: NEED TO CHANGE THE NAME HERE
-            if (moviesQuestion.getOption4().equals(moviesQuestion.getAnswer())) {
+            if (moviesQuestion.getMoviesOption4().equals(moviesQuestion.getMoviesAnswer())) {
 
                 option4.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -1474,7 +1481,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         setMoviesQuestionData();
         option1.setOnClickListener(v -> {
             // TODO: NEED TO CHANGE THE NAME HERE
-            if (moviesQuestion.getOption1().equals(moviesQuestion.getAnswer())) {
+            if (moviesQuestion.getMoviesOption1().equals(moviesQuestion.getMoviesAnswer())) {
 
                 option1.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -1521,7 +1528,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         setMoviesQuestionData();
         option2.setOnClickListener(v -> {
             // TODO: NEED TO CHANGE THE NAME HERE
-            if (moviesQuestion.getOption2().equals(moviesQuestion.getAnswer())) {
+            if (moviesQuestion.getMoviesOption2().equals(moviesQuestion.getMoviesAnswer())) {
 
                 option2.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -1569,7 +1576,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         setMoviesQuestionData();
         option3.setOnClickListener(v -> {
 // TODO: NEED TO CHANGE THE NAME HERE
-            if (moviesQuestion.getOption3().equals(moviesQuestion.getAnswer())) {
+            if (moviesQuestion.getMoviesOption3().equals(moviesQuestion.getMoviesAnswer())) {
 
                 option3.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -1617,7 +1624,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         setMoviesQuestionData();
         option4.setOnClickListener(v -> {
 // TODO: NEED TO CHANGE THE NAME HERE
-            if (moviesQuestion.getOption4().equals(moviesQuestion.getAnswer())) {
+            if (moviesQuestion.getMoviesOption4().equals(moviesQuestion.getMoviesAnswer())) {
 
                 option4.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));

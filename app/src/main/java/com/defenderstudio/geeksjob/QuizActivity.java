@@ -64,11 +64,12 @@ public class QuizActivity extends AppCompatActivity {
         moviesQuestionList = moviesList;
         scienceQuestionList = scienceList;
 
+        moviesDatabaseLoadWithAsyncTask moviesDatabaseLoadWithAsyncTask = new moviesDatabaseLoadWithAsyncTask();
+        moviesDatabaseLoadWithAsyncTask.execute();
         scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask = new scienceDatabaseLoadWithAsyncTask();
         scienceDatabaseLoadWithAsyncTask.execute();
 
-        moviesDatabaseLoadWithAsyncTask moviesDatabaseLoadWithAsyncTask = new moviesDatabaseLoadWithAsyncTask();
-        moviesDatabaseLoadWithAsyncTask.execute();
+
 
 
         curriculumDatabaseLoadWithAsyncTask curriculumDatabaseLoadWithAsyncTask = new curriculumDatabaseLoadWithAsyncTask();
