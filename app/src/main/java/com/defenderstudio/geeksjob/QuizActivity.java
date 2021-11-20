@@ -256,7 +256,7 @@ public class QuizActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(MoviesQuestion... lists) {
 
-            moviesReference = FirebaseDatabase.getInstance().getReference("Questionso/Movies");
+            moviesReference = FirebaseDatabase.getInstance().getReference("Questions/MoviesQuestion/Movies");
             moviesReference.addValueEventListener(new ValueEventListener() {
 
                 @Override
