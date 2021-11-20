@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     String BREAK = "BREAK";
     private DrawerLayout drawerLayout;
+    String updating = "Updating";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         total_earning = findViewById(R.id.total_earning);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        readUpdateInformationFromFirebase(value -> {
+            new Handler().postDelayed(() -> {
+                if(value != null) {
+                    if (value.equals(updating)) {
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(getApplicationContext(),
+                                "Application is being Updated. Please Try again later...",
+                                Toast.LENGTH_LONG).show();
+                        Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
+                        startActivity(logOut);
+                    }
+                }
+            }, 3000);
+        });
 
 //        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 //        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
@@ -258,5 +274,37 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private interface userSignInInformation {
         void userSignInInfo(String value);
     }
+
+
+    public void readUpdateInformationFromFirebase(MainActivity.readUpdateInformation readUpdateInformation) {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference databaseEarningReference;
+        assert firebaseUser != null;
+        databaseEarningReference = FirebaseDatabase.getInstance().
+                getReference("Application Status").child("Status");
+        databaseEarningReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String stringValue = snapshot.getValue(String.class);
+                try {
+                    readUpdateInformation.readUpdateInfo(stringValue);
+                }catch (Exception ignored){
+                    readUpdateInformation.readUpdateInfo("Running");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public interface readUpdateInformation {
+        void readUpdateInfo(String value);
+    }
+
+
 
 }

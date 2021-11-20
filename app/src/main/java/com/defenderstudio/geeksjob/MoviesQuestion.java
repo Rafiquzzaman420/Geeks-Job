@@ -1,6 +1,6 @@
 package com.defenderstudio.geeksjob;
 
-public class Questions {
+public class MoviesQuestion {
 
     String question;
     String option1;
@@ -12,15 +12,15 @@ public class Questions {
     //==================================================================================================
 //                                      Empty constructor
 //==================================================================================================
-    public Questions() {
+    public MoviesQuestion() {
     }
 
 
     //==================================================================================================
 //                                       Constructor
 //==================================================================================================
-    public Questions(String question, String option1, String option2,
-                     String option3, String option4, String answer) {
+    public MoviesQuestion(String question, String option1, String option2,
+                          String option3, String option4, String answer) {
         this.question = question;
         this.option1 = option1;
         this.option2 = option2;

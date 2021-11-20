@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:text="@string/not_applicable"
         android:textColor="@color/orange"
-        android:textSize="32sp"
+        android:textSize="22sp"
         android:gravity="center"
         android:layout_margin="10dp"
         android:fontFamily="@font/geeks_job_regular"/>

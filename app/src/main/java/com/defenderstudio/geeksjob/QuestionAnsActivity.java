@@ -66,9 +66,16 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             goBackFromBrowser,
             rewardedAdButton;
     WebView browserView;
-    List<Questions> curriculumQuestionsList, moviesQuestionsList,
-            scienceQuestionsList, religionQuestionsList;
-    Questions questions;
+    List<ScienceQuestion> scienceQuestionList;
+    List<ReligionQuestion> religionQuestionList;
+    List<MoviesQuestion> moviesQuestionList;
+    List<CurriculumQuestion> curriculumQuestionList;
+
+    MoviesQuestion moviesQuestion;
+    ReligionQuestion religionQuestion;
+    ScienceQuestion scienceQuestion;
+    CurriculumQuestion curriculumQuestion;
+
     int index = 0;
     long correctCount = 0;
     private InterstitialAd mInterstitialAd;
@@ -170,24 +177,24 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         //==============================================================================================
 
 // Assigning list (Question) into ArrayList
-        curriculumQuestionsList = curriculumList;
-        religionQuestionsList = religionList;
-        moviesQuestionsList = moviesList;
-        scienceQuestionsList = scienceList;
+        curriculumQuestionList = curriculumList;
+        religionQuestionList = religionList;
+        moviesQuestionList = moviesList;
+        scienceQuestionList = scienceList;
 
 // Shuffling all the questions taken from the server
 
-        Collections.shuffle(curriculumQuestionsList);
-        Collections.shuffle(religionQuestionsList);
-        Collections.shuffle(moviesQuestionsList);
-        Collections.shuffle(scienceQuestionsList);
+        Collections.shuffle(curriculumQuestionList);
+        Collections.shuffle(religionQuestionList);
+        Collections.shuffle(scienceQuestionList);
+        Collections.shuffle(moviesQuestionList);
 
 // Trying to get information from the server. If connection is slow then it'll show error Toast to
 //        the user.
-        quizCallFromFirebase(religionList);
-        quizCallFromFirebase(scienceList);
-        quizCallFromFirebase(moviesList);
-        quizCallFromFirebase(curriculumList);
+        religionQuizCallFromFirebase(religionList);
+        scienceQuizCallFromFirebase(scienceList);
+        moviesQuizCallFromFirebase(moviesList);
+        curriculumQuizCallFromFirebase(curriculumList);
 
     }
 
@@ -296,21 +303,72 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 });
     }
 
-    private void quizCallFromFirebase(ArrayList<Questions> arrayList) {
+    private void scienceQuizCallFromFirebase(ArrayList<ScienceQuestion> arrayList) {
         try {
-            questions = arrayList.get(index);
+            scienceQuestion = arrayList.get(index);
 
             // Calling the optionClick methods after assigning them with information from the server
-            option1ClickMethod(arrayList);
-            option2ClickMethod(arrayList);
-            option3ClickMethod(arrayList);
-            option4ClickMethod(arrayList);
+            scienceOption1ClickMethod(arrayList);
+            scienceOption2ClickMethod(arrayList);
+            scienceOption3ClickMethod(arrayList);
+            scienceOption4ClickMethod(arrayList);
 
             // If fails to get data from server, then it'll try again and after that show
             // connection error message
         } catch (Exception ignored) {
         }
     }
+
+
+    private void religionQuizCallFromFirebase(ArrayList<ReligionQuestion> arrayList) {
+        try {
+            religionQuestion = arrayList.get(index);
+
+            // Calling the optionClick methods after assigning them with information from the server
+            religionOption1ClickMethod(arrayList);
+            religionOption2ClickMethod(arrayList);
+            religionOption3ClickMethod(arrayList);
+            religionOption4ClickMethod(arrayList);
+
+            // If fails to get data from server, then it'll try again and after that show
+            // connection error message
+        } catch (Exception ignored) {
+        }
+    }
+
+    private void curriculumQuizCallFromFirebase(ArrayList<CurriculumQuestion> arrayList) {
+        try {
+            curriculumQuestion = arrayList.get(index);
+
+            // Calling the optionClick methods after assigning them with information from the server
+            curriculumOption1ClickMethod(arrayList);
+            curriculumOption2ClickMethod(arrayList);
+            curriculumOption3ClickMethod(arrayList);
+            curriculumOption4ClickMethod(arrayList);
+
+            // If fails to get data from server, then it'll try again and after that show
+            // connection error message
+        } catch (Exception ignored) {
+        }
+    }
+
+
+    private void moviesQuizCallFromFirebase(ArrayList<MoviesQuestion> arrayList) {
+        try {
+            moviesQuestion = arrayList.get(index);
+
+            // Calling the optionClick methods after assigning them with information from the server
+            moviesOption1ClickMethod(arrayList);
+            moviesOption2ClickMethod(arrayList);
+            moviesOption3ClickMethod(arrayList);
+            moviesOption4ClickMethod(arrayList);
+
+            // If fails to get data from server, then it'll try again and after that show
+            // connection error message
+        } catch (Exception ignored) {
+        }
+    }
+
 
     //==============================================================================================
     // Method to update score directly to the server
@@ -445,13 +503,24 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
     // Setting all the question taken from the server with the questions textview in the application
     //==============================================================================================
-    private void setQuestionData() {
+    private void setMoviesQuestionData() {
 
-        question.setText(questions.getQuestion());
-        option1.setText(questions.getOption1());
-        option2.setText(questions.getOption2());
-        option3.setText(questions.getOption3());
-        option4.setText(questions.getOption4());
+        question.setText(moviesQuestion.getQuestion());
+        option1.setText(moviesQuestion.getOption1());
+        option2.setText(moviesQuestion.getOption2());
+        option3.setText(moviesQuestion.getOption3());
+        option4.setText(moviesQuestion.getOption4());
+        submitButton.setClickable(false);
+
+    }
+
+    private void setScienceQuestionData() {
+
+        question.setText(scienceQuestion.getQuestion());
+        option1.setText(scienceQuestion.getOption1());
+        option2.setText(scienceQuestion.getOption2());
+        option3.setText(scienceQuestion.getOption3());
+        option4.setText(scienceQuestion.getOption4());
         submitButton.setClickable(false);
 
     }
@@ -461,16 +530,16 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
     // If answer is correct, then this method will invoke
     //==============================================================================================
-    public void correctAnswer(Button button, ArrayList<Questions> arrayList) {
+    public void moviesCorrectAnswer(Button button, ArrayList<MoviesQuestion> arrayList) {
         button.setBackgroundColor(getResources().getColor(R.color.green));
         button.setTextColor(getResources().getColor(R.color.white));
         submitButton.setOnClickListener(v -> {
             correctCount++;
             if ((index < arrayList.size() - 1)) {
                 index++;
-                questions = arrayList.get(index);
+                moviesQuestion = arrayList.get(index);
                 resetButtonColor();
-                setQuestionData();
+                setMoviesQuestionData();
                 enableButton();
                 scoreUpdate();
 
@@ -479,6 +548,68 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
     }
+
+    public void scienceCorrectAnswer(Button button, ArrayList<ScienceQuestion> arrayList) {
+        button.setBackgroundColor(getResources().getColor(R.color.green));
+        button.setTextColor(getResources().getColor(R.color.white));
+        submitButton.setOnClickListener(v -> {
+            correctCount++;
+            if ((index < arrayList.size() - 1)) {
+                index++;
+                scienceQuestion = arrayList.get(index);
+                resetButtonColor();
+                setScienceQuestionData();
+                enableButton();
+                scoreUpdate();
+
+            } else {
+                disableButton();
+            }
+        });
+    }
+
+
+    public void curriculumCorrectAnswer(Button button, ArrayList<CurriculumQuestion> arrayList) {
+        button.setBackgroundColor(getResources().getColor(R.color.green));
+        button.setTextColor(getResources().getColor(R.color.white));
+        submitButton.setOnClickListener(v -> {
+            correctCount++;
+            if ((index < arrayList.size() - 1)) {
+                index++;
+                curriculumQuestion = arrayList.get(index);
+                resetButtonColor();
+                // TODO: NEED TO CHANGE THE NAME HERE
+                setMoviesQuestionData();
+                enableButton();
+                scoreUpdate();
+
+            } else {
+                disableButton();
+            }
+        });
+    }
+
+
+    public void religionCorrectAnswer(Button button, ArrayList<ReligionQuestion> arrayList) {
+        button.setBackgroundColor(getResources().getColor(R.color.green));
+        button.setTextColor(getResources().getColor(R.color.white));
+        submitButton.setOnClickListener(v -> {
+            correctCount++;
+            if ((index < arrayList.size() - 1)) {
+                index++;
+                religionQuestion = arrayList.get(index);
+                resetButtonColor();
+                // TODO: NEED TO CHANGE THE NAME HERE
+                setMoviesQuestionData();
+                enableButton();
+                scoreUpdate();
+
+            } else {
+                disableButton();
+            }
+        });
+    }
+
 
     //==============================================================================================
 
@@ -502,7 +633,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     // If answer is wrong, then this method will invoke
     //==============================================================================================
 
-    public void wrongAnswer(Button button, ArrayList<Questions> arrayList) {
+    public void moviesWrongAnswer(Button button, ArrayList<MoviesQuestion> arrayList) {
         button.setBackgroundColor(getResources().getColor(R.color.red));
         button.setClickable(false);
         button.setTextColor(getResources().getColor(R.color.white));
@@ -510,9 +641,9 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             correctCount++;
             if ((index < arrayList.size() - 1)) {
                 index++;
-                questions = arrayList.get(index);
+                moviesQuestion = arrayList.get(index);
                 resetButtonColor();
-                setQuestionData();
+                setMoviesQuestionData();
                 enableButton();
                 scoreUpdate();
 
@@ -520,8 +651,71 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 disableButton();
             }
         });
+    }
 
 
+    public void scienceWrongAnswer(Button button, ArrayList<ScienceQuestion> arrayList) {
+        button.setBackgroundColor(getResources().getColor(R.color.red));
+        button.setClickable(false);
+        button.setTextColor(getResources().getColor(R.color.white));
+        submitButton.setOnClickListener(v -> {
+            correctCount++;
+            if ((index < arrayList.size() - 1)) {
+                index++;
+                scienceQuestion = arrayList.get(index);
+                resetButtonColor();
+                setScienceQuestionData();
+                enableButton();
+                scoreUpdate();
+
+            } else {
+                disableButton();
+            }
+        });
+    }
+
+
+    public void religionWrongAnswer(Button button, ArrayList<ReligionQuestion> arrayList) {
+        button.setBackgroundColor(getResources().getColor(R.color.red));
+        button.setClickable(false);
+        button.setTextColor(getResources().getColor(R.color.white));
+        submitButton.setOnClickListener(v -> {
+            correctCount++;
+            if ((index < arrayList.size() - 1)) {
+                index++;
+                religionQuestion = arrayList.get(index);
+                resetButtonColor();
+                // TODO: NEED TO CHANGE THE NAME HERE
+                setMoviesQuestionData();
+                enableButton();
+                scoreUpdate();
+
+            } else {
+                disableButton();
+            }
+        });
+    }
+
+
+    public void curriculumWrongAnswer(Button button, ArrayList<CurriculumQuestion> arrayList) {
+        button.setBackgroundColor(getResources().getColor(R.color.red));
+        button.setClickable(false);
+        button.setTextColor(getResources().getColor(R.color.white));
+        submitButton.setOnClickListener(v -> {
+            correctCount++;
+            if ((index < arrayList.size() - 1)) {
+                index++;
+                curriculumQuestion = arrayList.get(index);
+                resetButtonColor();
+                // TODO: NEED TO CHANGE THE NAME HERE
+                setMoviesQuestionData();
+                enableButton();
+                scoreUpdate();
+
+            } else {
+                disableButton();
+            }
+        });
     }
     //==============================================================================================
 
@@ -585,19 +779,19 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     // When Option1 button is clicked, this method will be invoked
     //==============================================================================================
 
-    public void option1ClickMethod(ArrayList<Questions> arrayList) {
+    public void moviesOption1ClickMethod(ArrayList<MoviesQuestion> arrayList) {
         submitButton.setClickable(false);
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-        setQuestionData();
+        setMoviesQuestionData();
         option1.setOnClickListener(v -> {
-            if (questions.getOption1().equals(questions.getAnswer())) {
+            if (moviesQuestion.getOption1().equals(moviesQuestion.getAnswer())) {
 
                 option1.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
 
                 if (index < arrayList.size() - 1) {
                     submitButton.setClickable(false);
-                    correctAnswer(option1, arrayList);
+                    moviesCorrectAnswer(option1, arrayList);
                     disableButton();
 
                 } else {
@@ -605,7 +799,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     option1.setTextColor(getResources().getColor(R.color.white));
                     submitButton.setClickable(false);
                     submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                    correctAnswer(option1, arrayList);
+                    moviesCorrectAnswer(option1, arrayList);
                     disableButton();
                     submitButton.setClickable(true);
                     submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -615,7 +809,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 }
 
             } else {
-                wrongAnswer(option1, arrayList);
+                moviesWrongAnswer(option1, arrayList);
                 submitButton.setClickable(false);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -630,19 +824,19 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     // When Option2 button is clicked, this method will be invoked
     //==============================================================================================
 
-    public void option2ClickMethod(ArrayList<Questions> arrayList) {
+    public void moviesOption2ClickMethod(ArrayList<MoviesQuestion> arrayList) {
         submitButton.setClickable(false);
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-        setQuestionData();
+        setMoviesQuestionData();
         option2.setOnClickListener(v -> {
-            if (questions.getOption2().equals(questions.getAnswer())) {
+            if (moviesQuestion.getOption2().equals(moviesQuestion.getAnswer())) {
 
                 option2.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
 
                 if (index < arrayList.size() - 1) {
                     submitButton.setClickable(false);
-                    correctAnswer(option2, arrayList);
+                    moviesCorrectAnswer(option2, arrayList);
                     disableButton();
 
 
@@ -651,7 +845,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     option2.setTextColor(getResources().getColor(R.color.white));
                     submitButton.setClickable(false);
                     submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                    correctAnswer(option2, arrayList);
+                    moviesCorrectAnswer(option2, arrayList);
                     disableButton();
                     submitButton.setClickable(true);
                     submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -661,7 +855,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 }
 
             } else {
-                wrongAnswer(option2, arrayList);
+                moviesWrongAnswer(option2, arrayList);
                 submitButton.setClickable(false);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -676,20 +870,20 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     // When Option3 button is clicked, this method will be invoked
     //==============================================================================================
 
-    public void option3ClickMethod(ArrayList<Questions> arrayList) {
+    public void moviesOption3ClickMethod(ArrayList<MoviesQuestion> arrayList) {
         submitButton.setClickable(false);
         submitButton.getResources().getColor(R.color.red);
-        setQuestionData();
+        setMoviesQuestionData();
         option3.setOnClickListener(v -> {
 
-            if (questions.getOption3().equals(questions.getAnswer())) {
+            if (moviesQuestion.getOption3().equals(moviesQuestion.getAnswer())) {
 
                 option3.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
 
                 if (index < arrayList.size() - 1) {
                     submitButton.setClickable(false);
-                    correctAnswer(option3, arrayList);
+                    moviesCorrectAnswer(option3, arrayList);
                     disableButton();
 
 
@@ -698,7 +892,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     option3.setTextColor(getResources().getColor(R.color.white));
                     submitButton.setClickable(false);
                     submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                    correctAnswer(option3, arrayList);
+                    moviesCorrectAnswer(option3, arrayList);
                     disableButton();
                     submitButton.setClickable(true);
                     submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -708,7 +902,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 }
 
             } else {
-                wrongAnswer(option3, arrayList);
+                moviesWrongAnswer(option3, arrayList);
                 submitButton.setClickable(false);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -723,20 +917,20 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     // When Option4 button is clicked, this method will be invoked
     //==============================================================================================
 
-    public void option4ClickMethod(ArrayList<Questions> arrayList) {
+    public void moviesOption4ClickMethod(ArrayList<MoviesQuestion> arrayList) {
         submitButton.setClickable(false);
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-        setQuestionData();
+        setMoviesQuestionData();
         option4.setOnClickListener(v -> {
 
-            if (questions.getOption4().equals(questions.getAnswer())) {
+            if (moviesQuestion.getOption4().equals(moviesQuestion.getAnswer())) {
 
                 option4.setBackgroundColor(getResources().getColor(R.color.green));
                 submitButton.setBackgroundColor(getResources().getColor(R.color.green));
 
                 if (index < arrayList.size() - 1) {
                     submitButton.setClickable(false);
-                    correctAnswer(option4, arrayList);
+                    moviesCorrectAnswer(option4, arrayList);
                     disableButton();
 
 
@@ -745,7 +939,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     option4.setTextColor(getResources().getColor(R.color.white));
                     submitButton.setClickable(false);
                     submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                    correctAnswer(option4, arrayList);
+                    moviesCorrectAnswer(option4, arrayList);
                     disableButton();
                     submitButton.setClickable(true);
                     submitButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -755,7 +949,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 }
 
             } else {
-                wrongAnswer(option4, arrayList);
+                moviesWrongAnswer(option4, arrayList);
                 submitButton.setClickable(false);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -903,5 +1097,560 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
         //==============================================================================================
     }
+    
+    
+    public void religionOption1ClickMethod(ArrayList<ReligionQuestion> arrayList) {
+        submitButton.setClickable(false);
+        submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+        // TODO: NEED TO CHANGE THE NAME HERE
+        setMoviesQuestionData();
+        option1.setOnClickListener(v -> {
+            // TODO: NEED TO CHANGE THE NAME HERE
+            if (moviesQuestion.getOption1().equals(moviesQuestion.getAnswer())) {
+
+                option1.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                if (index < arrayList.size() - 1) {
+                    submitButton.setClickable(false);
+                    religionCorrectAnswer(option1, arrayList);
+                    disableButton();
+
+                } else {
+                    // This will work only when the user reaches the last Quiz section
+                    option1.setTextColor(getResources().getColor(R.color.white));
+                    submitButton.setClickable(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                    religionCorrectAnswer(option1, arrayList);
+                    disableButton();
+                    submitButton.setClickable(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                            Toast.LENGTH_LONG).show();
+                    backToQuizActivity(submitButton);
+                }
+
+            } else {
+                religionWrongAnswer(option1, arrayList);
+                submitButton.setClickable(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+    }
+
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option2 button is clicked, this method will be invoked
+    //==============================================================================================
+
+    public void religionOption2ClickMethod(ArrayList<ReligionQuestion> arrayList) {
+        submitButton.setClickable(false);
+        submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+        // TODO: NEED TO CHANGE THE NAME HERE
+        setMoviesQuestionData();
+        option2.setOnClickListener(v -> {
+            // TODO: NEED TO CHANGE THE NAME HERE
+            if (moviesQuestion.getOption2().equals(moviesQuestion.getAnswer())) {
+
+                option2.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                if (index < arrayList.size() - 1) {
+                    submitButton.setClickable(false);
+                    religionCorrectAnswer(option2, arrayList);
+                    disableButton();
+
+
+                } else {
+                    // This will work only when the user reaches the last Quiz section
+                    option2.setTextColor(getResources().getColor(R.color.white));
+                    submitButton.setClickable(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                    religionCorrectAnswer(option2, arrayList);
+                    disableButton();
+                    submitButton.setClickable(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                            Toast.LENGTH_LONG).show();
+                    backToQuizActivity(submitButton);
+                }
+
+            } else {
+                religionWrongAnswer(option2, arrayList);
+                submitButton.setClickable(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+    }
+
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option3 button is clicked, this method will be invoked
+    //==============================================================================================
+
+    public void religionOption3ClickMethod(ArrayList<ReligionQuestion> arrayList) {
+        submitButton.setClickable(false);
+        submitButton.getResources().getColor(R.color.red);
+        // TODO: NEED TO CHANGE THE NAME HERE
+        setMoviesQuestionData();
+        option3.setOnClickListener(v -> {
+// TODO: NEED TO CHANGE THE NAME HERE
+            if (moviesQuestion.getOption3().equals(moviesQuestion.getAnswer())) {
+
+                option3.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                if (index < arrayList.size() - 1) {
+                    submitButton.setClickable(false);
+                    religionCorrectAnswer(option3, arrayList);
+                    disableButton();
+
+
+                } else {
+                    // This will work only when the user reaches the last Quiz section
+                    option3.setTextColor(getResources().getColor(R.color.white));
+                    submitButton.setClickable(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                    religionCorrectAnswer(option3, arrayList);
+                    disableButton();
+                    submitButton.setClickable(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                            Toast.LENGTH_LONG).show();
+                    backToQuizActivity(submitButton);
+                }
+
+            } else {
+                religionWrongAnswer(option3, arrayList);
+                submitButton.setClickable(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+    }
+
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option4 button is clicked, this method will be invoked
+    //==============================================================================================
+
+    public void religionOption4ClickMethod(ArrayList<ReligionQuestion> arrayList) {
+        submitButton.setClickable(false);
+        submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+        // TODO: NEED TO CHANGE THE NAME HERE
+        setMoviesQuestionData();
+        option4.setOnClickListener(v -> {
+// TODO: NEED TO CHANGE THE NAME HERE
+            if (moviesQuestion.getOption4().equals(moviesQuestion.getAnswer())) {
+
+                option4.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                if (index < arrayList.size() - 1) {
+                    submitButton.setClickable(false);
+                    religionCorrectAnswer(option4, arrayList);
+                    disableButton();
+
+
+                } else {
+                    // This will work only when the user reaches the last Quiz section
+                    option4.setTextColor(getResources().getColor(R.color.white));
+                    submitButton.setClickable(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                    religionCorrectAnswer(option4, arrayList);
+                    disableButton();
+                    submitButton.setClickable(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                            Toast.LENGTH_LONG).show();
+                    backToQuizActivity(submitButton);
+                }
+
+            } else {
+                religionWrongAnswer(option4, arrayList);
+                submitButton.setClickable(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+    }
+
+    
+    
+    public void scienceOption1ClickMethod(ArrayList<ScienceQuestion> arrayList) {
+        submitButton.setClickable(false);
+        submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+        setScienceQuestionData();
+        option1.setOnClickListener(v -> {
+            if (scienceQuestion.getOption1().equals(scienceQuestion.getAnswer())) {
+
+                option1.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                if (index < arrayList.size() - 1) {
+                    submitButton.setClickable(false);
+                    scienceCorrectAnswer(option1, arrayList);
+                    disableButton();
+
+                } else {
+                    // This will work only when the user reaches the last Quiz section
+                    option1.setTextColor(getResources().getColor(R.color.white));
+                    submitButton.setClickable(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                    scienceCorrectAnswer(option1, arrayList);
+                    disableButton();
+                    submitButton.setClickable(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                            Toast.LENGTH_LONG).show();
+                    backToQuizActivity(submitButton);
+                }
+
+            } else {
+                scienceWrongAnswer(option1, arrayList);
+                submitButton.setClickable(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+    }
+
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option2 button is clicked, this method will be invoked
+    //==============================================================================================
+
+    public void scienceOption2ClickMethod(ArrayList<ScienceQuestion> arrayList) {
+        submitButton.setClickable(false);
+        submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+        setScienceQuestionData();
+        option2.setOnClickListener(v -> {
+            if (scienceQuestion.getOption2().equals(scienceQuestion.getAnswer())) {
+
+                option2.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                if (index < arrayList.size() - 1) {
+                    submitButton.setClickable(false);
+                    scienceCorrectAnswer(option2, arrayList);
+                    disableButton();
+
+
+                } else {
+                    // This will work only when the user reaches the last Quiz section
+                    option2.setTextColor(getResources().getColor(R.color.white));
+                    submitButton.setClickable(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                    scienceCorrectAnswer(option2, arrayList);
+                    disableButton();
+                    submitButton.setClickable(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                            Toast.LENGTH_LONG).show();
+                    backToQuizActivity(submitButton);
+                }
+
+            } else {
+                scienceWrongAnswer(option2, arrayList);
+                submitButton.setClickable(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+    }
+
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option3 button is clicked, this method will be invoked
+    //==============================================================================================
+
+    public void scienceOption3ClickMethod(ArrayList<ScienceQuestion> arrayList) {
+        submitButton.setClickable(false);
+        submitButton.getResources().getColor(R.color.red);
+        setScienceQuestionData();
+        option3.setOnClickListener(v -> {
+
+            if (scienceQuestion.getOption3().equals(scienceQuestion.getAnswer())) {
+
+                option3.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                if (index < arrayList.size() - 1) {
+                    submitButton.setClickable(false);
+                    scienceCorrectAnswer(option3, arrayList);
+                    disableButton();
+
+
+                } else {
+                    // This will work only when the user reaches the last Quiz section
+                    option3.setTextColor(getResources().getColor(R.color.white));
+                    submitButton.setClickable(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                    scienceCorrectAnswer(option3, arrayList);
+                    disableButton();
+                    submitButton.setClickable(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                            Toast.LENGTH_LONG).show();
+                    backToQuizActivity(submitButton);
+                }
+
+            } else {
+                scienceWrongAnswer(option3, arrayList);
+                submitButton.setClickable(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+    }
+
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option4 button is clicked, this method will be invoked
+    //==============================================================================================
+
+    public void scienceOption4ClickMethod(ArrayList<ScienceQuestion> arrayList) {
+        submitButton.setClickable(false);
+        submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+        setScienceQuestionData();
+        option4.setOnClickListener(v -> {
+
+            if (scienceQuestion.getOption4().equals(scienceQuestion.getAnswer())) {
+
+                option4.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                if (index < arrayList.size() - 1) {
+                    submitButton.setClickable(false);
+                    scienceCorrectAnswer(option4, arrayList);
+                    disableButton();
+
+
+                } else {
+                    // This will work only when the user reaches the last Quiz section
+                    option4.setTextColor(getResources().getColor(R.color.white));
+                    submitButton.setClickable(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                    scienceCorrectAnswer(option4, arrayList);
+                    disableButton();
+                    submitButton.setClickable(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                            Toast.LENGTH_LONG).show();
+                    backToQuizActivity(submitButton);
+                }
+
+            } else {
+                scienceWrongAnswer(option4, arrayList);
+                submitButton.setClickable(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+    }
+
+    
+    
+    public void curriculumOption1ClickMethod(ArrayList<CurriculumQuestion> arrayList) {
+        submitButton.setClickable(false);
+        submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+        // TODO: NEED TO CHANGE THE NAME HERE
+        setMoviesQuestionData();
+        option1.setOnClickListener(v -> {
+            // TODO: NEED TO CHANGE THE NAME HERE
+            if (moviesQuestion.getOption1().equals(moviesQuestion.getAnswer())) {
+
+                option1.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                if (index < arrayList.size() - 1) {
+                    submitButton.setClickable(false);
+                    curriculumCorrectAnswer(option1, arrayList);
+                    disableButton();
+
+                } else {
+                    // This will work only when the user reaches the last Quiz section
+                    option1.setTextColor(getResources().getColor(R.color.white));
+                    submitButton.setClickable(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                    curriculumCorrectAnswer(option1, arrayList);
+                    disableButton();
+                    submitButton.setClickable(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                            Toast.LENGTH_LONG).show();
+                    backToQuizActivity(submitButton);
+                }
+
+            } else {
+                curriculumWrongAnswer(option1, arrayList);
+                submitButton.setClickable(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+    }
+
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option2 button is clicked, this method will be invoked
+    //==============================================================================================
+
+    public void curriculumOption2ClickMethod(ArrayList<CurriculumQuestion> arrayList) {
+        submitButton.setClickable(false);
+        submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+        // TODO: NEED TO CHANGE THE NAME HERE
+        setMoviesQuestionData();
+        option2.setOnClickListener(v -> {
+            // TODO: NEED TO CHANGE THE NAME HERE
+            if (moviesQuestion.getOption2().equals(moviesQuestion.getAnswer())) {
+
+                option2.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                if (index < arrayList.size() - 1) {
+                    submitButton.setClickable(false);
+                    curriculumCorrectAnswer(option2, arrayList);
+                    disableButton();
+
+
+                } else {
+                    // This will work only when the user reaches the last Quiz section
+                    option2.setTextColor(getResources().getColor(R.color.white));
+                    submitButton.setClickable(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                    curriculumCorrectAnswer(option2, arrayList);
+                    disableButton();
+                    submitButton.setClickable(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                            Toast.LENGTH_LONG).show();
+                    backToQuizActivity(submitButton);
+                }
+
+            } else {
+                curriculumWrongAnswer(option2, arrayList);
+                submitButton.setClickable(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+    }
+
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option3 button is clicked, this method will be invoked
+    //==============================================================================================
+
+    public void curriculumOption3ClickMethod(ArrayList<CurriculumQuestion> arrayList) {
+        submitButton.setClickable(false);
+        submitButton.getResources().getColor(R.color.red);
+        // TODO: NEED TO CHANGE THE NAME HERE
+        setMoviesQuestionData();
+        option3.setOnClickListener(v -> {
+// TODO: NEED TO CHANGE THE NAME HERE
+            if (moviesQuestion.getOption3().equals(moviesQuestion.getAnswer())) {
+
+                option3.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                if (index < arrayList.size() - 1) {
+                    submitButton.setClickable(false);
+                    curriculumCorrectAnswer(option3, arrayList);
+                    disableButton();
+
+
+                } else {
+                    // This will work only when the user reaches the last Quiz section
+                    option3.setTextColor(getResources().getColor(R.color.white));
+                    submitButton.setClickable(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                    curriculumCorrectAnswer(option3, arrayList);
+                    disableButton();
+                    submitButton.setClickable(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                            Toast.LENGTH_LONG).show();
+                    backToQuizActivity(submitButton);
+                }
+
+            } else {
+                curriculumWrongAnswer(option3, arrayList);
+                submitButton.setClickable(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+    }
+
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option4 button is clicked, this method will be invoked
+    //==============================================================================================
+
+    public void curriculumOption4ClickMethod(ArrayList<CurriculumQuestion> arrayList) {
+        submitButton.setClickable(false);
+        submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+        // TODO: NEED TO CHANGE THE NAME HERE
+        setMoviesQuestionData();
+        option4.setOnClickListener(v -> {
+// TODO: NEED TO CHANGE THE NAME HERE
+            if (moviesQuestion.getOption4().equals(moviesQuestion.getAnswer())) {
+
+                option4.setBackgroundColor(getResources().getColor(R.color.green));
+                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                if (index < arrayList.size() - 1) {
+                    submitButton.setClickable(false);
+                    curriculumCorrectAnswer(option4, arrayList);
+                    disableButton();
+
+
+                } else {
+                    // This will work only when the user reaches the last Quiz section
+                    option4.setTextColor(getResources().getColor(R.color.white));
+                    submitButton.setClickable(false);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                    curriculumCorrectAnswer(option4, arrayList);
+                    disableButton();
+                    submitButton.setClickable(true);
+                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                            Toast.LENGTH_LONG).show();
+                    backToQuizActivity(submitButton);
+                }
+
+            } else {
+                curriculumWrongAnswer(option4, arrayList);
+                submitButton.setClickable(false);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+    }
+
 
 }

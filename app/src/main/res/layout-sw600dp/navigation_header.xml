@@ -8,8 +8,8 @@
     android:gravity="center">
 
     <androidx.cardview.widget.CardView
-        android:layout_width="140dp"
-        android:layout_height="140dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:background="@color/white"
         app:cardCornerRadius="100dp"
         android:elevation="10dp"
@@ -17,8 +17,8 @@
     <ImageView
         android:id="@+id/user_image"
         android:contentDescription="@string/app_name"
-        android:layout_width="120dp"
-        android:layout_height="120dp"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         android:src="@drawable/ic_baseline_account_circle_24"
         android:layout_gravity="center" />
     </androidx.cardview.widget.CardView>
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:text="@string/not_applicable"
         android:textColor="@color/orange"
-        android:textSize="30sp"
+        android:textSize="20sp"
         android:gravity="center"
         android:layout_margin="10dp"
         android:fontFamily="@font/geeks_job_regular"/>
