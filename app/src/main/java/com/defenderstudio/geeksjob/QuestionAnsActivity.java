@@ -134,7 +134,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
         AdRequest adRequest = new AdRequest.Builder().build();
         adView.loadAd(adRequest);
-        interstitialAdLoader();
         topicName.setText(getIntent().getStringExtra("topicName"));
 
         ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
