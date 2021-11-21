@@ -57,11 +57,10 @@
                     android:layout_weight=".80"
                     android:elevation="5dp"
                     android:translationZ="5dp"
-                    android:background="@drawable/color_gradient"
                     android:fontFamily="@font/geeks_job_medium"
                     android:gravity="center"
                     android:text="@string/topic_name"
-                    android:textColor="@color/white"
+                    android:textColor="@color/orange"
                     android:textSize="24sp"
                     android:textStyle="bold"
                     tools:ignore="NestedWeights">
