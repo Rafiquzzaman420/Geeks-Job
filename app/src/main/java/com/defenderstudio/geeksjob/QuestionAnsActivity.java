@@ -10,9 +10,11 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
+import android.media.session.PlaybackState;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.Gravity;
 import android.webkit.WebView;
@@ -102,7 +104,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_ans_activity);
-        overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
 
 
         adHandler = new Handler();

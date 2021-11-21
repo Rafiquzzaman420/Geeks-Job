@@ -46,7 +46,6 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_section_activity);
-        overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
         MobileAds.initialize(
                 this,
                 initializationStatus -> {

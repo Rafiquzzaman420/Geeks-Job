@@ -54,7 +54,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         FirebaseAuth.getInstance().getCurrentUser();
-        overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
         total_earning = findViewById(R.id.total_earning);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -86,8 +85,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 // If value doesn't match with the device ID then it'll sign out the user
                 if (!value.equals(ANDROID_ID) && !value.equals("NULL")) {
                     FirebaseAuth.getInstance().signOut();
+                    mGoogleSignInClient.signOut();
                     Toast.makeText(getApplicationContext(),
-                            "Please sign out from other device and try again!",
+                            "Use another account or sign out from other device.",
                             Toast.LENGTH_LONG).show();
                     Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
                     startActivity(logOut);
