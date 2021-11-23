@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -58,6 +59,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        readVersionInformationFromFirebase(value -> {
+            long appVersion = BuildConfig.VERSION_CODE;
+            if (value != appVersion){
+                FirebaseAuth.getInstance().signOut();
+                Toast.makeText(getApplicationContext(),
+                        "New version found! Please update.", Toast.LENGTH_LONG).show();
+                Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
+                startActivity(logOut);
+            }
+        });
+
         readUpdateInformationFromFirebase(value -> {
             new Handler().postDelayed(() -> {
                 if(value != null) {
@@ -73,12 +85,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }, 3000);
         });
 
-//        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-//        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
-//        progressDialog.setCancelable(false);
-//        progressDialog.setMessage("Loading...");
-//        progressDialog.show();
-//        new Handler().postDelayed(() -> {
             @SuppressLint("HardwareIds")
             String ANDROID_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             userSignInInformationCallBack(value -> {
@@ -306,5 +312,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    private void readVersionInformationFromFirebase(MainActivity.readVersionInformation readVersionInformation){
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference databaseReference;
+        assert firebaseUser != null;
+        databaseReference = FirebaseDatabase.getInstance().
+                getReference("Application Status").child("Version");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Double versionValue = snapshot.getValue(Double.class);
+                readVersionInformation.readVersionInfo(versionValue);
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public interface readVersionInformation {
+        void readVersionInfo(Double value);
+    }
 }
