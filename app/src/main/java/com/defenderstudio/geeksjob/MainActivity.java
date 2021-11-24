@@ -68,7 +68,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-        new Handler().postDelayed(this::readBannedInformationFromFirebase, 3000);
+            readBannedInformationFromFirebase(value -> {
+                if (value != null) {
+                    if (value){
+                    googleSignInClient.signOut();
+                    Toast.makeText(getApplicationContext(),
+                            "Your Account has been banned!",
+                            Toast.LENGTH_LONG).show();
+                    Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
+                    startActivity(logOut);
+                }}
+            });
+
 
         readUpdateInformationFromFirebase(value -> {
             new Handler().postDelayed(() -> {
@@ -321,7 +332,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    private void readBannedInformationFromFirebase() {
+    private void readBannedInformationFromFirebase(MainActivity.userBanInformation userBanInformation) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference banInfoReference;
         assert firebaseUser != null;
@@ -330,15 +341,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         banInfoReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.hasChild(firebaseUser.getUid())) {
-                    FirebaseAuth.getInstance().signOut();
-                    googleSignInClient.signOut();
-                    Toast.makeText(getApplicationContext(),
-                            "Your Account has been banned!",
-                            Toast.LENGTH_LONG).show();
-                    Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
-                    startActivity(logOut);
-                }
+                    userBanInformation.userBanInfo(snapshot.hasChild(firebaseUser.getUid()));
             }
 
             @Override
@@ -347,6 +350,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+    }
+
+    private interface userBanInformation{
+        void userBanInfo(Boolean value);
     }
 
 
