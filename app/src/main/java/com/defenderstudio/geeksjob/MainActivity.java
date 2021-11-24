@@ -1,13 +1,11 @@
 package com.defenderstudio.geeksjob;
 
 import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -42,12 +40,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     TextView user_name_text_view;
     ImageView user_image;
-    GoogleSignInClient mGoogleSignInClient;
+    GoogleSignInClient googleSignInClient;
     TextView total_earning;
     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     String BREAK = "BREAK";
-    private DrawerLayout drawerLayout;
     String updating = "Updating";
+    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         readVersionInformationFromFirebase(value -> {
             long appVersion = BuildConfig.VERSION_CODE;
-            if (value != appVersion){
+            if (value != appVersion) {
                 FirebaseAuth.getInstance().signOut();
                 Toast.makeText(getApplicationContext(),
                         "New version found! Please update.", Toast.LENGTH_LONG).show();
@@ -70,9 +68,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        new Handler().postDelayed(this::readBannedInformationFromFirebase, 3000);
+
         readUpdateInformationFromFirebase(value -> {
             new Handler().postDelayed(() -> {
-                if(value != null) {
+                if (value != null) {
                     if (value.equals(updating)) {
                         FirebaseAuth.getInstance().signOut();
                         Toast.makeText(getApplicationContext(),
@@ -85,26 +85,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }, 3000);
         });
 
-            @SuppressLint("HardwareIds")
-            String ANDROID_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-            userSignInInformationCallBack(value -> {
-                // If value doesn't match with the device ID then it'll sign out the user
-                if (!value.equals(ANDROID_ID) && !value.equals("NULL")) {
-                    FirebaseAuth.getInstance().signOut();
-                    mGoogleSignInClient.signOut();
-                    Toast.makeText(getApplicationContext(),
-                            "Use another account or sign out from other device.",
-                            Toast.LENGTH_LONG).show();
-                    Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
-                    startActivity(logOut);
-                } else {
-                    // Otherwise it'll do nothing and send the information to the server
-                    if (BREAK.equals("BREAK")) {
-                        BREAK = "DO NOTHING";
-                        userSignInInformationSendToServer(BREAK);
-                    }
+        @SuppressLint("HardwareIds")
+        String ANDROID_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        userSignInInformationCallBack(value -> {
+            // If value doesn't match with the device ID then it'll sign out the user
+            if (!value.equals(ANDROID_ID) && !value.equals("NULL")) {
+                FirebaseAuth.getInstance().signOut();
+                googleSignInClient.signOut();
+                Toast.makeText(getApplicationContext(),
+                        "Use another account or sign out from other device.",
+                        Toast.LENGTH_LONG).show();
+                Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
+                startActivity(logOut);
+            } else {
+                // Otherwise it'll do nothing and send the information to the server
+                if (BREAK.equals("BREAK")) {
+                    BREAK = "DO NOTHING";
+                    userSignInInformationSendToServer(BREAK);
                 }
-            });
+            }
+        });
 //
 //            progressDialog.dismiss();
 //        }, 2000);
@@ -125,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 .requestEmail()
                 .build();
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new Home()).commit();
@@ -210,7 +210,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.sign_out:
                 userSignOutInformationSendToServer();
                 FirebaseAuth.getInstance().signOut();
-                mGoogleSignInClient.signOut().addOnCompleteListener(this,
+                googleSignInClient.signOut().addOnCompleteListener(this,
                         task -> {
                             Intent signOutIntent = new Intent(MainActivity.this, SignInActivity.class);
                             startActivity(signOutIntent);
@@ -276,12 +276,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } else return;
     }
 
-
-    private interface userSignInInformation {
-        void userSignInInfo(String value);
-    }
-
-
     public void readUpdateInformationFromFirebase(MainActivity.readUpdateInformation readUpdateInformation) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference databaseEarningReference;
@@ -294,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String stringValue = snapshot.getValue(String.class);
                 try {
                     readUpdateInformation.readUpdateInfo(stringValue);
-                }catch (Exception ignored){
+                } catch (Exception ignored) {
                     readUpdateInformation.readUpdateInfo("Running");
                 }
 
@@ -307,12 +301,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    public interface readUpdateInformation {
-        void readUpdateInfo(String value);
-    }
-
-
-    private void readVersionInformationFromFirebase(MainActivity.readVersionInformation readVersionInformation){
+    private void readVersionInformationFromFirebase(MainActivity.readVersionInformation readVersionInformation) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference databaseReference;
         assert firebaseUser != null;
@@ -331,6 +320,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
     }
+
+    private void readBannedInformationFromFirebase() {
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+        DatabaseReference banInfoReference;
+        assert firebaseUser != null;
+        banInfoReference = FirebaseDatabase.getInstance().
+                getReference("Banned User Info").child("Users");
+        banInfoReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.hasChild(firebaseUser.getUid())) {
+                    FirebaseAuth.getInstance().signOut();
+                    googleSignInClient.signOut();
+                    Toast.makeText(getApplicationContext(),
+                            "Your Account has been banned!",
+                            Toast.LENGTH_LONG).show();
+                    Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
+                    startActivity(logOut);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+    }
+
+
+    private interface userSignInInformation {
+        void userSignInInfo(String value);
+    }
+
+    public interface readUpdateInformation {
+        void readUpdateInfo(String value);
+    }
+
 
     public interface readVersionInformation {
         void readVersionInfo(Double value);

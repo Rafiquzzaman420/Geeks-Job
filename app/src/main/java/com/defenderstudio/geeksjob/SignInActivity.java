@@ -2,8 +2,12 @@ package com.defenderstudio.geeksjob;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -25,6 +29,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.GoogleAuthProvider;
+
+import java.util.Objects;
 
 public class SignInActivity extends AppCompatActivity {
 
@@ -102,7 +108,6 @@ public class SignInActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                progressBar.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(),
                         "Sign in failed.Please be sure to turn on internet", Toast.LENGTH_LONG).show();
 
@@ -129,10 +134,28 @@ public class SignInActivity extends AppCompatActivity {
 
                     } else {
                         // If sign in fails, display a message to the user.
-                        Toast.makeText(getApplicationContext(),
-                                "Sign in failed. Be sure to turn on internet connection", Toast.LENGTH_LONG).show();
+                        progressBar.setVisibility(View.GONE);
+                        try {
+                            Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                        } catch (Exception e) {
+                            if (isOnline()) {
+                                Toast.makeText(getApplicationContext(),
+                                        "Sorry. You've been banned for misusing Geeks Job", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(),
+                                        "Sign in failed. Be sure to turn on internet connection", Toast.LENGTH_LONG).show();
+                            }
+                        }
+
                     }
                 });
+    }
+
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnected();
     }
 
     // [END auth_with_google]
