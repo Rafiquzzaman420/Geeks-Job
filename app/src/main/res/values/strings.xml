@@ -110,7 +110,7 @@
     </string-array>
 
     <string name="faq_initial">
-        <b>Before you begin, please note that every section of \"Rewards\" will give the user an extra
+        <b>Before you begin, please note that every section of "Rewards" will give the user an extra
             scope to earn more points. So it is highly recommended to use them more often!</b>
     </string>
 
@@ -118,16 +118,16 @@
     <b>1. What is the use of Points?</b>
 </string>
     <string name="faq_first_answer">
-        <b> <u>Answer :</u></b> Points are used to redeem \"Cash Prizes\". If you are able to reach one of the top positions in
+        <b> <u>Answer :</u></b> Points are used to redeem "Cash Prizes". If you are able to reach one of the top positions in
         the <b>"Leaderboard"</b>, you\'ll be able to redeem points into real money. But you must have at least
         <b>10000 points</b> to be eligible for redeem <b>(Minimum requirements)</b>
 </string>
 
     <string name="faq_second_question">
-    <b>What does \"Rewards\" section do?</b>
+    <b>What does "Rewards" section do?</b>
 </string>
     <string name="faq_second_answer">
-        <b> <u>Answer :</u></b> If you answer only quiz, you\'ll get only 10 points for each answer. But if you go to <b>\"Rewards\"</b>
+        <b> <u>Answer :</u></b> If you answer only quiz, you\'ll get only 10 points for each answer. But if you go to <b>"Rewards"</b>
         section and watch ads (only 20), you\'ll get 50 points for each. That means a total of <b>1000 Points</b> which is a big deal.
         <p/>If you don\'t want to use it
         you\'re welcome. But if other users use that efficiently, they might get to the top position way faster than you.
@@ -136,7 +136,7 @@
 </string>
 
     <string name="faq_third_question">
-        <b>How does \"Leaderboard\" works?</b>
+        <b>How does "Leaderboard" works?</b>
     </string>
 
     <string name="faq_third_answer">
@@ -145,16 +145,16 @@
     </string>
 
     <string name="faq_fourth_question">
-        <b>What does \"Profile\" section do?</b>
+        <b>What does "Profile" section do?</b>
     </string>
 
     <string name="faq_fourth_answer">
-        <b><u>Answer: </u></b>You\'ll find all the answered question amount and earned points in \"Profile\".
+        <b><u>Answer: </u></b>You\'ll find all the answered question amount and earned points in "Profile".
         You\'ll also get your Login information like username, email and profile photo.
     </string>
 
     <string name="faq_fifth_question">
-        <b>How does \"Exchange\" works?</b>
+        <b>How does "Exchange" works?</b>
     </string>
 
     <string name="faq_fifth_answer">
@@ -167,7 +167,7 @@
     </string>
 
     <string name="faq_sixth_question">
-        <b>How does \"Share\" works?</b>
+        <b>How does "Share" works?</b>
     </string>
 
     <string name="faq_sixth_answer">
@@ -177,7 +177,7 @@
     </string>
 
     <string name="faq_seventh_question">
-        <b>How does \"Quiz\" section works?</b>
+        <b>How does "Quiz" section works?</b>
     </string>
 
     <string name="faq_seventh_answer">
@@ -188,18 +188,18 @@
         <p/>If you answer a wrong question, you\'ll get a penalty for about 20 seconds. But no points will be deducted from your account.
         It\'s an won and won situation.
 
-        You won\'t be able to pass or skip any question. If you don\'t know the answer, you use the <b>\"Hint\"</b>.
+        You won\'t be able to pass or skip any question. If you don\'t know the answer, you use the <b>"Hint"</b>.
         <b><p/>Please note that: </b> If you leave application for any reason, you\'ll have to start again.
     </string>
 
     <string name="faq_eighth_question">
-        <b>How does \"Reward\" in \"Quiz\" section works?</b>
+        <b>How does "Reward" in "Quiz" section works?</b>
     </string>
 
     <string name="faq_eighth_answer">
-        <b><u>Answer: </u></b>The \"Reward\" button in the quiz section is for additional points for the user.
-        If you're answering quiz, you should also use \"Reward\". Because Reward in the Quiz section gives 30 points to the user.
-        <p/><b>Note that: </b>Reward in Quiz section comes in every 5 minutes after watching!.
+        <b><u>Answer: </u></b>The \"Reward\" in the quiz section is for additional points for the user.
+        If you\'re answering quiz, you should also use \"Reward\". Because Reward in the Quiz section gives 30 points to the user.
+        <b><p/>Note that: </b>Reward in Quiz section comes in every 5 minutes after watching!.
     </string>
 
 </resources>
