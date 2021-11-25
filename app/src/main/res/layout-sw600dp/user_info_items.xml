@@ -26,14 +26,15 @@
                 android:layout_marginEnd="2.5dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginBottom="5dp">
+                android:layout_marginBottom="5dp"
+                android:gravity="center">
 
 
                 <ImageView
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
                     android:background="@mipmap/logo"
-                    android:layout_margin="10dp"
+                    android:layout_margin="10dp" 
                     android:layout_gravity="center"/>
 
             </LinearLayout>
@@ -60,7 +61,7 @@
                         android:text="@string/userName"
                         android:gravity="center"
                         android:textColor="@color/orange"
-                        android:textSize="18sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"/>
 
                     <TextView
@@ -70,7 +71,7 @@
                         android:layout_height="match_parent"
                         android:text="@string/not_applicable"
                         android:gravity="center"
-                        android:textSize="18sp"
+                        android:textSize="20sp"
                         android:textColor="@color/orange"
                         android:textStyle="bold"/>
                 </LinearLayout>
@@ -90,7 +91,7 @@
                         android:layout_weight=".7"
                         android:textColor="@color/orange"
                         android:textStyle="bold"
-                        android:textSize="18sp"
+                        android:textSize="20sp"
                         />
 
                     <TextView
