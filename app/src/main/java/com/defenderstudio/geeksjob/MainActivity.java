@@ -1,13 +1,18 @@
 package com.defenderstudio.geeksjob;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,6 +50,43 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     String BREAK = "BREAK";
     String updating = "Updating";
+    private boolean dialogShown = false;
+
+    Runnable statusChecker = () -> {
+        try {
+                Dialog dialog = new Dialog(MainActivity.this, R.style.dialogue);
+                dialog.setContentView(R.layout.connection_alert);
+                dialog.setCancelable(false);
+                dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
+                dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
+                    Log.d("MainActivity", "User///// User Click detected...");
+                    if (isOnline() && dialogShown) {
+                        dialog.dismiss();
+                        dialogShown = false;
+                        Log.d("MainActivity", "Dialog value is : "+ dialogShown);
+                        Log.d("MainActivity", "User///// Connected to Internet...");
+                    }
+                });
+                // If Internet connection is gone
+
+                if (!isOnline()) {
+                    if (!dialogShown) {
+                        Log.d("MainActivity", "Dialog value is : " + dialogShown);
+                        dialogShown = true;
+                        dialog.show();
+                    }
+                    Log.d("MainActivity", "User///// Not Connected to Internet...");
+                    }
+
+
+
+        } catch (Exception ignored) {
+        } finally {
+            int interval = 1000;
+            new Handler().postDelayed(this::startRepeatingTask, interval);
+        }
+    };
     private DrawerLayout drawerLayout;
 
     @Override
@@ -57,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        startRepeatingTask();
+
         readVersionInformationFromFirebase(value -> {
             long appVersion = BuildConfig.VERSION_CODE;
             if (value != appVersion) {
@@ -68,17 +112,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
-            readBannedInformationFromFirebase(value -> {
-                if (value != null) {
-                    if (value){
+        readBannedInformationFromFirebase(value -> {
+            if (value != null) {
+                if (value) {
                     googleSignInClient.signOut();
                     Toast.makeText(getApplicationContext(),
                             "Your Account has been banned!",
                             Toast.LENGTH_LONG).show();
                     Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
                     startActivity(logOut);
-                }}
-            });
+                }
+            }
+        });
 
 
         readUpdateInformationFromFirebase(value -> {
@@ -161,8 +206,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "Error Occurred...", Toast.LENGTH_LONG).show();
         }
+    }
 
+    private boolean booleanCatcher(boolean value){
+        return value;
+    }
 
+    void startRepeatingTask() {
+        statusChecker.run();
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return connectivityManager.getActiveNetworkInfo() != null &&
+                connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
     @Override
@@ -341,7 +400,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         banInfoReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    userBanInformation.userBanInfo(snapshot.hasChild(firebaseUser.getUid()));
+                userBanInformation.userBanInfo(snapshot.hasChild(firebaseUser.getUid()));
             }
 
             @Override
@@ -352,7 +411,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
-    private interface userBanInformation{
+    private interface userBanInformation {
         void userBanInfo(Boolean value);
     }
 

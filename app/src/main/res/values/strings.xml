@@ -86,7 +86,7 @@
     <string name="go_back">Go Back</string>
 
     <string name="select_one_or_both"><u>Select one or both method</u></string>
-
+<string name="no_connection">Hmm. No Internet connection. Please connect to the internet and try again!</string>
 
     <string-array name="question_title">
         <item>Curriculum</item>
