@@ -83,6 +83,7 @@
     <string name="timer">00:00</string>
     <string name="reward_Button">Reward</string>
 <string name="and_symbol">&amp;</string>
+    <string name="go_back">Go Back</string>
 
     <string name="select_one_or_both"><u>Select one or both method</u></string>
 

@@ -12,7 +12,7 @@
             android:layout_gravity="bottom"
             android:layout_margin="5dp"
             android:background="@drawable/ripple_white"
-            android:text="Go Back"
+            android:text="@string/go_back"
             android:theme="@style/red.GeeksJob" />
 
 
