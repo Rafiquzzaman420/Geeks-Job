@@ -7,16 +7,20 @@ import static com.defenderstudio.geeksjob.QuizActivity.scienceList;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.media.session.PlaybackState;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
@@ -84,6 +88,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     private InterstitialAd mInterstitialAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
     private Handler adHandler;
+    private boolean dialogShown = false;
 
     Runnable statusChecker = new Runnable() {
         @Override
@@ -96,7 +101,41 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         }
     };
+    Runnable connectionStatusChecker = () -> {
+        try {
+            Dialog dialog = new Dialog(QuestionAnsActivity.this, R.style.dialogue);
+            dialog.setContentView(R.layout.connection_alert);
+            dialog.setCancelable(false);
+            dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
+            dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
+                Log.d("MainActivity", "User///// User Click detected...");
+                if (isOnline() && dialogShown) {
+                    dialog.dismiss();
+                    dialogShown = false;
+                    Log.d("MainActivity", "Dialog value is : "+ dialogShown);
+                    Log.d("MainActivity", "User///// Connected to Internet...");
+                }
+            });
+            // If Internet connection is gone
+
+            if (!isOnline()) {
+                if (!dialogShown) {
+                    Log.d("MainActivity", "Dialog value is : " + dialogShown);
+                    dialogShown = true;
+                    dialog.show();
+                }
+                Log.d("MainActivity", "User///// Not Connected to Internet...");
+            }
+
+
+
+        } catch (Exception ignored) {
+        } finally {
+            int interval = 1000;
+            new Handler().postDelayed(this::startConnectionRepeatingTask, interval);
+        }
+    };
     //==============================================================================================
 //                                      onCreate() activity
     //==============================================================================================
@@ -105,6 +144,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_ans_activity);
 
+        startConnectionRepeatingTask();
 
         adHandler = new Handler();
         startRepeatingTask();
@@ -204,6 +244,19 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 //        curriculumQuizCallFromFirebase(curriculumList);
 
     }
+
+    void startConnectionRepeatingTask() {
+        connectionStatusChecker.run();
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return connectivityManager.getActiveNetworkInfo() != null &&
+                connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
 
     void startRepeatingTask() {
         statusChecker.run();

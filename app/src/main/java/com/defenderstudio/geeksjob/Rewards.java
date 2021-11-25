@@ -1,11 +1,16 @@
 package com.defenderstudio.geeksjob;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,10 +47,45 @@ public class Rewards extends AppCompatActivity {
     private long chancesLeft;
     private RewardedAd mRewardedAd;
 
+    private boolean dialogShown = false;
+
+    Runnable statusChecker = () -> {
+        try {
+            Dialog dialog = new Dialog(Rewards.this, R.style.dialogue);
+            dialog.setContentView(R.layout.connection_alert);
+            dialog.setCancelable(false);
+            dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
+            dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
+                Log.d("MainActivity", "User///// User Click detected...");
+                if (isOnline() && dialogShown) {
+                    dialog.dismiss();
+                    dialogShown = false;
+                }
+            });
+            // If Internet connection is gone
+
+            if (!isOnline()) {
+                if (!dialogShown) {
+                    dialogShown = true;
+                    dialog.show();
+                }
+            }
+
+        } catch (Exception ignored) {
+        } finally {
+            int interval = 1000;
+            new Handler().postDelayed(this::startConnectionRepeatingTask, interval);
+        }
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rewards);
+
+        startConnectionRepeatingTask();
 
         ProgressDialog dialog = new ProgressDialog(Rewards.this,
                 R.style.ProgressDialogStyle);
@@ -142,6 +182,19 @@ public class Rewards extends AppCompatActivity {
         }.start();
 
     }
+
+    void startConnectionRepeatingTask() {
+        statusChecker.run();
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return connectivityManager.getActiveNetworkInfo() != null &&
+                connectivityManager.getActiveNetworkInfo().isConnected();
+    }
+
     //==============================================================================================================================
 
 

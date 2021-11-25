@@ -1,11 +1,15 @@
 package com.defenderstudio.geeksjob;
 
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +43,39 @@ public class QuizActivity extends AppCompatActivity {
     MoviesQuestion moviesQuestion;
     ScienceQuestion scienceQuestion;
 
+
+    private boolean dialogShown = false;
+
+    Runnable statusChecker = () -> {
+        try {
+            Dialog dialog = new Dialog(QuizActivity.this, R.style.dialogue);
+            dialog.setContentView(R.layout.connection_alert);
+            dialog.setCancelable(false);
+            dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+
+            dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
+                Log.d("MainActivity", "User///// User Click detected...");
+                if (isOnline() && dialogShown) {
+                    dialog.dismiss();
+                    dialogShown = false;
+                }
+            });
+            // If Internet connection is gone
+
+            if (!isOnline()) {
+                if (!dialogShown) {
+                    dialogShown = true;
+                    dialog.show();
+                }
+            }
+
+        } catch (Exception ignored) {
+        } finally {
+            int interval = 1000;
+            new Handler().postDelayed(this::startConnectionRepeatingTask, interval);
+        }
+    };
+
     //==================================================================================================
     // onCreate() activity starts here
 //==================================================================================================
@@ -46,6 +83,9 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_section_activity);
+
+        startConnectionRepeatingTask();
+
         MobileAds.initialize(
                 this,
                 initializationStatus -> {
@@ -147,6 +187,17 @@ public class QuizActivity extends AppCompatActivity {
         }, 3000);
     }
 
+    void startConnectionRepeatingTask() {
+        statusChecker.run();
+    }
+
+    private boolean isOnline() {
+        ConnectivityManager connectivityManager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return connectivityManager.getActiveNetworkInfo() != null &&
+                connectivityManager.getActiveNetworkInfo().isConnected();
+    }
 
     public void ScienceQuestionAnswerLoadingIntent(String message, String topicName, ArrayList<ScienceQuestion> arrayList) {
         ProgressDialog dialog = new ProgressDialog(QuizActivity.this, R.style.ProgressDialogStyle);

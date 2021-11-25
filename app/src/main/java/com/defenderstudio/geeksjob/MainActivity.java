@@ -208,9 +208,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    private boolean booleanCatcher(boolean value){
-        return value;
-    }
 
     void startRepeatingTask() {
         statusChecker.run();
