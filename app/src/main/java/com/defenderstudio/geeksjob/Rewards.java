@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -114,7 +115,22 @@ public class Rewards extends AppCompatActivity {
 
         Button rewardButton = findViewById(R.id.rewardedAdButton);
         rewardButton.setBackgroundColor(getResources().getColor(R.color.green));
-        rewardButton.setOnClickListener(v -> adShow());
+       rewardButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               ProgressDialog progressDialog = new ProgressDialog(Rewards.this, R.style.ProgressDialogStyle);
+               progressDialog.setCancelable(false);
+               progressDialog.setMessage("Loading. Please wait...");
+
+               try {
+                   progressDialog.show();
+                   new Handler().postDelayed(() -> {
+                       adShow();
+                       progressDialog.dismiss();
+                   }, 2000);
+               }catch (Exception ignored){}
+           }
+       });
     }
     //==============================================================================================================================
 
@@ -306,7 +322,7 @@ public class Rewards extends AppCompatActivity {
                                     userChancesLeftSendToServer(chancesLeft);
                                     ProgressDialog dialog = new ProgressDialog(Rewards.this,
                                             R.style.ProgressDialogStyle);
-                                    dialog.setMessage("Loading...");
+                                    dialog.setMessage("Loading. Please wait...");
                                     dialog.setCancelable(false);
                                     dialog.show();
                                     new Handler().postDelayed(() -> {
@@ -321,7 +337,7 @@ public class Rewards extends AppCompatActivity {
 
                                     ProgressDialog dialog = new ProgressDialog(Rewards.this,
                                             R.style.ProgressDialogStyle);
-                                    dialog.setMessage("Loading...");
+                                    dialog.setMessage("Loading. Please wait...");
                                     dialog.setCancelable(false);
                                     dialog.show();
                                     new Handler().postDelayed(() -> {
@@ -361,6 +377,10 @@ public class Rewards extends AppCompatActivity {
                 initialPointValue = initialPointValue + 50;
                 UserPointsValueUpdate();
             });
+        }
+        else{
+            Toast.makeText(getApplicationContext(), "Please try again",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
