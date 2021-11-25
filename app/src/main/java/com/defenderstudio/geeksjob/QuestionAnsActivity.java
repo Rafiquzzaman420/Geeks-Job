@@ -109,23 +109,18 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
             dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
-                Log.d("MainActivity", "User///// User Click detected...");
                 if (isOnline() && dialogShown) {
                     dialog.dismiss();
                     dialogShown = false;
-                    Log.d("MainActivity", "Dialog value is : "+ dialogShown);
-                    Log.d("MainActivity", "User///// Connected to Internet...");
                 }
             });
             // If Internet connection is gone
 
             if (!isOnline()) {
                 if (!dialogShown) {
-                    Log.d("MainActivity", "Dialog value is : " + dialogShown);
                     dialogShown = true;
                     dialog.show();
                 }
-                Log.d("MainActivity", "User///// Not Connected to Internet...");
             }
 
 
@@ -267,7 +262,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         AdRequest adRequest = new AdRequest.Builder().build();
         MobileAds.initialize(this, initializationStatus -> {
             // TODO : Need to change the Ad ID here
-            InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest,
+            InterstitialAd.load(this, "ca-app-pub-5052828179386026/7359645574", adRequest,
                     new InterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -314,7 +309,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     public void loadAd() {
         // Use the test ad unit ID to load an ad.
-        RewardedInterstitialAd.load(QuestionAnsActivity.this, "ca-app-pub-3940256099942544/5354046379",
+        RewardedInterstitialAd.load(QuestionAnsActivity.this, "ca-app-pub-5052828179386026/3242847727",
                 new AdRequest.Builder().build(), new RewardedInterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull RewardedInterstitialAd ad) {
