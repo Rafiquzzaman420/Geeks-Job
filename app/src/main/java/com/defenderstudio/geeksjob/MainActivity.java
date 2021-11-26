@@ -60,12 +60,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
                 dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
-                    Log.d("MainActivity", "User///// User Click detected...");
                     if (isOnline() && dialogShown) {
                         dialog.dismiss();
                         dialogShown = false;
-                        Log.d("MainActivity", "Dialog value is : "+ dialogShown);
-                        Log.d("MainActivity", "User///// Connected to Internet...");
                     }
                 });
                 // If Internet connection is gone

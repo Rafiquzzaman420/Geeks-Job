@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.session.PlaybackState;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
@@ -28,6 +29,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -53,11 +55,14 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarnedRewardListener {
 
@@ -256,13 +261,13 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     void startRepeatingTask() {
         statusChecker.run();
     }
-
+//ca-app-pub-5052828179386026/7359645574
 
     private void interstitialAdLoader() {
         AdRequest adRequest = new AdRequest.Builder().build();
         MobileAds.initialize(this, initializationStatus -> {
             // TODO : Need to change the Ad ID here
-            InterstitialAd.load(this, "ca-app-pub-5052828179386026/7359645574", adRequest,
+            InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest,
                     new InterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -559,7 +564,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     // Setting all the question taken from the server with the questions textview in the application
     //==============================================================================================
     private void setMoviesQuestionData() {
-        Log.d("Question", "Setting All the Movies Question...");
         question.setText(moviesQuestion.getMoviesQuestion());
         option1.setText(moviesQuestion.getMoviesOption1());
         option2.setText(moviesQuestion.getMoviesOption2());
@@ -569,8 +573,36 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     }
 
+//    public boolean internetAvailabilityCheck(){
+//        try{
+//            InetAddress address = InetAddress.getByName("www.google.com");
+//            return !address.equals("");
+//        }catch (Exception exception){
+//            return false;
+//        }
+//    }
+
+
+    public boolean internetAvailabilityCheck(){
+        Runtime runtime = Runtime.getRuntime();
+            try {
+            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+            int exitValue = ipProcess.waitFor();
+                if (exitValue == 1){
+                Toast.makeText(getApplicationContext(),
+            "Please check your network connection...", Toast.LENGTH_LONG).show();
+                }
+            return (exitValue == 0);
+
+        }
+        catch (IOException | InterruptedException e)
+        {
+            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+        }
+        return false;
+    }
+
     private void setScienceQuestionData() {
-        Log.d("Question", "Setting All the Science Question...");
         question.setText(scienceQuestion.getQuestion());
         option1.setText(scienceQuestion.getOption1());
         option2.setText(scienceQuestion.getOption2());
@@ -582,6 +614,27 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
 
+    private void internetCheckerAndHandler(){
+        Dialog dialog = new Dialog(QuestionAnsActivity.this, R.style.dialogue);
+        dialog.setContentView(R.layout.connection_alert);
+        dialog.setCancelable(false);
+        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+        dialog.findViewById(R.id.connection_retry).setOnClickListener(view -> {
+                if (internetAvailabilityCheck() && dialogShown) {
+                    dialogShown = false;
+                    dialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Answer Submitted.", Toast.LENGTH_SHORT).show();
+                }
+        });
+        // If Internet connection is gone
+        if (!internetAvailabilityCheck()) {
+            if (!dialogShown) {
+                dialogShown = true;
+                dialog.show();
+            }
+        }
+    }
+
     //==============================================================================================
     // If answer is correct, then this method will invoke
     //==============================================================================================
@@ -591,12 +644,20 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         submitButton.setOnClickListener(v -> {
             correctCount++;
             if ((index < arrayList.size() - 1)) {
-                index++;
-                moviesQuestion = arrayList.get(index);
-                resetButtonColor();
-                setMoviesQuestionData();
-                enableButton();
-                scoreUpdate();
+                ProgressDialog progressDialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Submitting Answer...");
+                progressDialog.show();
+                new Handler().postDelayed(() -> {
+                    index++;
+                    internetCheckerAndHandler();
+                    moviesQuestion = arrayList.get(index);
+                    resetButtonColor();
+                    setMoviesQuestionData();
+                    enableButton();
+                    scoreUpdate();
+                    progressDialog.dismiss();
+                }, 1000);
 
             } else {
                 disableButton();
@@ -610,12 +671,20 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         submitButton.setOnClickListener(v -> {
             correctCount++;
             if ((index < arrayList.size() - 1)) {
-                index++;
-                scienceQuestion = arrayList.get(index);
-                resetButtonColor();
-                setScienceQuestionData();
-                enableButton();
-                scoreUpdate();
+                ProgressDialog progressDialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Submitting Answer...");
+                progressDialog.show();
+                new Handler().postDelayed(() -> {
+                    index++;
+                    scienceQuestion = arrayList.get(index);
+                    resetButtonColor();
+                    setScienceQuestionData();
+                    enableButton();
+                    internetCheckerAndHandler();
+                    scoreUpdate();
+                    progressDialog.dismiss();
+                }, 1000);
 
             } else {
                 disableButton();
