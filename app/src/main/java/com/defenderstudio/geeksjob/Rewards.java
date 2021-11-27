@@ -96,7 +96,7 @@ public class Rewards extends AppCompatActivity {
         new Handler().postDelayed(() -> {
             rewardedAdLoader();
             dialog.dismiss();
-        }, 3000);
+        }, 5000);
 
         blockRewardButton();
         TextView chancesLeftText = findViewById(R.id.chancesLeft);
@@ -119,7 +119,7 @@ public class Rewards extends AppCompatActivity {
 
         Button rewardButton = findViewById(R.id.rewardedAdButton);
         rewardButton.setBackgroundColor(getResources().getColor(R.color.green));
-       rewardButton.setOnClickListener(v -> {
+        rewardButton.setOnClickListener(v -> {
            ProgressDialog progressDialog = new ProgressDialog(Rewards.this, R.style.ProgressDialogStyle);
            progressDialog.setCancelable(false);
            progressDialog.setMessage("Loading. Please wait...");
@@ -129,7 +129,7 @@ public class Rewards extends AppCompatActivity {
                new Handler().postDelayed(() -> {
                    adShow();
                    progressDialog.dismiss();
-               }, 2000);
+               }, 3000);
            }catch (Exception ignored){}
        });
     }
@@ -149,7 +149,6 @@ public class Rewards extends AppCompatActivity {
 
             // If current time is less than the value from the server
             if ((currentTime - value) >= 0) {
-                // TODO : NEED TO DO SOME WORK HERE
                 Button rewardButton = findViewById(R.id.rewardedAdButton);
 
                 // Setting Reward button as Clickable
@@ -204,7 +203,6 @@ public class Rewards extends AppCompatActivity {
         new CountDownTimer(timeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-//                TimeLeftInMillis = millisUntilFinished;
                 String duration = String.format(Locale.ENGLISH, "%02d:%02d:%02d",
                         TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
@@ -304,13 +302,12 @@ public class Rewards extends AppCompatActivity {
 //    ca-app-pub-5052828179386026/8585274942
     private void rewardedAdLoader() {
         AdRequest adRequest = new AdRequest.Builder().build();
-        RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917",
+        RewardedAd.load(this, "ca-app-pub-5052828179386026/8585274942",
                 adRequest, new RewardedAdLoadCallback() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         // Handle the error.
                         mRewardedAd = null;
-                        Log.d("s", "Running from rewardedAdLoader method");
                         Toast.makeText(getApplicationContext(), "Please try again",
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -353,13 +350,13 @@ public class Rewards extends AppCompatActivity {
                                     userChancesLeftSendToServer(chancesLeft);
                                     ProgressDialog dialog = new ProgressDialog(Rewards.this,
                                             R.style.ProgressDialogStyle);
-                                    dialog.setMessage("Loading. Please wait...");
+                                    dialog.setMessage("Loading...");
                                     dialog.setCancelable(false);
                                     dialog.show();
                                     new Handler().postDelayed(() -> {
                                         rewardedAdLoader();
                                         dialog.dismiss();
-                                    }, 2000);
+                                    }, 3000);
                                 } else {
                                     userChancesLeftSendToServer(0);
                                     blockRewardButton();
