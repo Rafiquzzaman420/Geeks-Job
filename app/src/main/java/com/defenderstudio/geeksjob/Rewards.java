@@ -104,9 +104,13 @@ public class Rewards extends AppCompatActivity {
             chancesLeftText.setText(String.valueOf(value));
             chancesLeft = value;
             if (value == 0) {
-                informationValidation();
+                informationValidationAfterGettingZero();
             } else {
-                informationValidation();
+                START_TIME_IN_MILLIS = 43200000;
+
+                // Loading the Rewarded Ads
+                rewardedAdLoader();
+                dialog.dismiss();
                 freeRewardButton();
             }
         });
@@ -134,30 +138,59 @@ public class Rewards extends AppCompatActivity {
     //==============================================================================================================================
     // Method to start the "Timer"
     //==============================================================================================================================
-    private void informationValidation() {
+    // Method for validating information with server
+    private void informationValidationAfterGettingZero() {
         userTimerInformationCallBack(value -> {
             ProgressDialog dialog = new ProgressDialog(Rewards.this, R.style.ProgressDialogStyle);
             TextView chancesLeftText = findViewById(R.id.chancesLeft);
+
             // Getting the current time in MILLIS
             long currentTime = Calendar.getInstance().getTimeInMillis();
+
+            // If current time is less than the value from the server
             if ((currentTime - value) >= 0) {
+                // TODO : NEED TO DO SOME WORK HERE
                 Button rewardButton = findViewById(R.id.rewardedAdButton);
+
+                // Setting Reward button as Clickable
                 rewardButton.setClickable(true);
+
+                // Setting the Reward button's background color GREEN
                 rewardButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+                // Sending the user chance left information to the server
+                userChancesLeftSendToServer(20);
+
+                // Setting the value of chances left to the textview
+                chancesLeftText.setText(String.valueOf(20));
+                chancesLeftText.invalidate();
+
+                // Dismissing the Progress Dialog Window
                 dialog.dismiss();
 
+                // If current time is more than the value from the server
             } else if ((currentTime - value) < 0) {
+                // Assigning the value to START_TIME_IN_MILLIS
                 START_TIME_IN_MILLIS = value - currentTime;
                 chancesLeftText.setText(String.valueOf(0));
                 chancesLeftText.invalidate();
                 new Handler().postDelayed(() -> {
+
+                    // Starting the timer
                     startTimer(START_TIME_IN_MILLIS);
+
+                    // Resetting the value of the timer
                     resetTimer();
+
+                    // Dismissing the Progress Dialog Window
                     dialog.dismiss();
+
                 }, 3000);
             } else {
                 // Otherwise it'll set the starting time to 12 Hours or 43200000 milliseconds
                 START_TIME_IN_MILLIS = 43200000;
+
+                // Loading the Rewarded Ads
                 rewardedAdLoader();
                 dialog.dismiss();
             }
@@ -268,15 +301,16 @@ public class Rewards extends AppCompatActivity {
 //==================================================================================================================================
     // Will load Rewards when called
 //==================================================================================================================================
-
+//    ca-app-pub-5052828179386026/8585274942
     private void rewardedAdLoader() {
         AdRequest adRequest = new AdRequest.Builder().build();
-        RewardedAd.load(this, "ca-app-pub-5052828179386026/8585274942",
+        RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917",
                 adRequest, new RewardedAdLoadCallback() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         // Handle the error.
                         mRewardedAd = null;
+                        Log.d("s", "Running from rewardedAdLoader method");
                         Toast.makeText(getApplicationContext(), "Please try again",
                                 Toast.LENGTH_SHORT).show();
                     }
@@ -342,7 +376,6 @@ public class Rewards extends AppCompatActivity {
                                         dialog.dismiss();
                                     }, 3000);
                                     startTimer(START_TIME_IN_MILLIS);
-//                                    updateCountDownText();
                                 }
                             }
                         });
@@ -376,6 +409,7 @@ public class Rewards extends AppCompatActivity {
             });
         }
         else{
+            Log.d("s", "Running from adShow method");
             Toast.makeText(getApplicationContext(), "Please try again",
                     Toast.LENGTH_SHORT).show();
         }
