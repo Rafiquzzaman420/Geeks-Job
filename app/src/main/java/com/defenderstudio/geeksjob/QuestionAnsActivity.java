@@ -21,6 +21,7 @@ import android.os.Handler;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -359,6 +360,12 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                        Dialog adNotAvailableDialog = new Dialog(QuestionAnsActivity.this, R.style.dialogue);
+                        adNotAvailableDialog.setCancelable(false);
+                        adNotAvailableDialog.setContentView(R.layout.ad_not_available_layout);
+                        adNotAvailableDialog.show();
+                        adNotAvailableDialog.findViewById(R.id.adNotAvailableButton).setOnClickListener(v ->
+                                adNotAvailableDialog.dismiss());
                     }
                 });
     }

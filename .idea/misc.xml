@@ -43,6 +43,7 @@
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw480dp/home_fragment.xml" value="0.22" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/activity_rewards.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/activity_sign_in.xml" value="0.20416666666666666" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/ad_not_available_layout.xml" value="0.20416666666666666" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/connection_alert.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/fragment_exchange.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/fragment_faq.xml" value="0.25" />
@@ -56,6 +57,7 @@
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw600dp/user_info_items.xml" value="0.22" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/activity_rewards.xml" value="0.19140625" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/activity_sign_in.xml" value="0.19140625" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/ad_not_available_layout.xml" value="0.19140625" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/connection_alert.xml" value="0.19140625" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/fragment_exchange.xml" value="0.22" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout-sw720dp/fragment_faq.xml" value="0.19140625" />
@@ -76,6 +78,7 @@
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/activity_sign_in.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/activity_sign_up.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/activity_terms_and_conditions.xml" value="0.20416666666666666" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/ad_not_available_layout.xml" value="0.1814814814814815" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/competition_activity.xml" value="0.1814814814814815" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/connection_alert.xml" value="0.2" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/custom_progress_dialog.xml" value="0.1814814814814815" />
