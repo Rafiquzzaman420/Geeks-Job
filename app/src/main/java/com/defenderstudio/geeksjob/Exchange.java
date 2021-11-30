@@ -283,4 +283,8 @@ public class Exchange extends Fragment {
         void userInfoCall(Long value);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

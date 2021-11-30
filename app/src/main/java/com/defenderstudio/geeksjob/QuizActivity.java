@@ -42,7 +42,8 @@ public class QuizActivity extends AppCompatActivity {
 
     MoviesQuestion moviesQuestion;
     ScienceQuestion scienceQuestion;
-
+private scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask;
+    private moviesDatabaseLoadWithAsyncTask moviesDatabaseLoadWithAsyncTask;
 
     private boolean dialogShown = false;
 
@@ -326,6 +327,17 @@ public class QuizActivity extends AppCompatActivity {
                 }
             });
             return null;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (scienceDatabaseLoadWithAsyncTask != null){
+            scienceDatabaseLoadWithAsyncTask.cancel(true);
+        }
+        if (moviesDatabaseLoadWithAsyncTask != null){
+            moviesDatabaseLoadWithAsyncTask.cancel(true);
         }
     }
 }

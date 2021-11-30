@@ -176,4 +176,9 @@ public class Profile extends Fragment {
     public interface quizInformationCallBack {
         void quizInfoCall(Long value);
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

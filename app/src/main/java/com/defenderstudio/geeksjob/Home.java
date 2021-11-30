@@ -26,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Objects;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -115,12 +117,14 @@ public class Home extends Fragment {
         quizActivity.setOnClickListener(v -> {
             Intent quizActivityIntent = new Intent(Home.this.getActivity(), QuizActivity.class);
             startActivity(quizActivityIntent);
+            requireActivity().finish();
         });
 
         CardView rewards = view.findViewById(R.id.rewards);
         rewards.setOnClickListener(v -> {
             Intent rewardsIntent = new Intent(Home.this.getActivity(), Rewards.class);
             startActivity(rewardsIntent);
+            requireActivity().finish();
         });
 
 
@@ -128,6 +132,7 @@ public class Home extends Fragment {
             try {
                 Intent leaderBoardIntent = new Intent(Home.this.getActivity(), LeaderBoard.class);
                 startActivity(leaderBoardIntent);
+                requireActivity().finish();
             } catch (Exception exception) {
                 Toast.makeText(getActivity(), "Please try again!", Toast.LENGTH_SHORT).show();
             }
@@ -164,5 +169,8 @@ public class Home extends Fragment {
         void userPointInfo(Long value);
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+    }
 }

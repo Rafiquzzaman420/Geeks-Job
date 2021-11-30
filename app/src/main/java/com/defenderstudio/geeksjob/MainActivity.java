@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         "New version found! Please update.", Toast.LENGTH_LONG).show();
                 Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
                 startActivity(logOut);
+                finish();
             }
         });
 
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             Toast.LENGTH_LONG).show();
                     Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
                     startActivity(logOut);
+                    finish();
                 }
             }
         });
@@ -133,6 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 Toast.LENGTH_LONG).show();
                         Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
                         startActivity(logOut);
+                        finish();
                     }
                 }
             }, 3000);
@@ -150,6 +153,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Toast.LENGTH_LONG).show();
                 Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
                 startActivity(logOut);
+                finish();
             } else {
                 // Otherwise it'll do nothing and send the information to the server
                 if (BREAK.equals("BREAK")) {
@@ -278,6 +282,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         task -> {
                             Intent signOutIntent = new Intent(MainActivity.this, SignInActivity.class);
                             startActivity(signOutIntent);
+                            finish();
                         });
 
 
@@ -421,5 +426,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public interface readVersionInformation {
         void readVersionInfo(Double value);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

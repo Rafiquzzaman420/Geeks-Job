@@ -425,6 +425,7 @@ public class Rewards extends AppCompatActivity {
                     Intent intent = new Intent(Rewards.this,
                             MainActivity.class);
                     startActivity(intent);
+                    finish();
                 })
                 .setNegativeButton("No", null)
                 .show();
@@ -557,5 +558,10 @@ public class Rewards extends AppCompatActivity {
 
     private interface userChancesLeft {
         void userChancesLeftMethod(Long value);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

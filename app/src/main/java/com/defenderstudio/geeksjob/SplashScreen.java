@@ -27,6 +27,7 @@ public class SplashScreen extends AppCompatActivity {
         if (splash) {
             Intent signInIntent = new Intent(SplashScreen.this, SignInActivity.class);
             startActivity(signInIntent);
+            finish();
         } else {
             setContentView(R.layout.splash_screen);
 
@@ -68,5 +69,9 @@ public class SplashScreen extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 }
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

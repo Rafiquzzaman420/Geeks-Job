@@ -12,16 +12,11 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.media.session.PlaybackState;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.support.v4.media.session.PlaybackStateCompat;
-import android.util.Log;
 import android.view.Gravity;
-import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -30,7 +25,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -57,13 +51,11 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.TimeUnit;
 
 public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarnedRewardListener {
 
@@ -94,8 +86,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     private InterstitialAd mInterstitialAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
     private Handler adHandler;
-    private boolean dialogShown = false;
-
     Runnable statusChecker = new Runnable() {
         @Override
         public void run() {
@@ -107,6 +97,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         }
     };
+    private boolean dialogShown = false;
     Runnable connectionStatusChecker = () -> {
         try {
             Dialog dialog = new Dialog(QuestionAnsActivity.this, R.style.dialogue);
@@ -130,13 +121,13 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
 
 
-
         } catch (Exception ignored) {
         } finally {
             int interval = 1000;
             new Handler().postDelayed(this::startConnectionRepeatingTask, interval);
         }
     };
+
     //==============================================================================================
 //                                      onCreate() activity
     //==============================================================================================
@@ -237,9 +228,9 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         // TODO: NEED TO PUT STRING EXTRA TO CALL THESE INFORMATION DAH!
         // Most important thing in this project I think
         String topicInfo = getIntent().getStringExtra("topicName");
-        if (topicInfo.equals("Science & History")){
+        if (topicInfo.equals("Science & History")) {
             scienceQuizCallFromFirebase(scienceList, topicInfo);
-        }else if (topicInfo.equals("Movies & Sports")) {
+        } else if (topicInfo.equals("Movies & Sports")) {
             moviesQuizCallFromFirebase(moviesList, topicInfo);
         }
 //        curriculumQuizCallFromFirebase(curriculumList);
@@ -504,6 +495,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                         Intent intent = new Intent(QuestionAnsActivity.this,
                                 QuizActivity.class);
                         startActivity(intent);
+                        finish();
                     })
                     .setNegativeButton("No", null)
                     .show();
@@ -558,6 +550,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                         Intent intent = new Intent(QuestionAnsActivity.this,
                                 QuizActivity.class);
                         startActivity(intent);
+                        finish();
                     })
                     .setNegativeButton("No", null)
                     .show();
@@ -590,20 +583,18 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 //    }
 
 
-    public boolean internetAvailabilityCheck(){
+    public boolean internetAvailabilityCheck() {
         Runtime runtime = Runtime.getRuntime();
-            try {
+        try {
             Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
             int exitValue = ipProcess.waitFor();
-                if (exitValue == 1){
+            if (exitValue == 1) {
                 Toast.makeText(getApplicationContext(),
-            "Please check your network connection...", Toast.LENGTH_LONG).show();
-                }
+                        "Please check your network connection...", Toast.LENGTH_LONG).show();
+            }
             return (exitValue == 0);
 
-        }
-        catch (IOException | InterruptedException e)
-        {
+        } catch (IOException | InterruptedException e) {
             Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
         }
         return false;
@@ -621,17 +612,17 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
 
-    private void internetCheckerAndHandler(){
+    private void internetCheckerAndHandler() {
         Dialog dialog = new Dialog(QuestionAnsActivity.this, R.style.dialogue);
         dialog.setContentView(R.layout.connection_alert);
         dialog.setCancelable(false);
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         dialog.findViewById(R.id.connection_retry).setOnClickListener(view -> {
-                if (internetAvailabilityCheck() && dialogShown) {
-                    dialogShown = false;
-                    dialog.dismiss();
-                    Toast.makeText(getApplicationContext(), "Answer Submitted.", Toast.LENGTH_SHORT).show();
-                }
+            if (internetAvailabilityCheck() && dialogShown) {
+                dialogShown = false;
+                dialog.dismiss();
+                Toast.makeText(getApplicationContext(), "Answer Submitted.", Toast.LENGTH_SHORT).show();
+            }
         });
         // If Internet connection is gone
         if (!internetAvailabilityCheck()) {
@@ -901,6 +892,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         button.setOnClickListener(v -> {
             Intent quizIntent = new Intent(QuestionAnsActivity.this, QuizActivity.class);
             startActivity(quizIntent);
+            finish();
         });
     }
 
@@ -1195,11 +1187,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     }
 
-    private interface userTimerInformation {
-        void timerInfo(Long value);
-    }
-
-
     private void rewardInformationToServer() {
 
         // This method will send the rewarded point information directly to the server and merge it down with the
@@ -1228,8 +1215,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
         //==============================================================================================
     }
-    
-    
+
     public void religionOption1ClickMethod(ArrayList<ReligionQuestion> arrayList) {
         submitButton.setClickable(false);
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
@@ -1270,12 +1256,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
     }
-
-    //==============================================================================================
-
-    //==============================================================================================
-    // When Option2 button is clicked, this method will be invoked
-    //==============================================================================================
 
     public void religionOption2ClickMethod(ArrayList<ReligionQuestion> arrayList) {
         submitButton.setClickable(false);
@@ -1322,7 +1302,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option3 button is clicked, this method will be invoked
+    // When Option2 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void religionOption3ClickMethod(ArrayList<ReligionQuestion> arrayList) {
@@ -1370,7 +1350,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option4 button is clicked, this method will be invoked
+    // When Option3 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void religionOption4ClickMethod(ArrayList<ReligionQuestion> arrayList) {
@@ -1415,8 +1395,12 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         });
     }
 
-    
-    
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option4 button is clicked, this method will be invoked
+    //==============================================================================================
+
     public void scienceOption1ClickMethod(ArrayList<ScienceQuestion> arrayList) {
         submitButton.setClickable(false);
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
@@ -1455,12 +1439,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
     }
-
-    //==============================================================================================
-
-    //==============================================================================================
-    // When Option2 button is clicked, this method will be invoked
-    //==============================================================================================
 
     public void scienceOption2ClickMethod(ArrayList<ScienceQuestion> arrayList) {
         submitButton.setClickable(false);
@@ -1505,7 +1483,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option3 button is clicked, this method will be invoked
+    // When Option2 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void scienceOption3ClickMethod(ArrayList<ScienceQuestion> arrayList) {
@@ -1552,7 +1530,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option4 button is clicked, this method will be invoked
+    // When Option3 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void scienceOption4ClickMethod(ArrayList<ScienceQuestion> arrayList) {
@@ -1596,8 +1574,12 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         });
     }
 
-    
-    
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option4 button is clicked, this method will be invoked
+    //==============================================================================================
+
     public void curriculumOption1ClickMethod(ArrayList<CurriculumQuestion> arrayList) {
         submitButton.setClickable(false);
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
@@ -1638,12 +1620,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
     }
-
-    //==============================================================================================
-
-    //==============================================================================================
-    // When Option2 button is clicked, this method will be invoked
-    //==============================================================================================
 
     public void curriculumOption2ClickMethod(ArrayList<CurriculumQuestion> arrayList) {
         submitButton.setClickable(false);
@@ -1690,7 +1666,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option3 button is clicked, this method will be invoked
+    // When Option2 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void curriculumOption3ClickMethod(ArrayList<CurriculumQuestion> arrayList) {
@@ -1738,7 +1714,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option4 button is clicked, this method will be invoked
+    // When Option3 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void curriculumOption4ClickMethod(ArrayList<CurriculumQuestion> arrayList) {
@@ -1783,5 +1759,18 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         });
     }
 
+    //==============================================================================================
 
+    //==============================================================================================
+    // When Option4 button is clicked, this method will be invoked
+    //==============================================================================================
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    private interface userTimerInformation {
+        void timerInfo(Long value);
+    }
 }

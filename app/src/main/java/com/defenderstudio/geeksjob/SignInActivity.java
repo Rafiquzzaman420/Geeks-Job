@@ -130,6 +130,7 @@ public class SignInActivity extends AppCompatActivity {
                         Intent mainActivityIntent = new Intent(SignInActivity.this,
                                 MainActivity.class);
                         startActivity(mainActivityIntent);
+                        finish();
 
 
                     } else {
@@ -142,6 +143,7 @@ public class SignInActivity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(),
                                         "Sorry. You've been banned for misusing Geeks Job", Toast.LENGTH_LONG).show();
                             } else {
+                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(getApplicationContext(),
                                         "Sign in failed. Be sure to turn on internet connection", Toast.LENGTH_LONG).show();
                             }
@@ -165,7 +167,6 @@ public class SignInActivity extends AppCompatActivity {
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
-
     }
     // [END signing]
 

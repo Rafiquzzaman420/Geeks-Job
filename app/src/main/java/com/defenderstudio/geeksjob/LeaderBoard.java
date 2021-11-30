@@ -127,5 +127,6 @@ public class LeaderBoard extends AppCompatActivity {
     public void onBackPressed() {
         Intent goBackIntent = new Intent(LeaderBoard.this, MainActivity.class);
         startActivity(goBackIntent);
+        finish();
     }
 }
