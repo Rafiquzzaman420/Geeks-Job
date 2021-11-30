@@ -306,7 +306,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     public void loadAd() {
         // Use the test ad unit ID to load an ad.
-        RewardedInterstitialAd.load(QuestionAnsActivity.this, "ca-app-pub-5052828179386026/3242847727",
+        // TODO : ca-app-pub-5052828179386026/3242847727
+        RewardedInterstitialAd.load(QuestionAnsActivity.this, "ca-app-pub-3940256099942544/5354046379",
                 new AdRequest.Builder().build(), new RewardedInterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull RewardedInterstitialAd ad) {
