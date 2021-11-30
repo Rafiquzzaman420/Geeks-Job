@@ -164,8 +164,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         AdView adView = findViewById(R.id.bannerAdView);
 
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        adView.loadAd(adRequest);
         topicName.setText(getIntent().getStringExtra("topicName"));
 
         ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
@@ -259,7 +259,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         AdRequest adRequest = new AdRequest.Builder().build();
         MobileAds.initialize(this, initializationStatus -> {
             // TODO : Need to change the Ad ID here
-            InterstitialAd.load(this, "ca-app-pub-5052828179386026/7359645574", adRequest,
+            InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest,
                     new InterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -582,7 +582,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 //        }
 //    }
 
-
     public boolean internetAvailabilityCheck() {
         Runtime runtime = Runtime.getRuntime();
         try {
@@ -618,6 +617,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         dialog.setCancelable(false);
         dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
         dialog.findViewById(R.id.connection_retry).setOnClickListener(view -> {
+            Toast.makeText(getApplicationContext(), "Checking connection...", Toast.LENGTH_LONG).show();
             if (internetAvailabilityCheck() && dialogShown) {
                 dialogShown = false;
                 dialog.dismiss();

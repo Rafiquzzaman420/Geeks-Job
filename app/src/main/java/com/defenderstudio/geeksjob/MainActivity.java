@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -54,29 +53,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     Runnable statusChecker = () -> {
         try {
-                Dialog dialog = new Dialog(MainActivity.this, R.style.dialogue);
-                dialog.setContentView(R.layout.connection_alert);
-                dialog.setCancelable(false);
-                dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+            Dialog dialog = new Dialog(MainActivity.this, R.style.dialogue);
+            dialog.setContentView(R.layout.connection_alert);
+            dialog.setCancelable(false);
+            dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
-                dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
-                    if (isOnline() && dialogShown) {
-                        dialog.dismiss();
-                        dialogShown = false;
-                    }
-                });
-                // If Internet connection is gone
-
-                if (!isOnline()) {
-                    if (!dialogShown) {
-                        Log.d("MainActivity", "Dialog value is : " + dialogShown);
-                        dialogShown = true;
-                        dialog.show();
-                    }
-                    Log.d("MainActivity", "User///// Not Connected to Internet...");
-                    }
-
-
+            dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
+                if (isOnline() && dialogShown) {
+                    dialog.dismiss();
+                    dialogShown = false;
+                }
+            });
+            // If Internet connection is gone
+            if (!isOnline()) {
+                if (!dialogShown) {
+                    dialogShown = true;
+                    dialog.show();
+                }
+            }
 
         } catch (Exception ignored) {
         } finally {
@@ -410,26 +404,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+
     private interface userBanInformation {
         void userBanInfo(Boolean value);
     }
-
 
     private interface userSignInInformation {
         void userSignInInfo(String value);
     }
 
+
     public interface readUpdateInformation {
         void readUpdateInfo(String value);
     }
 
-
     public interface readVersionInformation {
         void readVersionInfo(Double value);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }
