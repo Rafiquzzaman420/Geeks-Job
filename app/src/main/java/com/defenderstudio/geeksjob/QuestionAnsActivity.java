@@ -17,16 +17,19 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.view.Gravity;
+import android.view.View;
 import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.ads.AdError;
@@ -55,7 +58,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
 public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarnedRewardListener {
 
@@ -69,6 +74,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             submitButton,
             hintBrowser,
             goBackFromBrowser,
+            rewardTimer,
             rewardedAdButton;
     WebView browserView;
     List<ScienceQuestion> scienceQuestionList;
@@ -176,7 +182,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             // Getting the current time in MILLIS
             long currentTime = Calendar.getInstance().getTimeInMillis();
             if ((currentTime - value) >= 0) {
+                rewardTimer = findViewById(R.id.rewardTimer);
+                rewardTimer.setVisibility(View.GONE);
                 rewardedAdButton = findViewById(R.id.rewardButton);
+                rewardedAdButton.setVisibility(View.VISIBLE);
                 rewardedAdButton.setClickable(true);
                 rewardedAdButton.setBackgroundColor(getResources().getColor(R.color.green));
                 dialog.dismiss();
@@ -1138,12 +1147,18 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         new CountDownTimer(timeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
-//                String duration = String.format(Locale.ENGLISH, "%02d:%02d:%02d",
-//                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished),
-//                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
-//                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
-//                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
-//                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+                String duration = String.format(Locale.ENGLISH, "%02d:%02d",
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
+                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+
+                rewardedAdButton = findViewById(R.id.rewardButton);
+                rewardedAdButton.setVisibility(View.GONE);
+                rewardTimer = findViewById(R.id.rewardTimer);
+                rewardTimer.setVisibility(View.VISIBLE);
+                rewardTimer.setText(duration);
+                rewardTimer.invalidate();
             }
 
             @Override
@@ -1162,12 +1177,19 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     private void blockRewardButton() {
         rewardedAdButton = findViewById(R.id.rewardButton);
         rewardedAdButton.setClickable(false);
-        rewardedAdButton.setBackgroundColor(getResources().getColor(R.color.red));
+        rewardedAdButton.setVisibility(View.GONE);
+        rewardTimer = findViewById(R.id.rewardTimer);
+        rewardTimer.setClickable(false);
+        rewardTimer.setBackgroundColor(getResources().getColor(R.color.red));
     }
 
     private void freeRewardButton() {
+        rewardTimer = findViewById(R.id.rewardTimer);
+        rewardTimer.setVisibility(View.GONE);
         rewardedAdButton = findViewById(R.id.rewardButton);
+        rewardedAdButton.setVisibility(View.VISIBLE);
         rewardedAdButton.setClickable(true);
+
         rewardedAdButton.setBackgroundColor(getResources().getColor(R.color.green));
     }
 

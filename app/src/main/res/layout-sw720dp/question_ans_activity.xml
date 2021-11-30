@@ -208,21 +208,34 @@
                 </Button>
 
                 <Button
-                    android:id="@+id/rewardButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:id="@+id/rewardButton"
+                    android:text="@string/reward_Button"
+                    android:gravity="center"
+                    android:layout_weight=".6"
+                    android:textSize="18sp"
                     android:layout_marginStart="2.5dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_weight=".66"
-                    android:elevation="5dp"
-                    android:translationZ="5dp"
                     android:fontFamily="@font/geeks_job_medium"
-                    android:text="@string/reward_Button"
-                    android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:textSize="24sp">
+                    android:textColor="@color/white"
+                    android:visibility="visible" />
 
-                </Button>
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/rewardTimer"
+                    android:visibility="gone"
+                    android:layout_marginEnd="20dp"
+                    android:text="@string/rewardTimer"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:layout_weight=".6"
+                    android:layout_marginStart="2.5dp"
+                    android:textColor="@color/white"
+                    android:gravity="center"
+                    android:background="@color/red"/>
 
 
             </LinearLayout>

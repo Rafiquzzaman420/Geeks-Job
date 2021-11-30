@@ -204,4 +204,7 @@
     <string name="adNotLoaded">
         Ad couldn\'t be loaded right now. Please try again sometimes later.
     </string>
+    <string name="rewardTimer">
+        00:00
+    </string>
 </resources>
