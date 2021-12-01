@@ -22,14 +22,12 @@ import android.view.WindowManager;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.google.android.gms.ads.AdError;
@@ -53,7 +51,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -110,22 +107,25 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             dialog.setContentView(R.layout.connection_alert);
             dialog.setCancelable(false);
             dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-
-            dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
-                if (isOnline() && dialogShown) {
-                    dialog.dismiss();
-                    dialogShown = false;
+            internetConnectionCheckerWithServer(connection -> {
+                if (connection) {
+                    dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
+                        // TODO : THE PROBLEM IS HERE
+                        if (isOnline() && dialogShown) {
+                            dialog.dismiss();
+                            dialogShown = false;
+                        }
+                    });
+                    // If Internet connection is gone
                 }
+                if (!isOnline() && !connection) {
+                    if (!dialogShown) {
+                        dialogShown = true;
+                        dialog.show();
+                    }
+                }
+
             });
-            // If Internet connection is gone
-
-            if (!isOnline()) {
-                if (!dialogShown) {
-                    dialogShown = true;
-                    dialog.show();
-                }
-            }
-
 
         } catch (Exception ignored) {
         } finally {
@@ -170,8 +170,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         AdView adView = findViewById(R.id.bannerAdView);
 
 
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
+//        AdRequest adRequest = new AdRequest.Builder().build();
+//        adView.loadAd(adRequest);
         topicName.setText(getIntent().getStringExtra("topicName"));
 
         ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
@@ -262,13 +262,14 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     void startRepeatingTask() {
         statusChecker.run();
     }
-//ca-app-pub-5052828179386026/7359645574
+    //Main Account ID: ca-app-pub-5052828179386026/7359645574
+    // Dummy ID: ca-app-pub-3940256099942544/1033173712
 
     private void interstitialAdLoader() {
         AdRequest adRequest = new AdRequest.Builder().build();
         MobileAds.initialize(this, initializationStatus -> {
             // TODO : Need to change the Ad ID here
-            InterstitialAd.load(this, "ca-app-pub-5052828179386026/7359645574", adRequest,
+            InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest,
                     new InterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -316,7 +317,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     public void loadAd() {
         // Use the test ad unit ID to load an ad.
         // TODO : ca-app-pub-5052828179386026/3242847727
-        RewardedInterstitialAd.load(QuestionAnsActivity.this, "ca-app-pub-5052828179386026/3242847727",
+        // DUMMY ID : ca-app-pub-3940256099942544/5354046379
+        RewardedInterstitialAd.load(QuestionAnsActivity.this, "ca-app-pub-3940256099942544/5354046379",
                 new AdRequest.Builder().build(), new RewardedInterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull RewardedInterstitialAd ad) {
@@ -487,10 +489,27 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                         firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).child("pointsValue");
 
         pointsValue.setValue(ServerValue.increment(10));
-
-        //==============================================================================================
         score.setText(String.valueOf(correctCount));
         score.invalidate();
+        //==============================================================================================
+
+    }
+
+    private void internetConnectionCheckerWithServer(internetConnectionCheck internetConnectionCheck) {
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference AnsQuizAmountReference = firebaseDatabase.child("/.info/connected");
+        AnsQuizAmountReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Boolean connected = snapshot.getValue(Boolean.class);
+                internetConnectionCheck.connectionInfo(connected);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     //==============================================================================================
@@ -542,9 +561,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
     //==============================================================================================
-
-
-    //==============================================================================================
     // Takes action when back button is pressed. <Same as the leave button above>
     //==============================================================================================
     @Override
@@ -567,8 +583,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
         }
     }
-    //==============================================================================================
 
+    //==============================================================================================
 
     //==============================================================================================
     // Setting all the question taken from the server with the questions textview in the application
@@ -582,32 +598,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         submitButton.setClickable(false);
 
     }
-
-//    public boolean internetAvailabilityCheck(){
-//        try{
-//            InetAddress address = InetAddress.getByName("www.google.com");
-//            return !address.equals("");
-//        }catch (Exception exception){
-//            return false;
-//        }
-//    }
-
-    public boolean internetAvailabilityCheck() {
-        Runtime runtime = Runtime.getRuntime();
-        try {
-            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
-            int exitValue = ipProcess.waitFor();
-            if (exitValue == 1) {
-                Toast.makeText(getApplicationContext(),
-                        "Please check your network connection...", Toast.LENGTH_LONG).show();
-            }
-            return (exitValue == 0);
-
-        } catch (IOException | InterruptedException e) {
-            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
-        }
-        return false;
-    }
+    //==============================================================================================
 
     private void setScienceQuestionData() {
         question.setText(scienceQuestion.getQuestion());
@@ -618,30 +609,59 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         submitButton.setClickable(false);
 
     }
+
+//    public boolean internetAvailabilityCheck(){
+//        try{
+//            InetAddress address = InetAddress.getByName("www.google.com");
+//            return !address.equals("");
+//        }catch (Exception exception){
+//            return false;
+//        }
+//    }
+
+//    public boolean internetAvailabilityCheck() {
+//        Runtime runtime = Runtime.getRuntime();
+//        try {
+//            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
+//            int exitValue = ipProcess.waitFor();
+//            if (exitValue == 1) {
+//                Toast.makeText(getApplicationContext(),
+//                        "Please check your network connection...", Toast.LENGTH_LONG).show();
+//            }
+//            return (exitValue == 0);
+//
+//        } catch (IOException | InterruptedException e) {
+//            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
+//        }
+//        return false;
+//    }
+//
+//    private void internetCheckerAndHandler() {
+//        Dialog dialog = new Dialog(QuestionAnsActivity.this, R.style.dialogue);
+//        dialog.setContentView(R.layout.connection_alert);
+//        dialog.setCancelable(false);
+//        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
+//        dialog.findViewById(R.id.connection_retry).setOnClickListener(view -> {
+//            internetConnectionCheckerWithServer(value -> {
+//                if (value && dialogShown) {
+//                    dialogShown = false;
+//                    dialog.dismiss();
+//                    Toast.makeText(getApplicationContext(), "Answer Submitted.", Toast.LENGTH_SHORT).show();
+//                }
+//
+//                // If Internet connection is gone
+//                if (!value) {
+//                    if (!dialogShown) {
+//                        dialogShown = true;
+//                        dialog.show();
+//                    }
+//                }
+//
+//            });
+//        });
+//
+//    }
     //==============================================================================================
-
-
-    private void internetCheckerAndHandler() {
-        Dialog dialog = new Dialog(QuestionAnsActivity.this, R.style.dialogue);
-        dialog.setContentView(R.layout.connection_alert);
-        dialog.setCancelable(false);
-        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-        dialog.findViewById(R.id.connection_retry).setOnClickListener(view -> {
-            Toast.makeText(getApplicationContext(), "Checking connection...", Toast.LENGTH_LONG).show();
-            if (internetAvailabilityCheck() && dialogShown) {
-                dialogShown = false;
-                dialog.dismiss();
-                Toast.makeText(getApplicationContext(), "Answer Submitted.", Toast.LENGTH_SHORT).show();
-            }
-        });
-        // If Internet connection is gone
-        if (!internetAvailabilityCheck()) {
-            if (!dialogShown) {
-                dialogShown = true;
-                dialog.show();
-            }
-        }
-    }
 
     //==============================================================================================
     // If answer is correct, then this method will invoke
@@ -658,7 +678,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 progressDialog.show();
                 new Handler().postDelayed(() -> {
                     index++;
-                    internetCheckerAndHandler();
                     moviesQuestion = arrayList.get(index);
                     resetButtonColor();
                     setMoviesQuestionData();
@@ -689,9 +708,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     resetButtonColor();
                     setScienceQuestionData();
                     enableButton();
-                    internetCheckerAndHandler();
                     scoreUpdate();
                     progressDialog.dismiss();
+                    // If Internet connection is gone
+                    // If Internet connection is gone
                 }, 1000);
 
             } else {
@@ -699,7 +719,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
     }
-
 
     public void curriculumCorrectAnswer(Button button, ArrayList<CurriculumQuestion> arrayList) {
         button.setBackgroundColor(getResources().getColor(R.color.green));
@@ -721,7 +740,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         });
     }
 
-
     public void religionCorrectAnswer(Button button, ArrayList<ReligionQuestion> arrayList) {
         button.setBackgroundColor(getResources().getColor(R.color.green));
         button.setTextColor(getResources().getColor(R.color.white));
@@ -742,10 +760,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         });
     }
 
-
-    //==============================================================================================
-
-
     //==============================================================================================
     // Method to show Penalty Dialog when answer is wrong.
     //==============================================================================================
@@ -758,11 +772,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         new Handler().postDelayed(penaltyDialog::dismiss, 20000);
     }
 
-    //==============================================================================================
 
-
-    //==============================================================================================
-    // If answer is wrong, then this method will invoke
     //==============================================================================================
 
     public void moviesWrongAnswer(Button button, ArrayList<MoviesQuestion> arrayList) {
@@ -785,6 +795,12 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         });
     }
 
+    //==============================================================================================
+
+
+    //==============================================================================================
+    // If answer is wrong, then this method will invoke
+    //==============================================================================================
 
     public void scienceWrongAnswer(Button button, ArrayList<ScienceQuestion> arrayList) {
         button.setBackgroundColor(getResources().getColor(R.color.red));
@@ -805,7 +821,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
     }
-
 
     public void religionWrongAnswer(Button button, ArrayList<ReligionQuestion> arrayList) {
         button.setBackgroundColor(getResources().getColor(R.color.red));
@@ -828,7 +843,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         });
     }
 
-
     public void curriculumWrongAnswer(Button button, ArrayList<CurriculumQuestion> arrayList) {
         button.setBackgroundColor(getResources().getColor(R.color.red));
         button.setClickable(false);
@@ -849,8 +863,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
     }
-    //==============================================================================================
-
 
     //==============================================================================================
     // When true, this method will enable all the question buttons
@@ -861,12 +873,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         option3.setClickable(true);
         option4.setClickable(true);
     }
-
-    //==============================================================================================
-
-
-    //==============================================================================================
-    // When false, this method will disable all the question buttons
     //==============================================================================================
 
     public void disableButton() {
@@ -876,6 +882,11 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         option4.setClickable(false);
     }
 
+    //==============================================================================================
+
+
+    //==============================================================================================
+    // When false, this method will disable all the question buttons
     //==============================================================================================
 
     //==============================================================================================
@@ -906,10 +917,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         });
     }
 
-    //==============================================================================================
-
-    //==============================================================================================
-    // When Option1 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void moviesOption1ClickMethod(ArrayList<MoviesQuestion> arrayList) {
@@ -954,7 +961,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option2 button is clicked, this method will be invoked
+    // When Option1 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void moviesOption2ClickMethod(ArrayList<MoviesQuestion> arrayList) {
@@ -1000,7 +1007,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option3 button is clicked, this method will be invoked
+    // When Option2 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void moviesOption3ClickMethod(ArrayList<MoviesQuestion> arrayList) {
@@ -1047,7 +1054,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option4 button is clicked, this method will be invoked
+    // When Option3 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void moviesOption4ClickMethod(ArrayList<MoviesQuestion> arrayList) {
@@ -1090,6 +1097,12 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
     }
+
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option4 button is clicked, this method will be invoked
+    //==============================================================================================
 
     @Override
     public void onUserEarnedReward(@NonNull RewardItem rewardItem) {
@@ -1322,12 +1335,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         });
     }
 
-    //==============================================================================================
-
-    //==============================================================================================
-    // When Option2 button is clicked, this method will be invoked
-    //==============================================================================================
-
     public void religionOption3ClickMethod(ArrayList<ReligionQuestion> arrayList) {
         submitButton.setClickable(false);
         submitButton.getResources().getColor(R.color.red);
@@ -1373,7 +1380,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option3 button is clicked, this method will be invoked
+    // When Option2 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void religionOption4ClickMethod(ArrayList<ReligionQuestion> arrayList) {
@@ -1421,7 +1428,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option4 button is clicked, this method will be invoked
+    // When Option3 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void scienceOption1ClickMethod(ArrayList<ScienceQuestion> arrayList) {
@@ -1463,6 +1470,12 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         });
     }
 
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option4 button is clicked, this method will be invoked
+    //==============================================================================================
+
     public void scienceOption2ClickMethod(ArrayList<ScienceQuestion> arrayList) {
         submitButton.setClickable(false);
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
@@ -1502,12 +1515,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
     }
-
-    //==============================================================================================
-
-    //==============================================================================================
-    // When Option2 button is clicked, this method will be invoked
-    //==============================================================================================
 
     public void scienceOption3ClickMethod(ArrayList<ScienceQuestion> arrayList) {
         submitButton.setClickable(false);
@@ -1553,7 +1560,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option3 button is clicked, this method will be invoked
+    // When Option2 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void scienceOption4ClickMethod(ArrayList<ScienceQuestion> arrayList) {
@@ -1600,7 +1607,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option4 button is clicked, this method will be invoked
+    // When Option3 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void curriculumOption1ClickMethod(ArrayList<CurriculumQuestion> arrayList) {
@@ -1644,6 +1651,12 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         });
     }
 
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option4 button is clicked, this method will be invoked
+    //==============================================================================================
+
     public void curriculumOption2ClickMethod(ArrayList<CurriculumQuestion> arrayList) {
         submitButton.setClickable(false);
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
@@ -1685,12 +1698,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
     }
-
-    //==============================================================================================
-
-    //==============================================================================================
-    // When Option2 button is clicked, this method will be invoked
-    //==============================================================================================
 
     public void curriculumOption3ClickMethod(ArrayList<CurriculumQuestion> arrayList) {
         submitButton.setClickable(false);
@@ -1737,7 +1744,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option3 button is clicked, this method will be invoked
+    // When Option2 button is clicked, this method will be invoked
     //==============================================================================================
 
     public void curriculumOption4ClickMethod(ArrayList<CurriculumQuestion> arrayList) {
@@ -1785,12 +1792,22 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
 
     //==============================================================================================
-    // When Option4 button is clicked, this method will be invoked
+    // When Option3 button is clicked, this method will be invoked
     //==============================================================================================
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    //==============================================================================================
+
+    //==============================================================================================
+    // When Option4 button is clicked, this method will be invoked
+    //==============================================================================================
+
+    private interface internetConnectionCheck {
+        void connectionInfo(Boolean connection);
     }
 
     private interface userTimerInformation {

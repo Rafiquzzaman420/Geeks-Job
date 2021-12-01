@@ -9,7 +9,6 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
@@ -55,21 +54,24 @@ public class Rewards extends AppCompatActivity {
             dialog.setContentView(R.layout.connection_alert);
             dialog.setCancelable(false);
             dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-
-            dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
-                if (isOnline() && dialogShown) {
-                    dialog.dismiss();
-                    dialogShown = false;
+            internetConnectionCheckerWithServer(connection -> {
+                if (connection) {
+                    dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
+                        if (isOnline() && dialogShown) {
+                            dialog.dismiss();
+                            dialogShown = false;
+                        }
+                    });
+                    // If Internet connection is gone
+                }
+                if (!isOnline() && !connection) {
+                    if (!dialogShown) {
+                        dialogShown = true;
+                        dialog.show();
+                    }
                 }
             });
-            // If Internet connection is gone
 
-            if (!isOnline()) {
-                if (!dialogShown) {
-                    dialogShown = true;
-                    dialog.show();
-                }
-            }
 
         } catch (Exception ignored) {
         } finally {
@@ -118,18 +120,19 @@ public class Rewards extends AppCompatActivity {
         Button rewardButton = findViewById(R.id.rewardedAdButton);
         rewardButton.setBackgroundColor(getResources().getColor(R.color.green));
         rewardButton.setOnClickListener(v -> {
-           ProgressDialog progressDialog = new ProgressDialog(Rewards.this, R.style.ProgressDialogStyle);
-           progressDialog.setCancelable(false);
-           progressDialog.setMessage("Loading. Please wait...");
+            ProgressDialog progressDialog = new ProgressDialog(Rewards.this, R.style.ProgressDialogStyle);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Loading. Please wait...");
 
-           try {
-               progressDialog.show();
-               new Handler().postDelayed(() -> {
-                   adShow();
-                   progressDialog.dismiss();
-               }, 3000);
-           }catch (Exception ignored){}
-       });
+            try {
+                progressDialog.show();
+                new Handler().postDelayed(() -> {
+                    adShow();
+                    progressDialog.dismiss();
+                }, 3000);
+            } catch (Exception ignored) {
+            }
+        });
     }
     //==============================================================================================================================
 
@@ -294,14 +297,15 @@ public class Rewards extends AppCompatActivity {
     }
 //==================================================================================================================================
 
-//==================================================================================================================================
+    //==================================================================================================================================
     // Will load Rewards when called
 //==================================================================================================================================
 //    ca-app-pub-5052828179386026/8585274942
+    // DUMMY ID : ca-app-pub-3940256099942544/5224354917
     private void rewardedAdLoader() {
         // TODO : NEED TO CHANGE THE REWARDED AD IN MAIN SECTION ID
         AdRequest adRequest = new AdRequest.Builder().build();
-        RewardedAd.load(this, "ca-app-pub-5052828179386026/8585274942",
+        RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917",
                 adRequest, new RewardedAdLoadCallback() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
@@ -403,8 +407,7 @@ public class Rewards extends AppCompatActivity {
                 initialPointValue = initialPointValue + 50;
                 UserPointsValueUpdate();
             });
-        }
-        else{
+        } else {
             Toast.makeText(getApplicationContext(), "Please try again",
                     Toast.LENGTH_SHORT).show();
         }
@@ -550,16 +553,39 @@ public class Rewards extends AppCompatActivity {
         pointsValue.setValue(ServerValue.increment(50));
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    private void internetConnectionCheckerWithServer(Rewards.internetConnectionCheck internetConnectionCheck) {
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference AnsQuizAmountReference = firebaseDatabase.child("/.info/connected");
+        AnsQuizAmountReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Boolean connected = snapshot.getValue(Boolean.class);
+                internetConnectionCheck.connectionInfo(connected);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     private interface userInfoCallBack {
         void userInfo(Long value);
     }
+
 
     private interface userChancesLeft {
         void userChancesLeftMethod(Long value);
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
+    private interface internetConnectionCheck {
+        void connectionInfo(Boolean connection);
     }
+
 }

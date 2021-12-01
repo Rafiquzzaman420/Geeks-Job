@@ -58,20 +58,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             dialog.setContentView(R.layout.connection_alert);
             dialog.setCancelable(false);
             dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-
-            dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
-                if (isOnline() && dialogShown) {
-                    dialog.dismiss();
-                    dialogShown = false;
+            internetConnectionCheckerWithServer(connection -> {
+                if (connection) {
+                    dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
+                        if (isOnline() && dialogShown) {
+                            dialog.dismiss();
+                            dialogShown = false;
+                        }
+                    });
+                }
+                // If Internet connection is gone
+                if (!isOnline() && !connection) {
+                    if (!dialogShown) {
+                        dialogShown = true;
+                        dialog.show();
+                    }
                 }
             });
-            // If Internet connection is gone
-            if (!isOnline()) {
-                if (!dialogShown) {
-                    dialogShown = true;
-                    dialog.show();
-                }
-            }
+
 
         } catch (Exception ignored) {
         } finally {
@@ -101,21 +105,18 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 progressDialog.setCancelable(false);
                 progressDialog.setMessage("Checking version...");
                 progressDialog.show();
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        userSignInInformationSendToServer(BREAK);
-                        userSignOutInformationSendToServer();
-                        FirebaseAuth.getInstance().signOut();
-                        googleSignInClient.signOut();
-                        progressDialog.dismiss();
-                        Toast.makeText(getApplicationContext(),
-                                "New version found! Please update.", Toast.LENGTH_LONG).show();
-                        Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
-                        startActivity(logOut);
-                        finish();
-                    }
-                },2000);
+                new Handler().postDelayed(() -> {
+                    userSignInInformationSendToServer(BREAK);
+                    userSignOutInformationSendToServer();
+                    FirebaseAuth.getInstance().signOut();
+                    googleSignInClient.signOut();
+                    progressDialog.dismiss();
+                    Toast.makeText(getApplicationContext(),
+                            "New version found! Please update.", Toast.LENGTH_LONG).show();
+                    Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
+                    startActivity(logOut);
+                    finish();
+                }, 2000);
 
             }
         });
@@ -429,6 +430,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    private void internetConnectionCheckerWithServer(MainActivity.internetConnectionCheck internetConnectionCheck) {
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference AnsQuizAmountReference = firebaseDatabase.child("/.info/connected");
+        AnsQuizAmountReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Boolean connected = snapshot.getValue(Boolean.class);
+                internetConnectionCheck.connectionInfo(connected);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -450,5 +469,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public interface readVersionInformation {
         void readVersionInfo(Double value);
+    }
+
+    private interface internetConnectionCheck {
+        void connectionInfo(Boolean connection);
     }
 }
