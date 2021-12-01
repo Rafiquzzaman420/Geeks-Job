@@ -9,7 +9,6 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.util.Log;
 
 import android.view.WindowManager;
 import android.widget.Button;
@@ -58,7 +57,6 @@ public class Rewards extends AppCompatActivity {
             dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
             dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
-                Log.d("MainActivity", "User///// User Click detected...");
                 if (isOnline() && dialogShown) {
                     dialog.dismiss();
                     dialogShown = false;
@@ -407,7 +405,6 @@ public class Rewards extends AppCompatActivity {
             });
         }
         else{
-            Log.d("s", "Running from adShow method");
             Toast.makeText(getApplicationContext(), "Please try again",
                     Toast.LENGTH_SHORT).show();
         }

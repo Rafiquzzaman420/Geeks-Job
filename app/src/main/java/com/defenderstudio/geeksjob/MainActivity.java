@@ -2,6 +2,7 @@ package com.defenderstudio.geeksjob;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -93,27 +94,51 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         startRepeatingTask();
 
         readVersionInformationFromFirebase(value -> {
-            long appVersion = BuildConfig.VERSION_CODE;
+            // Always use application BuildConfig from package
+            long appVersion = 5;
             if (value != appVersion) {
-                FirebaseAuth.getInstance().signOut();
-                Toast.makeText(getApplicationContext(),
-                        "New version found! Please update.", Toast.LENGTH_LONG).show();
-                Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
-                startActivity(logOut);
-                finish();
+                ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Checking version...");
+                progressDialog.show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        userSignInInformationSendToServer(BREAK);
+                        userSignOutInformationSendToServer();
+                        FirebaseAuth.getInstance().signOut();
+                        googleSignInClient.signOut();
+                        progressDialog.dismiss();
+                        Toast.makeText(getApplicationContext(),
+                                "New version found! Please update.", Toast.LENGTH_LONG).show();
+                        Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
+                        startActivity(logOut);
+                        finish();
+                    }
+                },2000);
+
             }
         });
 
         readBannedInformationFromFirebase(value -> {
             if (value != null) {
                 if (value) {
-                    googleSignInClient.signOut();
-                    Toast.makeText(getApplicationContext(),
-                            "Your Account has been banned!",
-                            Toast.LENGTH_LONG).show();
-                    Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
-                    startActivity(logOut);
-                    finish();
+                    ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
+                    progressDialog.setCancelable(false);
+                    progressDialog.setMessage("Checking validity of your account...");
+                    progressDialog.show();
+                    new Handler().postDelayed(() -> {
+                        userSignInInformationSendToServer(BREAK);
+                        userSignOutInformationSendToServer();
+                        FirebaseAuth.getInstance().signOut();
+                        googleSignInClient.signOut();
+                        Toast.makeText(getApplicationContext(),
+                                "Your Account has been banned!",
+                                Toast.LENGTH_LONG).show();
+                        Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
+                        startActivity(logOut);
+                        finish();
+                    }, 2000);
                 }
             }
         });

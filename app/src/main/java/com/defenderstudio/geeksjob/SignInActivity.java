@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -108,6 +107,7 @@ public class SignInActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
+                progressBar.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(),
                         "Sign in failed.Please be sure to turn on internet", Toast.LENGTH_LONG).show();
 

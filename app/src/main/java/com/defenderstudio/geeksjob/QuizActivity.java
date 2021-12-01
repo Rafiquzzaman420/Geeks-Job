@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -55,7 +54,6 @@ private scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask;
             dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
 
             dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
-                Log.d("MainActivity", "User///// User Click detected...");
                 if (isOnline() && dialogShown) {
                     dialog.dismiss();
                     dialogShown = false;
@@ -263,7 +261,6 @@ private scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask;
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         ScienceQuestion scienceQuestion = dataSnapshot.getValue(ScienceQuestion.class);
                         scienceList.add(scienceQuestion);
-                        Log.d("QuizActivity", "Setting the Science Question...");
                     }
                 }
 
@@ -318,7 +315,6 @@ private scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask;
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         MoviesQuestion moviesQuestion = dataSnapshot.getValue(MoviesQuestion.class);
                         moviesList.add(moviesQuestion);
-                        Log.d("QuizActivity", "Setting the Movies Question...");
                     }
                 }
 
