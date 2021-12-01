@@ -108,10 +108,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             dialog.setCancelable(false);
             dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
             internetConnectionCheckerWithServer(connection -> {
-                if (connection) {
+                if (isOnline() && connection) {
                     dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
                         // TODO : THE PROBLEM IS HERE
-                        if (isOnline() && dialogShown) {
+                        if (dialogShown) {
                             dialog.dismiss();
                             dialogShown = false;
                         }
@@ -149,7 +149,17 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
         MobileAds.initialize(this, initializationStatus -> {
             rewardedAdButton = findViewById(R.id.rewardButton);
-            rewardedAdButton.setOnClickListener(v -> loadAd());
+            rewardedAdButton.setOnClickListener(v -> {
+                ProgressDialog progressDialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Loading. Please wait...");
+                progressDialog.show();
+                new Handler().postDelayed(() -> {
+                    loadAd();
+                    progressDialog.dismiss();
+                }, 3000);
+
+            });
         });
 
         //==============================================================================================
@@ -502,7 +512,11 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Boolean connected = snapshot.getValue(Boolean.class);
-                internetConnectionCheck.connectionInfo(connected);
+                try {
+                    internetConnectionCheck.connectionInfo(connected);
+                } catch (Exception e) {
+                    internetConnectionCheck.connectionInfo(false);
+                }
             }
 
             @Override

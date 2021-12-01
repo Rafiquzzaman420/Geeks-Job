@@ -437,7 +437,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Boolean connected = snapshot.getValue(Boolean.class);
-                internetConnectionCheck.connectionInfo(connected);
+                try {
+                    internetConnectionCheck.connectionInfo(connected);
+                }catch (Exception e){
+                    internetConnectionCheck.connectionInfo(false);
+                }
             }
 
             @Override
