@@ -221,7 +221,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:indeterminate="true"
-                android:indeterminateTint="@color/white"
+                android:indeterminateTint="@color/orange"
                 android:visibility="gone"
                 android:background="@android:color/transparent"/>
 
