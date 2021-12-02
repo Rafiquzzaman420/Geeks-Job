@@ -180,8 +180,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         AdView adView = findViewById(R.id.bannerAdView);
 
 
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        adView.loadAd(adRequest);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
         topicName.setText(getIntent().getStringExtra("topicName"));
 
         ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
@@ -279,7 +279,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         AdRequest adRequest = new AdRequest.Builder().build();
         MobileAds.initialize(this, initializationStatus -> {
             // TODO : Need to change the Ad ID here
-            InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest,
+            InterstitialAd.load(this, "ca-app-pub-5052828179386026/7359645574", adRequest,
                     new InterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -328,7 +328,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         // Use the test ad unit ID to load an ad.
         // TODO : ca-app-pub-5052828179386026/3242847727
         // DUMMY ID : ca-app-pub-3940256099942544/5354046379
-        RewardedInterstitialAd.load(QuestionAnsActivity.this, "ca-app-pub-3940256099942544/5354046379",
+        RewardedInterstitialAd.load(QuestionAnsActivity.this, "ca-app-pub-5052828179386026/3242847727",
                 new AdRequest.Builder().build(), new RewardedInterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull RewardedInterstitialAd ad) {
