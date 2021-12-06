@@ -29,8 +29,6 @@ public class GroupChatActivity extends AppCompatActivity {
     FirebaseDatabase database;
     FirebaseStorage storage;
 
-    ProgressDialog dialog;
-
     String senderUid;
 
     @Override
