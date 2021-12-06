@@ -91,7 +91,6 @@ public class Profile extends Fragment {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             for (UserInfo profile : user.getProviderData()) {
-                // Id of the provider (ex: google.com)
 
                 // Name, email address, and profile photo Url
                 String name = profile.getDisplayName();

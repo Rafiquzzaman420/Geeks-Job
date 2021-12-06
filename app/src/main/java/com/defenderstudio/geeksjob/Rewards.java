@@ -305,7 +305,7 @@ public class Rewards extends AppCompatActivity {
     private void rewardedAdLoader() {
         // TODO : NEED TO CHANGE THE REWARDED AD IN MAIN SECTION ID
         AdRequest adRequest = new AdRequest.Builder().build();
-        RewardedAd.load(this, "ca-app-pub-5052828179386026/8585274942",
+        RewardedAd.load(this, "ca-app-pub-3940256099942544/5224354917",
                 adRequest, new RewardedAdLoadCallback() {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {

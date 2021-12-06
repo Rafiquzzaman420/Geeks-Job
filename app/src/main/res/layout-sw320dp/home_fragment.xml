@@ -208,12 +208,59 @@
             android:layout_weight=".5"
             android:orientation="horizontal">
 
+
             <androidx.cardview.widget.CardView
-                android:id="@+id/leader_board_activity"
+                android:layout_weight=".5"
+                android:id="@+id/groupChat"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="20dp"
+                android:background="@drawable/ripple_white"
+                android:clickable="true"
+                android:elevation="5dp"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                android:translationZ="5dp"
+                app:cardCornerRadius="10dp"
+                android:tooltipText="@string/leader_board">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="20dp"
+                    android:orientation="vertical">
+
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
+                        android:layout_gravity="center"
+                        android:background="@drawable/group_chat" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:fontFamily="@font/geeks_job_medium"
+                        android:gravity="center"
+                        android:text="@string/group_chat"
+                        android:textColor="@color/orange"
+                        android:textSize="22sp" />
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/leader_board_activity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight=".5"
                 android:layout_marginEnd="20dp"
                 android:layout_marginBottom="20dp"
                 android:background="@drawable/ripple_white"
@@ -221,57 +268,46 @@
                 android:elevation="5dp"
                 android:focusable="true"
                 android:foreground="?android:attr/selectableItemBackground"
-                android:tooltipText="@string/leader_board"
                 android:translationZ="5dp"
-                app:cardCornerRadius="10dp">
+                app:cardCornerRadius="10dp"
+                android:tooltipText="@string/leader_board">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_margin="20dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginBottom="20dp"
                     android:gravity="center"
-                    android:orientation="horizontal">
+                    android:orientation="vertical">
 
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="100dp"
-                            android:layout_height="100dp"
-                            android:layout_gravity="center"
-                            android:background="@drawable/leaderboard" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                    <ImageView
+                        android:layout_width="90dp"
+                        android:layout_height="90dp"
                         android:layout_gravity="center"
-                        android:gravity="center">
+                        android:background="@drawable/leaderboard" />
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="15dp"
-                            android:layout_marginEnd="15dp"
-                            android:layout_marginBottom="15dp"
-                            android:fontFamily="@font/geeks_job_medium"
-                            android:gravity="center"
-                            android:text="@string/leader_board"
-                            android:textColor="@color/orange"
-                            android:textSize="32sp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/geeks_job_medium"
+                        android:gravity="center"
+                        android:text="@string/leader_board"
+                        android:textColor="@color/orange"
+                        android:textSize="22sp" />
 
-                    </LinearLayout>
 
                 </LinearLayout>
 
 
             </androidx.cardview.widget.CardView>
 
+
         </LinearLayout>
+
 
 
     </LinearLayout>

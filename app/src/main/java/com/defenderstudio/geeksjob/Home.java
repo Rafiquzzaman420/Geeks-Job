@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -95,6 +97,7 @@ public class Home extends Fragment {
         TextView userName = view.findViewById(R.id.userNameInHomeFragment);
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         TextView userPointReference = view.findViewById(R.id.userPointReference);
+        CardView groupChat = view.findViewById(R.id.groupChat);
         readPointDataFromFirebase(value -> {
             if (value != null) {
                 userPointReference.setText(String.valueOf(value));
@@ -114,6 +117,12 @@ public class Home extends Fragment {
                 Glide.with(this).load(photo).apply(RequestOptions.circleCropTransform()).into(userImageView);
             }
         }
+
+        groupChat.setOnClickListener(v -> {
+            Intent intent = new Intent(Home.this.getActivity(), GroupChatActivity.class);
+            startActivity(intent);
+            requireActivity().finish();
+        });
         quizActivity.setOnClickListener(v -> {
             Intent quizActivityIntent = new Intent(Home.this.getActivity(), QuizActivity.class);
             startActivity(quizActivityIntent);

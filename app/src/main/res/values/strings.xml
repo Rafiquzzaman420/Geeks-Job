@@ -76,6 +76,8 @@
     <string name="note_rewards">Note: You can watch 20 ads per day and after
         that you\'ll have 24 hour cool down.</string>
 
+    <string name="group_chat">Group Chat</string>
+
     <string name="points">Points:</string>
     <string name="userName">Name:</string>
     <string name="twenty">20</string>

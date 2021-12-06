@@ -28,6 +28,11 @@
             android:value="ca-app-pub-5052828179386026~6268256882" />
 
         <activity
+            android:name=".GroupChatActivity"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".Rewards"
             android:noHistory="true"
             android:screenOrientation="portrait" />
