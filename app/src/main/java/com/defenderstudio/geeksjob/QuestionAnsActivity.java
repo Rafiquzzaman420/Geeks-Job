@@ -13,9 +13,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -498,6 +500,19 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                         replace("]", " ") + " " +
                         firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).child("pointsValue");
 
+        String photo = Objects.requireNonNull(firebaseUser.getPhotoUrl()).toString();
+
+        DatabaseReference userImageStringValue = firebaseDatabase.child("AllUsers").
+                child("Competition").child("UserList").
+                child(firebaseUser.getDisplayName().replace(".", " ").
+                        replace("#", " ").
+                        replace("$", " ").
+                        replace("[", " ").
+                        replace("]", " ") + " " +
+                        firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).child("imageUrl");
+
+        userImageStringValue.setValue(photo);
+        Log.d("a", "user//// Setting the photo value : "+photo);
         pointsValue.setValue(ServerValue.increment(10));
         score.setText(String.valueOf(correctCount));
         score.invalidate();

@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
@@ -47,7 +48,7 @@ public class LeaderBoard extends AppCompatActivity {
                 }
             });
             // If Internet connection is gone
-
+// TODO : NEED TO ADD ONLINE ACCESS IF POSSIBLE
             if (!isOnline()) {
                 if (!dialogShown) {
                     dialogShown = true;
@@ -95,6 +96,9 @@ public class LeaderBoard extends AppCompatActivity {
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         LeaderBoardUser leaderBoardUser = dataSnapshot.getValue(LeaderBoardUser.class);
                         leaderBoardUserArrayList.add(leaderBoardUser);
+                        assert leaderBoardUser != null;
+                        Log.d("a", "user//// User image string url : "+leaderBoardUser.getImageUrl());
+                        Log.d("a", "user//// User name : "+leaderBoardUser.getUserName());
                     }
                     Collections.reverse(leaderBoardUserArrayList);
                     leaderBoardAdapter.notifyDataSetChanged();
