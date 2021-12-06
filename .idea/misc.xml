@@ -117,7 +117,9 @@
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout-sw320dp/home_fragment.xml" value="0.1814814814814815" />
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout-sw480dp/home_fragment.xml" value="0.49" />
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout-sw600dp/home_fragment.xml" value="0.20416666666666666" />
+        <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout-sw600dp/user_info_items.xml" value="0.20416666666666666" />
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout-sw720dp/home_fragment.xml" value="0.19140625" />
+        <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout-sw720dp/user_info_items.xml" value="0.19140625" />
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout/activity_group_chat.xml" value="0.22" />
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout/delete_dialog.xml" value="0.1814814814814815" />
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout/demo_layout.xml" value="0.1814814814814815" />
@@ -126,7 +128,9 @@
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout/home_fragment.xml" value="0.25" />
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout/item_receive_group.xml" value="0.22" />
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout/item_sent_group.xml" value="0.33" />
+        <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout/leaderboard_activity.xml" value="0.1814814814814815" />
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout/row_conversation.xml" value="0.1814814814814815" />
+        <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout/user_info_items.xml" value="0.1814814814814815" />
       </map>
     </option>
   </component>
