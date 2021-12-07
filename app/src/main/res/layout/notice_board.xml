@@ -8,6 +8,51 @@
     tools:context=".NoticeBoard"
     android:background="@drawable/notice_board_background">
 
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/user_notice_card_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="15dp"
+        android:elevation="10dp"
+        android:translationZ="10dp"
+        android:layout_margin="10dp"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+
+            <TextView
+                android:id="@+id/user_notice_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="28sp"
+                android:layout_margin="20dp"
+                android:textColor="@color/orange"
+                android:gravity="center"
+                android:layout_weight=".8"
+                android:textStyle="bold"
+                android:fontFamily="@font/geeks_job_medium"/>
+
+            <TextView
+                android:id="@+id/user_notice_body"
+                android:layout_width="match_parent"
+                android:layout_weight=".2"
+                android:layout_height="match_parent"
+                android:textSize="22sp"
+                android:layout_margin="20dp"
+                android:textColor="@color/orange"
+                android:gravity="center"
+                android:fontFamily="@font/geeks_job_medium"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
     <androidx.cardview.widget.CardView
         android:id="@+id/notice_board_card_1"
         android:layout_width="match_parent"
@@ -85,51 +130,6 @@
 
             <TextView
                 android:id="@+id/notice_board_text_2"
-                android:layout_width="match_parent"
-                android:layout_weight=".2"
-                android:layout_height="match_parent"
-                android:textSize="22sp"
-                android:layout_margin="20dp"
-                android:textColor="@color/orange"
-                android:gravity="center"
-                android:fontFamily="@font/geeks_job_medium"/>
-
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/notice_board_card_3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:cardCornerRadius="15dp"
-        android:elevation="10dp"
-        android:translationZ="10dp"
-        android:layout_margin="10dp"
-        android:visibility="gone">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-
-
-            <TextView
-                android:id="@+id/notice_board_title_3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textSize="28sp"
-                android:layout_margin="20dp"
-                android:textColor="@color/orange"
-                android:gravity="center"
-                android:layout_weight=".8"
-                android:textStyle="bold"
-                android:fontFamily="@font/geeks_job_medium"/>
-
-            <TextView
-                android:id="@+id/notice_board_text_3"
                 android:layout_width="match_parent"
                 android:layout_weight=".2"
                 android:layout_height="match_parent"

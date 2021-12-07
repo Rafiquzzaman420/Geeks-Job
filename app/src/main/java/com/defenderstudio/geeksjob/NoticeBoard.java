@@ -1,5 +1,6 @@
 package com.defenderstudio.geeksjob;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -8,6 +9,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -19,10 +22,10 @@ public class NoticeBoard extends AppCompatActivity {
 
     private final String child1 = "Card 1";
     private final String child2 = "Card 2";
-    private final String child3 = "Card 3";
-    CardView noticeBoardCardView1, noticeBoardCardView2, noticeBoardCardView3;
-    TextView noticeHeader1, noticeHeader2, noticeHeader3,
-            noticeBody1, noticeBody2, noticeBody3;
+    CardView noticeBoardCardView1, noticeBoardCardView2, userNotice;
+    TextView noticeHeader1, noticeHeader2, userNoticeHeader,
+            noticeBody1, noticeBody2, userNoticeBody;
+    private String userNoticeChildNode;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,17 +34,22 @@ public class NoticeBoard extends AppCompatActivity {
 
         noticeBoardCardView1 = findViewById(R.id.notice_board_card_1);
         noticeBoardCardView2 = findViewById(R.id.notice_board_card_2);
-        noticeBoardCardView3 = findViewById(R.id.notice_board_card_3);
+        userNotice = findViewById(R.id.user_notice_card_view);
 
 
         noticeHeader1 = findViewById(R.id.notice_board_title_1);
         noticeHeader2 = findViewById(R.id.notice_board_title_2);
-        noticeHeader3 = findViewById(R.id.notice_board_title_3);
+        userNoticeHeader = findViewById(R.id.user_notice_title);
 
 
         noticeBody1 = findViewById(R.id.notice_board_text_1);
         noticeBody2 = findViewById(R.id.notice_board_text_2);
-        noticeBody3 = findViewById(R.id.notice_board_text_3);
+        userNoticeBody = findViewById(R.id.user_notice_body);
+
+
+        FirebaseUser userInfo = FirebaseAuth.getInstance().getCurrentUser();
+        assert userInfo != null;
+        userNoticeChildNode = userInfo.getUid();
 
 
         noticeBoardInfoChecker(info -> {
@@ -49,21 +57,14 @@ public class NoticeBoard extends AppCompatActivity {
                 case "1":
                     noticeBoardCardView1.setVisibility(View.VISIBLE);
                     getNoticeBoardCardViewInfo(child1, noticeHeader1, noticeBody1);
+                    userNotice.setVisibility(View.VISIBLE);
+                    getNoticeBoardCardViewInfo(userNoticeChildNode, userNoticeHeader, userNoticeBody);
                     break;
                 case "12":
                     noticeBoardCardView1.setVisibility(View.VISIBLE);
                     noticeBoardCardView2.setVisibility(View.VISIBLE);
                     getNoticeBoardCardViewInfo(child1, noticeHeader1, noticeBody1);
                     getNoticeBoardCardViewInfo(child2, noticeHeader2, noticeBody2);
-
-                    break;
-                case "123":
-                    noticeBoardCardView1.setVisibility(View.VISIBLE);
-                    noticeBoardCardView2.setVisibility(View.VISIBLE);
-                    noticeBoardCardView3.setVisibility(View.VISIBLE);
-                    getNoticeBoardCardViewInfo(child1, noticeHeader1, noticeBody1);
-                    getNoticeBoardCardViewInfo(child2, noticeHeader2, noticeBody2);
-                    getNoticeBoardCardViewInfo(child3, noticeHeader3, noticeBody3);
                     break;
             }
         });
@@ -117,7 +118,7 @@ public class NoticeBoard extends AppCompatActivity {
                 String infoValue = snapshot.getValue(String.class);
                 try {
                     info.noticeInfo(infoValue);
-                }catch (Exception e){
+                } catch (Exception e) {
                     info.noticeInfo("1");
                 }
             }
@@ -132,14 +133,34 @@ public class NoticeBoard extends AppCompatActivity {
         noticeboardInfoCollector(child, new noticeOneInfoCollector() {
             @Override
             public void noticeHeader(String noticeHeader) {
-                noticeViewHead.setText(noticeHeader);
+                if (child.equals("Card 1") || child.equals("Card 2")) {
+                    noticeViewHead.setText(noticeHeader);
+                } else {
+                    userNotice.setVisibility(View.GONE);
+                }
             }
 
             @Override
             public void noticeBody(String noticeBody) {
-                noticeViewBody.setText(noticeBody);
+                if (child.equals("Card 1") || child.equals("Card 2")) {
+                    noticeViewBody.setText(noticeBody);
+                } else {
+                    userNotice.setVisibility(View.GONE);
+                }
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(NoticeBoard.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     private interface noticeOneInfoCollector {
@@ -150,10 +171,5 @@ public class NoticeBoard extends AppCompatActivity {
 
     private interface noticeInfoChecker {
         void noticeInfo(String info);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
     }
 }
