@@ -28,6 +28,11 @@
             android:title="@string/faq"
             android:tooltipText="@string/faq"/>
 
+        <item android:id="@+id/notice_board_id"
+            android:icon="@drawable/notice_board"
+            android:title="@string/notice_board"
+            android:tooltipText="@string/notice_board"/>
+
     </group>
 
     <item android:title="@string/community" tools:targetApi="o">

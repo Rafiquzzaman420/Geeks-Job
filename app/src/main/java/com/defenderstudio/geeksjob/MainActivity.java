@@ -295,6 +295,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
                 startActivity(Intent.createChooser(sharingIntent, "Share via"));
                 break;
+            case R.id.notice_board_id:
+                Intent noticeIntent = new Intent(MainActivity.this, NoticeBoard.class);
+                startActivity(noticeIntent);
+                finish();
+                break;
             case R.id.sign_out:
                 userSignOutInformationSendToServer();
                 FirebaseAuth.getInstance().signOut();

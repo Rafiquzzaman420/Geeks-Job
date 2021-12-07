@@ -64,6 +64,11 @@
             android:name=".QuizActivity"
             android:noHistory="true"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".NoticeBoard"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
