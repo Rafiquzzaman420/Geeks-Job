@@ -35,7 +35,7 @@
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_margin="10dp"
-                    android:background="@mipmap/logo"
+                    android:background="@drawable/profile"
                     android:layout_gravity="center"/>
 
             </LinearLayout>

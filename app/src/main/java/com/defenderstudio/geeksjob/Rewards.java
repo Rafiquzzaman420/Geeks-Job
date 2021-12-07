@@ -550,7 +550,22 @@ public class Rewards extends AppCompatActivity {
                         replace("]", " ") + " " +
                         firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).child("pointsValue");
 
+        String photo = Objects.requireNonNull(firebaseUser.getPhotoUrl()).toString();
+
+        DatabaseReference userImageStringValue = firebaseDatabase.child("AllUsers").
+                child("Competition").child("UserList").
+                child(firebaseUser.getDisplayName().replace(".", " ").
+                        replace("#", " ").
+                        replace("$", " ").
+                        replace("[", " ").
+                        replace("]", " ") + " " +
+                        firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).child("imageUrl");
+
+
+        userImageStringValue.setValue(photo);
+
         pointsValue.setValue(ServerValue.increment(50));
+
     }
 
     @Override

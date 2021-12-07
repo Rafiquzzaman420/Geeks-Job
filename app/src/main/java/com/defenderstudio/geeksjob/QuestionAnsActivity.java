@@ -512,7 +512,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                         firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).child("imageUrl");
 
         userImageStringValue.setValue(photo);
-        Log.d("a", "user//// Setting the photo value : "+photo);
         pointsValue.setValue(ServerValue.increment(10));
         score.setText(String.valueOf(correctCount));
         score.invalidate();
@@ -638,59 +637,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         submitButton.setClickable(false);
 
     }
-
-//    public boolean internetAvailabilityCheck(){
-//        try{
-//            InetAddress address = InetAddress.getByName("www.google.com");
-//            return !address.equals("");
-//        }catch (Exception exception){
-//            return false;
-//        }
-//    }
-
-//    public boolean internetAvailabilityCheck() {
-//        Runtime runtime = Runtime.getRuntime();
-//        try {
-//            Process ipProcess = runtime.exec("/system/bin/ping -c 1 8.8.8.8");
-//            int exitValue = ipProcess.waitFor();
-//            if (exitValue == 1) {
-//                Toast.makeText(getApplicationContext(),
-//                        "Please check your network connection...", Toast.LENGTH_LONG).show();
-//            }
-//            return (exitValue == 0);
-//
-//        } catch (IOException | InterruptedException e) {
-//            Toast.makeText(getApplicationContext(), "Something went wrong!", Toast.LENGTH_LONG).show();
-//        }
-//        return false;
-//    }
-//
-//    private void internetCheckerAndHandler() {
-//        Dialog dialog = new Dialog(QuestionAnsActivity.this, R.style.dialogue);
-//        dialog.setContentView(R.layout.connection_alert);
-//        dialog.setCancelable(false);
-//        dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-//        dialog.findViewById(R.id.connection_retry).setOnClickListener(view -> {
-//            internetConnectionCheckerWithServer(value -> {
-//                if (value && dialogShown) {
-//                    dialogShown = false;
-//                    dialog.dismiss();
-//                    Toast.makeText(getApplicationContext(), "Answer Submitted.", Toast.LENGTH_SHORT).show();
-//                }
-//
-//                // If Internet connection is gone
-//                if (!value) {
-//                    if (!dialogShown) {
-//                        dialogShown = true;
-//                        dialog.show();
-//                    }
-//                }
-//
-//            });
-//        });
-//
-//    }
-    //==============================================================================================
 
     //==============================================================================================
     // If answer is correct, then this method will invoke
@@ -1274,6 +1220,37 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
         DatabaseReference EarnedPointAmount = firebaseDatabase.child("AllUsers").
                 child("User").child(firebaseUser.getUid()).child("Earned_Point_Amount");
+
+        String photo = Objects.requireNonNull(firebaseUser.getPhotoUrl()).toString();
+
+        DatabaseReference userImageStringValue = firebaseDatabase.child("AllUsers").
+                child("Competition").child("UserList").
+                child(firebaseUser.getDisplayName().replace(".", " ").
+                        replace("#", " ").
+                        replace("$", " ").
+                        replace("[", " ").
+                        replace("]", " ") + " " +
+                        firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).child("imageUrl");
+
+        DatabaseReference userName = firebaseDatabase.child("AllUsers").
+                child("Competition").child("UserList").
+                child(Objects.requireNonNull((firebaseUser.getDisplayName() + " " +
+                        firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).
+                        replace(".", " ").
+                        replace("#", " ").
+                        replace("$", " ").
+                        replace("[", " ").
+                        replace("]", " "))).child("userName");
+
+
+        userName.setValue(Objects.requireNonNull(firebaseUser.getDisplayName()).replace(".", " ").
+                replace("#", " ").
+                replace("$", " ").
+                replace("[", " ").
+                replace("]", " "));
+
+
+        userImageStringValue.setValue(photo);
 
         pointsValue.setValue(ServerValue.increment(30));
         EarnedPointAmount.setValue(ServerValue.increment(30));
