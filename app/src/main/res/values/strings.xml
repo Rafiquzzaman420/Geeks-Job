@@ -210,4 +210,11 @@
     <string name="rewardTimer">
         00:00
     </string>
+    <string name="user_notice_header">
+        User\'s Personalized Notice
+    </string>
+    <string name="user_notice_body">
+        This section is only used for sending messages to the user of Geeks Job from \"Defender Studio\".
+        When you win, you\'ll get your messages in this block. Thanks for using Geeks Job.
+    </string>
 </resources>

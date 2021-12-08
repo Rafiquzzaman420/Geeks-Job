@@ -16,15 +16,12 @@
         app:cardCornerRadius="15dp"
         android:elevation="10dp"
         android:translationZ="10dp"
-        android:layout_margin="10dp"
-        android:visibility="gone">
+        android:layout_margin="10dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
-
 
             <TextView
                 android:id="@+id/user_notice_title"
@@ -36,6 +33,7 @@
                 android:gravity="center"
                 android:layout_weight=".8"
                 android:textStyle="bold"
+                android:text="@string/user_notice_header"
                 android:fontFamily="@font/geeks_job_medium"/>
 
             <TextView
@@ -45,6 +43,7 @@
                 android:layout_height="match_parent"
                 android:textSize="22sp"
                 android:layout_margin="20dp"
+                android:text="@string/user_notice_body"
                 android:textColor="@color/orange"
                 android:gravity="center"
                 android:fontFamily="@font/geeks_job_medium"/>
