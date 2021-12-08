@@ -18,7 +18,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-// TODO : NEED TO ADD USER MESSAGE SYSTEM DIRECTLY
 public class NoticeBoard extends AppCompatActivity {
 
     private final String child1 = "Card 1";
