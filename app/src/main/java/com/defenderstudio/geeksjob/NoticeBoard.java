@@ -2,6 +2,7 @@ package com.defenderstudio.geeksjob;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -27,6 +28,9 @@ public class NoticeBoard extends AppCompatActivity {
             noticeBody1, noticeBody2, userNoticeBody;
     private String userNoticeChildNode;
 
+
+    FirebaseUser userInfo;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,9 +51,10 @@ public class NoticeBoard extends AppCompatActivity {
         userNoticeBody = findViewById(R.id.user_notice_body);
 
 
-        FirebaseUser userInfo = FirebaseAuth.getInstance().getCurrentUser();
+        userInfo = FirebaseAuth.getInstance().getCurrentUser();
         assert userInfo != null;
         userNoticeChildNode = userInfo.getUid();
+        Log.d("a", "user//// User's ID is : "+userNoticeChildNode);
 
 
         noticeBoardInfoChecker(info -> {
@@ -65,6 +70,8 @@ public class NoticeBoard extends AppCompatActivity {
                     noticeBoardCardView2.setVisibility(View.VISIBLE);
                     getNoticeBoardCardViewInfo(child1, noticeHeader1, noticeBody1);
                     getNoticeBoardCardViewInfo(child2, noticeHeader2, noticeBody2);
+                    userNotice.setVisibility(View.VISIBLE);
+                    getNoticeBoardCardViewInfo(userNoticeChildNode, userNoticeHeader, userNoticeBody);
                     break;
             }
         });
@@ -133,22 +140,25 @@ public class NoticeBoard extends AppCompatActivity {
         noticeboardInfoCollector(child, new noticeOneInfoCollector() {
             @Override
             public void noticeHeader(String noticeHeader) {
-                if (child.equals("Card 1") || child.equals("Card 2")) {
+                if (child.equals("Card 1") || child.equals("Card 2") || child.equals(userInfo.getUid())) {
                     noticeViewHead.setText(noticeHeader);
-                } else {
+                }else {
                     userNotice.setVisibility(View.GONE);
                 }
             }
 
+
             @Override
             public void noticeBody(String noticeBody) {
-                if (child.equals("Card 1") || child.equals("Card 2")) {
-                    noticeViewBody.setText(noticeBody);
-                } else {
-                    userNotice.setVisibility(View.GONE);
-                }
+                if (child.equals("Card 1") || child.equals("Card 2") || child.equals(userInfo.getUid())) {
+                        noticeViewBody.setText(noticeBody);
+
+                    if (!child.equals(userInfo.getUid())){
+                        userNotice.setVisibility(View.GONE);
+                    }
             }
-        });
+        }
+    });
     }
 
     @Override
