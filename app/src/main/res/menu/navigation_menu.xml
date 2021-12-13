@@ -38,6 +38,13 @@
     <item android:title="@string/community" tools:targetApi="o">
 
         <menu>
+
+            <item
+                android:id="@+id/facebook_group"
+                android:icon="@drawable/facebook_group"
+                android:title="@string/group"
+                android:tooltipText="@string/group" />
+
             <item
                 android:id="@+id/share"
                 android:icon="@drawable/share"

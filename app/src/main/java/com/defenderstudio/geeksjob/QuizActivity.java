@@ -9,6 +9,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -41,7 +43,7 @@ public class QuizActivity extends AppCompatActivity {
 
     MoviesQuestion moviesQuestion;
     ScienceQuestion scienceQuestion;
-private scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask;
+    private scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask;
     private moviesDatabaseLoadWithAsyncTask moviesDatabaseLoadWithAsyncTask;
 
     private boolean dialogShown = false;
@@ -108,8 +110,6 @@ private scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask;
         scienceDatabaseLoadWithAsyncTask.execute();
 
 
-
-
         curriculumDatabaseLoadWithAsyncTask curriculumDatabaseLoadWithAsyncTask = new curriculumDatabaseLoadWithAsyncTask();
         // This will be activated in the next couple of Updates Inshaallah
         //        curriculumDatabaseLoadWithAsyncTask.execute();
@@ -127,6 +127,36 @@ private scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask;
         CardView religionButton = findViewById(R.id.religion);
         CardView moviesButton = findViewById(R.id.movies);
         CardView scienceButton = findViewById(R.id.science);
+
+        TextView religionText = findViewById(R.id.religion_text);
+        TextView curriculumText = findViewById(R.id.curriculum_text);
+        TextView moviesText = findViewById(R.id.movies_text);
+        TextView sportsText = findViewById(R.id.sports_text);
+        TextView scienceText = findViewById(R.id.science_text);
+        TextView historyText = findViewById(R.id.history_text);
+
+        ImageView religionImage = findViewById(R.id.religion_image);
+        ImageView curriculumImage = findViewById(R.id.curriculum_image);
+        ImageView moviesImage = findViewById(R.id.movies_image);
+        ImageView scienceImage= findViewById(R.id.science_image);
+        ImageView historyImage = findViewById(R.id.history_image);
+        ImageView sportsImage = findViewById(R.id.sports_image);
+
+        religionText.setTextSize(convertFromDp(50));
+        moviesText.setTextSize(convertFromDp(50));
+        sportsText.setTextSize(convertFromDp(50));
+        scienceText.setTextSize(convertFromDp(50));
+        historyText.setTextSize(convertFromDp(50));
+        curriculumText.setTextSize(convertFromDp(50));
+
+        imageSizeSetter(religionImage, 300);
+        imageSizeSetter(curriculumImage, 300);
+        imageSizeSetter(moviesImage, 300);
+        imageSizeSetter(scienceImage, 300);
+        imageSizeSetter(historyImage, 300);
+        imageSizeSetter(sportsImage, 300);
+
+
 
 //==================================================================================================
         // Common intent for all the question buttons
@@ -216,6 +246,21 @@ private scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask;
         }, 3000);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (scienceDatabaseLoadWithAsyncTask != null) {
+            scienceDatabaseLoadWithAsyncTask.cancel(true);
+        }
+        if (moviesDatabaseLoadWithAsyncTask != null) {
+            moviesDatabaseLoadWithAsyncTask.cancel(true);
+        }
+    }
+
+    public float convertFromDp(int input) {
+        final float scale = getResources().getDisplayMetrics().density;
+        return ((input - 0.8f) / scale);
+    }
 
     class curriculumDatabaseLoadWithAsyncTask extends AsyncTask<CurriculumQuestion, Void, Void> {
         DatabaseReference curriculumReference;
@@ -326,14 +371,8 @@ private scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask;
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (scienceDatabaseLoadWithAsyncTask != null){
-            scienceDatabaseLoadWithAsyncTask.cancel(true);
-        }
-        if (moviesDatabaseLoadWithAsyncTask != null){
-            moviesDatabaseLoadWithAsyncTask.cancel(true);
-        }
+    private void imageSizeSetter(ImageView imageView, int size) {
+        imageView.getLayoutParams().width = (int) convertFromDp(size);
+        imageView.getLayoutParams().height = (int) convertFromDp(size);
     }
 }

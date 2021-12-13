@@ -87,6 +87,17 @@ public class Profile extends Fragment {
         quiz_answered = view.findViewById(R.id.quiz_completed);
         profile_user_image = view.findViewById(R.id.profile_user_photo);
         total_earning = view.findViewById(R.id.total_earning);
+        TextView totalEarningText = view.findViewById(R.id.total_earning_text);
+        TextView quizAnsweredText = view.findViewById(R.id.quiz_completed_text);
+
+
+        profile_user_name.setTextSize(convertFromDp(34));
+        profile_user_email.setTextSize(convertFromDp(28));
+        quiz_answered.setTextSize(convertFromDp(44));
+        quizAnsweredText.setTextSize(convertFromDp(44));
+        totalEarningText.setTextSize(convertFromDp(44));
+        total_earning.setTextSize(convertFromDp(44));
+
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -174,6 +185,11 @@ public class Profile extends Fragment {
 
     public interface quizInformationCallBack {
         void quizInfoCall(Long value);
+    }
+
+    public float convertFromDp(int input) {
+        final float scale = requireActivity().getResources().getDisplayMetrics().density;
+        return ((input - 0.7f) / scale);
     }
 
     @Override

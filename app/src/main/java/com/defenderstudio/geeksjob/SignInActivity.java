@@ -56,6 +56,9 @@ public class SignInActivity extends AppCompatActivity {
         appNameTextView = findViewById(R.id.app_name_sign_in_window);
         companyNameTextView = findViewById(R.id.company_name_sign_in);
 
+
+        appNameTextView.setTextSize(convertFromDp(160));
+
         Animation right_animation = AnimationUtils.loadAnimation(this, R.anim.company_name_anim);
         appNameTextView.setAnimation(right_animation);
 
@@ -109,7 +112,7 @@ public class SignInActivity extends AppCompatActivity {
                 // Google Sign In failed, update UI appropriately
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(),
-                        "Sign in failed.Please be sure to turn on internet", Toast.LENGTH_LONG).show();
+                        "Sign in failed. Please be sure to turn on internet", Toast.LENGTH_LONG).show();
 
             }
         }
@@ -180,6 +183,7 @@ public class SignInActivity extends AppCompatActivity {
                 .show();
     }
 
+
     private class googleIconSpinner {
         @SuppressLint("Recycle")
         ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(googleIcon, "rotation", 0, 360);
@@ -190,6 +194,12 @@ public class SignInActivity extends AppCompatActivity {
             this.rotateAnimation.setRepeatCount(15);
         }
 
+    }
+
+
+    public float convertFromDp(int input) {
+        final float scale = getResources().getDisplayMetrics().density;
+        return ((input - 0.8f) / scale);
     }
 
 }

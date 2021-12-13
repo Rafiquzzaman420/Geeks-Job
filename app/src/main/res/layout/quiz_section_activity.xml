@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@color/preferred_color"
+    android:background="@drawable/notice_board_background"
     android:layout_height="match_parent"
     tools:context=".QuizActivity"
     tools:ignore="NestedWeights">
@@ -29,6 +29,7 @@
             android:translationZ="10dp"
             android:clickable="true"
             android:focusable="true"
+            android:tooltipText="@string/religion"
             android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
@@ -37,6 +38,7 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/religion_text"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
@@ -46,11 +48,11 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/religion"
                     android:gravity="center"
-                    android:textSize="32sp"
                     android:textColor="@color/orange"
-                    android:textStyle="bold"/>
+                    android:fontFamily="@font/geeks_job_medium"/>
 
                 <ImageView
+                    android:id="@+id/religion_image"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
                     android:layout_marginStart="5dp"
@@ -80,6 +82,7 @@
             app:cardCornerRadius="20dp"
             android:clickable="true"
             android:focusable="true"
+            android:tooltipText="@string/science_and_history"
             android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
@@ -94,6 +97,7 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/science_image"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_marginEnd="5dp"
@@ -103,13 +107,13 @@
                         android:layout_gravity="center"/>
 
                     <TextView
+                        android:id="@+id/science_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/science"
                         android:layout_gravity="center"
-                        android:textSize="32sp"
-                        android:textStyle="bold"
-                        android:textColor="@color/orange"/>
+                        android:text="@string/science"
+                        android:textColor="@color/orange"
+                        android:fontFamily="@font/geeks_job_medium"/>
 
 
                 </LinearLayout>
@@ -121,8 +125,7 @@
                     android:layout_gravity="center"
                     android:textSize="40sp"
                     android:textColor="@color/orange"
-                    android:textStyle="bold"/>
-
+                    android:fontFamily="@font/geeks_job_medium"/>
 
 
                 <LinearLayout
@@ -132,6 +135,7 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/history_image"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_marginTop="20dp"
@@ -140,12 +144,12 @@
                         android:layout_gravity="center"/>
 
                     <TextView
+                        android:id="@+id/history_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/history"
                         android:layout_gravity="center"
-                        android:textSize="32sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/geeks_job_medium"
                         android:textColor="@color/orange"/>
 
                 </LinearLayout>
@@ -169,6 +173,7 @@
             android:id="@+id/curriculum"
             android:clickable="true"
             android:focusable="true"
+            android:tooltipText="@string/curriculum"
             android:foreground="?android:attr/selectableItemBackground">
 
        <LinearLayout
@@ -177,6 +182,7 @@
            android:orientation="horizontal">
 
            <ImageView
+               android:id="@+id/curriculum_image"
                android:layout_width="100dp"
                android:layout_height="100dp"
                android:layout_marginStart="30dp"
@@ -187,6 +193,7 @@
                android:layout_gravity="center"/>
 
            <TextView
+               android:id="@+id/curriculum_text"
                android:layout_width="0dp"
                android:layout_height="match_parent"
                android:layout_marginStart="5dp"
@@ -196,9 +203,8 @@
                android:layout_marginBottom="10dp"
                android:text="@string/curriculum"
                android:gravity="center"
-               android:textSize="32sp"
-               android:textColor="@color/orange"
-               android:textStyle="bold"/>
+               android:fontFamily="@font/geeks_job_medium"
+               android:textColor="@color/orange"/>
 
        </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -217,6 +223,7 @@
             app:cardCornerRadius="20dp"
             android:clickable="true"
             android:focusable="true"
+            android:tooltipText="@string/movies_and_sports"
             android:foreground="?android:attr/selectableItemBackground">
 
             <LinearLayout
@@ -231,6 +238,7 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/movies_image"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_marginEnd="5dp"
@@ -240,12 +248,12 @@
                         android:layout_gravity="center"/>
 
                     <TextView
+                        android:id="@+id/movies_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/movies"
                         android:layout_gravity="center"
-                        android:textSize="32sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/geeks_job_medium"
                         android:textColor="@color/orange"/>
 
 
@@ -258,7 +266,7 @@
                     android:layout_gravity="center"
                     android:textSize="40sp"
                     android:textColor="@color/orange"
-                    android:textStyle="bold"/>
+                    android:fontFamily="@font/geeks_job_medium"/>
 
 
 
@@ -269,6 +277,7 @@
                     android:orientation="vertical">
 
                     <ImageView
+                        android:id="@+id/sports_image"
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_marginTop="20dp"
@@ -277,12 +286,12 @@
                         android:layout_gravity="center"/>
 
                     <TextView
+                        android:id="@+id/sports_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/sports"
                         android:layout_gravity="center"
-                        android:textSize="32sp"
-                        android:textStyle="bold"
+                        android:fontFamily="@font/geeks_job_medium"
                         android:textColor="@color/orange"/>
 
                 </LinearLayout>

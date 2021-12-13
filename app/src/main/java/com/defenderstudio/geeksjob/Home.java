@@ -98,6 +98,17 @@ public class Home extends Fragment {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         TextView userPointReference = view.findViewById(R.id.userPointReference);
         CardView groupChat = view.findViewById(R.id.groupChat);
+        TextView groupChatText = view.findViewById(R.id.group_chat_text);
+        TextView rewardsText = view.findViewById(R.id.rewards_text);
+        TextView leaderBoardText = view.findViewById(R.id.Leader_board_text);
+        TextView quizText = view.findViewById(R.id.quiz_text);
+        TextView pointsText = view.findViewById(R.id.points_text);
+        ImageView quizImage = view.findViewById(R.id.quiz_image);
+        ImageView rewardsImage = view.findViewById(R.id.rewards_image);
+        ImageView chatImage = view.findViewById(R.id.chat_image);
+        ImageView leaderBoardImage = view.findViewById(R.id.leader_board_image);
+
+
         readPointDataFromFirebase(value -> {
             if (value != null) {
                 userPointReference.setText(String.valueOf(value));
@@ -117,6 +128,23 @@ public class Home extends Fragment {
                 Glide.with(this).load(photo).apply(RequestOptions.circleCropTransform()).into(userImageView);
             }
         }
+
+        quizText.setTextSize(convertFromDp(40));
+        groupChatText.setTextSize(convertFromDp(40));
+        rewardsText.setTextSize(convertFromDp(40));
+        leaderBoardText.setTextSize(convertFromDp(40));
+        userPointReference.setTextSize(convertFromDp(30));
+        pointsText.setTextSize(convertFromDp(30));
+
+        quizImage.getLayoutParams().height = (int) convertFromDp(250);
+        rewardsImage.getLayoutParams().height = (int) convertFromDp(250);
+        chatImage.getLayoutParams().height = (int) convertFromDp(250);
+        leaderBoardImage.getLayoutParams().height = (int) convertFromDp(250);
+
+        quizImage.getLayoutParams().width = (int) convertFromDp(250);
+        rewardsImage.getLayoutParams().width = (int) convertFromDp(250);
+        chatImage.getLayoutParams().width = (int) convertFromDp(250);
+        leaderBoardImage.getLayoutParams().width = (int) convertFromDp(250);
 
         groupChat.setOnClickListener(v -> {
             Intent intent = new Intent(Home.this.getActivity(), GroupChatActivity.class);
@@ -177,6 +205,12 @@ public class Home extends Fragment {
     public interface userPointInfoCallBack {
         void userPointInfo(Long value);
     }
+
+    public float convertFromDp(int input) {
+        final float scale = requireActivity().getResources().getDisplayMetrics().density;
+        return ((input - 0.7f) / scale);
+    }
+
 
     @Override
     public void onDestroy() {

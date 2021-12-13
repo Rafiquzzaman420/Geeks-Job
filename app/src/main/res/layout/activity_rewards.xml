@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/preferred_color"
+    android:background="@drawable/notice_board_background"
     android:orientation="vertical"
     tools:context=".Rewards">
 
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
-        android:layout_weight=".5"
+        android:layout_weight=".6"
         android:elevation="5dp"
         android:translationZ="10dp"
         app:cardCornerRadius="10dp">
@@ -77,8 +77,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight=".5"
-        android:orientation="vertical"
-        android:background="@color/preferred_color">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"

@@ -25,6 +25,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -80,7 +82,6 @@ public class Exchange extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_exchange, container, false);
         bkashAccount = view.findViewById(R.id.bkashAccountNumber);
@@ -91,9 +92,21 @@ public class Exchange extends Fragment {
         submitButton = view.findViewById(R.id.submit_exchange);
         pointAmount = view.findViewById(R.id.pointAmount);
 
+        TextView withdrawalAmountText = view.findViewById(R.id.withdrawal_amount_text);
+        TextView coinsAmount = view.findViewById(R.id.coins_amount_text);
+        TextView submitButtonText = view.findViewById(R.id.submit_button_in_exchange);
 
         setSubmitButton(view);
 
+        bkashAccount.setTextSize(convertFromDp(25));
+        paypalAccount.setTextSize(convertFromDp(25));
+        tenThousandButton.setTextSize(convertFromDp(30));
+        twentyThousandButton.setTextSize(convertFromDp(30));
+        fiftyThousandButton.setTextSize(convertFromDp(30));
+        pointAmount.setTextSize(convertFromDp(30));
+        submitButtonText.setTextSize(convertFromDp(35));
+        coinsAmount.setTextSize(convertFromDp(30));
+        withdrawalAmountText.setTextSize(convertFromDp(30));
 
         return view;
     }
@@ -149,18 +162,23 @@ public class Exchange extends Fragment {
                             paypalEmail.setValue(paypalAccountEmail);
                             bkashNumber.setValue(bkashAccountNumber);
                         }
-
+                        DatabaseReference tenThousandPoints = firebaseDatabase.child("Winning Persons").
+                                child("User").child(firebaseUser.getUid()).child("UserInformation").child("Amount");
+                        DatabaseReference name = firebaseDatabase.child("Winning Persons").
+                                child("User").child(firebaseUser.getUid()).child("UserInformation").child("Name");
+                        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         if (tenThousandButton.isSelected()) {
-                            DatabaseReference tenThousandPoints = firebaseDatabase.child("AllUsers").
-                                    child("User").child(firebaseUser.getUid()).child("UserInformation").child("Amount");
+                            name.setValue(user.getDisplayName());
                             tenThousandPoints.setValue(10000);
                         } else if (twentyThousandButton.isSelected()) {
-                            DatabaseReference twentyThousandPoints = firebaseDatabase.child("AllUsers").
+                            DatabaseReference twentyThousandPoints = firebaseDatabase.child("Winning Persons").
                                     child("User").child(firebaseUser.getUid()).child("UserInformation").child("Amount");
+                            name.setValue(user.getDisplayName());
                             twentyThousandPoints.setValue(20000);
                         } else if (fiftyThousandButton.isSelected()) {
-                            DatabaseReference fiftyThousandPoints = firebaseDatabase.child("AllUsers").
+                            DatabaseReference fiftyThousandPoints = firebaseDatabase.child("Winning Persons").
                                     child("User").child(firebaseUser.getUid()).child("UserInformation").child("Amount");
+                            name.setValue(user.getDisplayName());
                             fiftyThousandPoints.setValue(50000);
                         }
                         Toast.makeText(requireActivity().getApplicationContext(),
@@ -189,7 +207,7 @@ public class Exchange extends Fragment {
     private void setTenThousandButton(long value) {
         if (value < 10000) {
             Toast.makeText(requireActivity().getApplicationContext(),
-                    "Sorry you're not eligible for withdrawal. Your point is low",
+                    "Sorry you're not yet eligible for withdrawal",
                     Toast.LENGTH_LONG).show();
             tenThousandButton.setClickable(false);
             twentyThousandButton.setClickable(false);
@@ -199,7 +217,7 @@ public class Exchange extends Fragment {
                 tenThousandButton.setSelected(true);
                 twentyThousandButton.setSelected(false);
                 fiftyThousandButton.setSelected(false);
-                tenThousandButton.setBackgroundColor(getResources().getColor(R.color.orange));
+                tenThousandButton.setBackgroundColor(getResources().getColor(R.color.green));
                 tenThousandButton.setTextColor(Color.WHITE);
                 fiftyThousandButton.setBackgroundColor(Color.WHITE);
                 fiftyThousandButton.setTextColor(getResources().getColor(R.color.orange));
@@ -220,7 +238,7 @@ public class Exchange extends Fragment {
                 twentyThousandButton.setSelected(true);
                 tenThousandButton.setSelected(false);
                 fiftyThousandButton.setSelected(false);
-                twentyThousandButton.setBackgroundColor(getResources().getColor(R.color.orange));
+                twentyThousandButton.setBackgroundColor(getResources().getColor(R.color.green));
                 twentyThousandButton.setTextColor(Color.WHITE);
                 fiftyThousandButton.setBackgroundColor(Color.WHITE);
                 tenThousandButton.setBackgroundColor(Color.WHITE);
@@ -244,7 +262,7 @@ public class Exchange extends Fragment {
                 tenThousandButton.setBackgroundColor(Color.WHITE);
                 twentyThousandButton.setTextColor(getResources().getColor(R.color.orange));
                 tenThousandButton.setTextColor(getResources().getColor(R.color.orange));
-                fiftyThousandButton.setBackgroundColor(getResources().getColor(R.color.orange));
+                fiftyThousandButton.setBackgroundColor(getResources().getColor(R.color.green));
                 fiftyThousandButton.setTextColor(Color.WHITE);
 
             });
@@ -255,17 +273,15 @@ public class Exchange extends Fragment {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         assert firebaseUser != null;
-        DatabaseReference userPointReference = databaseReference.child("AllUsers").
-                child("User").child(firebaseUser.getUid()).child("Earned_Point_Amount");
+        DatabaseReference userPointReference = databaseReference.
+                child("Winning Persons").child(firebaseUser.getUid()).child("Coin Amount");
         userPointReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Long longValue = snapshot.getValue(Long.class);
                 try {
                     userInfoCallBack.userInfoCall(longValue);
-                } catch (Exception e) {
-
-                }
+                } catch (Exception ignored) {}
             }
 
             @Override
@@ -276,6 +292,11 @@ public class Exchange extends Fragment {
                 }
             }
         });
+    }
+
+    public float convertFromDp(int input) {
+        final float scale = requireActivity().getResources().getDisplayMetrics().density;
+        return ((input - 0.7f) / scale);
     }
 
 

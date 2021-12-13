@@ -39,6 +39,8 @@ public class SplashScreen extends AppCompatActivity {
             TextView appName = findViewById(R.id.app_name);
             TextView company_name = findViewById(R.id.company_name);
 
+            appName.setTextSize(convertFromDp(170));
+
             appName.startAnimation(mainAnim);
             company_name.setAnimation(bottomAnim);
 
@@ -67,6 +69,11 @@ public class SplashScreen extends AppCompatActivity {
             }));
         }
 
+    }
+
+    public float convertFromDp(int input) {
+        final float scale = getResources().getDisplayMetrics().density;
+        return ((input - 0.8f) / scale);
     }
 
     @Override

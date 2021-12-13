@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".Faq"
-    android:background="@color/white">
+    android:background="@drawable/notice_board_background">
 
 <LinearLayout
     android:layout_width="match_parent"

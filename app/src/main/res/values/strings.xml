@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="TypographyEllipsis">
+<resources xmlns:tools="http://schemas.android.com/tools" xmlns:link="http://schemas.android.com/apk/res-auto" tools:ignore="TypographyEllipsis">
     <string name="app_name">Geeks Job</string>
     <string name="answer_one">Answer 1</string>
     <string name="answer_two">Answer 2</string>
@@ -22,6 +22,7 @@
     <string name="premium">Premium</string>
     <string name="community">Community</string>
     <string name="share">Share</string>
+    <string name="group">Community Help</string>
     <string name="open">Open</string>
     <string name="close">Close</string>
     <string name="sign_out">Sign Out</string>
@@ -63,21 +64,34 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="science">Science</string>
+    <string name="science_and_history">Science &amp; history</string>
+    <string name="movies_and_sports">Movies &amp; Sports</string>
     <string name="economy">Economy</string>
-    <string name="withdrawal_amount">Withdrawal Amount: (Points)</string>
+    <string name="withdrawal_amount">Withdrawal Amount: (Coins)</string>
     <string name="bkash">Bkash Account...</string>
     <string name="paypal">Paypal Email...</string>
     <string name="ten_thousand">10000</string>
     <string name="twenty_thousand">20000</string>
     <string name="fifty_thousand">50000</string>
-    <string name="points_Info">You have (Points):</string>
+    <string name="points_Info">You have (Coins):</string>
     <string name="reward">Rewards</string>
     <string name="chance">Chances left: </string>
     <string name="watch_ad">Watch</string>
+    <string name="community_group">Community Group</string>
     <string name="note_rewards">Note: You can watch 20 ads per day and after
         that you\'ll have 24 hour cool down.</string>
 
+    <string name="facebook_link">Link: <a href="https://www.facebook.com/groups/476830953798096/">Facebook</a></string>
+    <string name="telegram_link">Link: <a href="https://t.me/geeksjobofficial">Telegram</a></string>
+    <string name="youtube_link">Link: <a href="https://www.youtube.com/watch?v=JLj08-wiXjA">Youtube</a></string>
+
     <string name="group_chat">Group Chat</string>
+    <string name="group_chat_text">You can join our facebook and telegram
+        group for more information or any kind of help you need. You can contact us by using these links. We\'ll be more than happy to help you!
+    </string>
+    <string name="tail_text"><br/><br/>Both link provides
+            direct link to our official group. If you have any kind of learning problem, like how to use this application, then you can watch video from this following link:
+            <br/><br/><br/><br/></string>
 
     <string name="points">Points:</string>
     <string name="userName">Name:</string>

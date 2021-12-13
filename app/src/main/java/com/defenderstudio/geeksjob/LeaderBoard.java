@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
@@ -26,12 +25,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class LeaderBoard extends AppCompatActivity {
-
+    // TODO : NEED TO DO SOME WORK IN HERE
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
     LeaderBoardAdapter leaderBoardAdapter;
     ArrayList<LeaderBoardUser> leaderBoardUserArrayList;
-
     private boolean dialogShown = false;
 
     Runnable statusChecker = () -> {
@@ -78,6 +76,7 @@ public class LeaderBoard extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         ProgressDialog progressDialog = new ProgressDialog(LeaderBoard.this, R.style.ProgressDialogStyle);
         progressDialog.setCancelable(false);
         progressDialog.setMessage("Loading. Please wait...");
@@ -92,13 +91,11 @@ public class LeaderBoard extends AppCompatActivity {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-
+                    leaderBoardUserArrayList.clear();
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                         LeaderBoardUser leaderBoardUser = dataSnapshot.getValue(LeaderBoardUser.class);
                         leaderBoardUserArrayList.add(leaderBoardUser);
                         assert leaderBoardUser != null;
-                        Log.d("a", "user//// User image string url : "+leaderBoardUser.getImageUrl());
-                        Log.d("a", "user//// User name : "+leaderBoardUser.getUserName());
                     }
                     Collections.reverse(leaderBoardUserArrayList);
                     leaderBoardAdapter.notifyDataSetChanged();
@@ -109,7 +106,7 @@ public class LeaderBoard extends AppCompatActivity {
                 }
             });
             progressDialog.dismiss();
-        }, 5000);
+        }, 3000);
 
     }
 

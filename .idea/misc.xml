@@ -131,13 +131,35 @@
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout/leaderboard_activity.xml" value="0.1814814814814815" />
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout/row_conversation.xml" value="0.1814814814814815" />
         <entry key="..\:/Videos/Code Practice Geeks Job/Geeks Job/app/src/main/res/layout/user_info_items.xml" value="0.1814814814814815" />
+        <entry key="app/src/main/res/layout-sw320dp/activity_rewards.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/layout-sw320dp/activity_sign_in.xml" value="0.2" />
+        <entry key="app/src/main/res/layout-sw320dp/fragment_profile.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/layout-sw320dp/home_fragment.xml" value="0.18935185185185185" />
+        <entry key="app/src/main/res/layout-sw320dp/question_ans_activity.xml" value="0.18935185185185185" />
+        <entry key="app/src/main/res/layout-sw600dp/ad_not_available_layout.xml" value="0.2125" />
+        <entry key="app/src/main/res/layout-sw600dp/fragment_faq.xml" value="0.2125" />
+        <entry key="app/src/main/res/layout-sw600dp/fragment_profile.xml" value="0.2125" />
+        <entry key="app/src/main/res/layout-sw600dp/navigation_header.xml" value="0.2125" />
         <entry key="app/src/main/res/layout-sw600dp/user_info_items.xml" value="0.21302083333333333" />
+        <entry key="app/src/main/res/layout-sw720dp/ad_not_available_layout.xml" value="0.22" />
+        <entry key="app/src/main/res/layout-sw720dp/fragment_faq.xml" value="0.25" />
+        <entry key="app/src/main/res/layout-sw720dp/navigation_header.xml" value="0.159375" />
         <entry key="app/src/main/res/layout-sw720dp/user_info_items.xml" value="0.19970703125" />
-        <entry key="app/src/main/res/layout/fragment_profile.xml" value="1.4607142857142856" />
-        <entry key="app/src/main/res/layout/home_fragment.xml" value="1.4607142857142856" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/layout/activity_rewards.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_sign_in.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/ad_not_available_layout.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/layout/community_group.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/fragment_exchange.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/layout/fragment_faq.xml" value="0.18888888888888888" />
+        <entry key="app/src/main/res/layout/fragment_profile.xml" value="0.2" />
+        <entry key="app/src/main/res/layout/home_fragment.xml" value="0.18" />
         <entry key="app/src/main/res/layout/leaderboard_activity.xml" value="0.18935185185185185" />
+        <entry key="app/src/main/res/layout/navigation_header.xml" value="0.18888888888888888" />
         <entry key="app/src/main/res/layout/notice_board.xml" value="0.22" />
+        <entry key="app/src/main/res/layout/question_ans_activity.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/quiz_section_activity.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/splash_screen.xml" value="0.21302083333333333" />
         <entry key="app/src/main/res/layout/user_info_items.xml" value="0.18935185185185185" />
         <entry key="app/src/main/res/menu/navigation_menu.xml" value="0.21203703703703702" />
       </map>

@@ -27,6 +27,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.ads.AdError;
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.FullScreenContentCallback;
+import com.google.android.gms.ads.LoadAdError;
+import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.interstitial.InterstitialAd;
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -51,7 +58,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     String BREAK = "BREAK";
     String updating = "Updating";
     private boolean dialogShown = false;
-
     Runnable statusChecker = () -> {
         try {
             Dialog dialog = new Dialog(MainActivity.this, R.style.dialogue);
@@ -83,6 +89,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             new Handler().postDelayed(this::startRepeatingTask, interval);
         }
     };
+    private Handler adHandler;
+    private InterstitialAd mInterstitialAd;
+    Runnable adStatusChecker = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                interstitialAdLoader();
+            } finally {
+                int interval = 180000;
+                adHandler.postDelayed(statusChecker, interval);
+            }
+        }
+    };
     private DrawerLayout drawerLayout;
 
     @Override
@@ -96,6 +115,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setSupportActionBar(toolbar);
 
         startRepeatingTask();
+
+        adHandler = new Handler();
+        startAdRepeatingTask();
 
         readVersionInformationFromFirebase(value -> {
             // Always use application BuildConfig from package
@@ -300,6 +322,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(noticeIntent);
                 finish();
                 break;
+            case R.id.facebook_group:
+                Intent groupIntent = new Intent(MainActivity.this, CommunityGroup.class);
+                startActivity(groupIntent);
+                finish();
+                break;
             case R.id.sign_out:
                 userSignOutInformationSendToServer();
                 FirebaseAuth.getInstance().signOut();
@@ -444,7 +471,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Boolean connected = snapshot.getValue(Boolean.class);
                 try {
                     internetConnectionCheck.connectionInfo(connected);
-                }catch (Exception e){
+                } catch (Exception e) {
                     internetConnectionCheck.connectionInfo(false);
                 }
             }
@@ -462,6 +489,62 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onDestroy();
     }
 
+    //Main Account ID: ca-app-pub-5052828179386026/7359645574
+    // Dummy ID: ca-app-pub-3940256099942544/1033173712
+
+    private void interstitialAdLoader() {
+        AdRequest adRequest = new AdRequest.Builder().build();
+        MobileAds.initialize(this, initializationStatus -> {
+            // TODO : Need to change the Ad ID here
+            InterstitialAd.load(this, "ca-app-pub-5052828179386026/7359645574", adRequest,
+                    new InterstitialAdLoadCallback() {
+                        @Override
+                        public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
+                            // The mInterstitialAd reference will be null until
+                            // an ad is loaded.
+                            // TODO : Need to show the Ad only when the user makes a mistake
+                            mInterstitialAd = interstitialAd;
+                            if (mInterstitialAd != null) {
+                                mInterstitialAd.show(MainActivity.this);
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Ad wasn't ready yet!",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                                @Override
+                                public void onAdDismissedFullScreenContent() {
+                                    // Called when fullscreen content is dismissed.
+                                }
+
+                                @Override
+                                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
+                                    // Called when fullscreen content failed to show.
+                                }
+
+                                @Override
+                                public void onAdShowedFullScreenContent() {
+                                    // Called when fullscreen content is shown.
+                                    // Make sure to set your reference to null so you don't
+                                    // show it a second time.
+                                    mInterstitialAd = null;
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
+                            // Handle the error
+                            mInterstitialAd = null;
+                        }
+                    });
+        });
+
+    }
+
+    void startAdRepeatingTask() {
+        adStatusChecker.run();
+    }
+
 
     private interface userBanInformation {
         void userBanInfo(Boolean value);
@@ -471,10 +554,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         void userSignInInfo(String value);
     }
 
-
     public interface readUpdateInformation {
         void readUpdateInfo(String value);
     }
+
+
+    //Main Account ID: ca-app-pub-5052828179386026/7359645574
+    // Dummy ID: ca-app-pub-3940256099942544/1033173712
 
     public interface readVersionInformation {
         void readVersionInfo(Double value);
@@ -483,4 +569,5 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private interface internetConnectionCheck {
         void connectionInfo(Boolean connection);
     }
+
 }

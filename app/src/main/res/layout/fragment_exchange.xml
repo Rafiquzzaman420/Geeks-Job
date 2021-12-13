@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@drawable/home_480"
+    android:background="@drawable/notice_board_background"
     android:orientation="vertical"
     tools:context=".Exchange"
     tools:ignore="NestedWeights">
@@ -46,7 +46,7 @@
                     />
 
                 <EditText
-                    android:maxLength="15"
+                    android:maxLength="11"
                     android:maxLines="1"
                     android:inputType="numberDecimal"
                     android:textCursorDrawable="@null"
@@ -54,7 +54,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/bkash"
-                    android:layout_margin="10dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
                     android:textColor="@color/orange"
                     android:textColorHint="@color/orange"
                     android:textSize="15sp"
@@ -96,8 +97,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/paypal"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginBottom="10dp"
                     android:layout_marginEnd="10dp"
                     android:textSize="15sp"
                     android:textColorHint="@color/orange"
@@ -121,14 +120,17 @@
             android:layout_weight=".8">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/withdrawal_amount_card_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
                 android:elevation="5dp"
                 android:translationZ="5dp"
                 app:cardCornerRadius="10dp">
 
                 <TextView
+                    android:id="@+id/withdrawal_amount_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textColor="@color/orange"
@@ -216,7 +218,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:indeterminate="true"
-                android:indeterminateTint="@color/orange"
+                android:indeterminateTint="@color/white"
                 android:visibility="gone"
                 android:background="@android:color/transparent"/>
 
@@ -234,6 +236,7 @@
                     android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/coins_amount_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight=".3"
@@ -282,6 +285,7 @@
                 android:foreground="?android:attr/selectableItemBackground">
 
                 <TextView
+                    android:id="@+id/submit_button_in_exchange"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="@string/submit"

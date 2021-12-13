@@ -89,13 +89,14 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     private InterstitialAd mInterstitialAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
     private Handler adHandler;
+
     Runnable statusChecker = new Runnable() {
         @Override
         public void run() {
             try {
                 interstitialAdLoader();
             } finally {
-                int interval = 300000;
+                int interval = 180000;
                 adHandler.postDelayed(statusChecker, interval);
             }
         }
@@ -147,6 +148,16 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         adHandler = new Handler();
         startRepeatingTask();
 
+        rewardedAdButton = findViewById(R.id.rewardButton);
+        rewardedAdButton.setTextSize(convertFromDp(30));
+        submitButton = findViewById(R.id.submit);
+        submitButton.setTextSize(convertFromDp(30));
+        hintBrowser = findViewById(R.id.question_hint);
+        hintBrowser.setTextSize(convertFromDp(30));
+        leaveButton = findViewById(R.id.leave);
+        leaveButton.setTextSize(convertFromDp(30));
+
+
         MobileAds.initialize(this, initializationStatus -> {
             rewardedAdButton = findViewById(R.id.rewardButton);
             rewardedAdButton.setOnClickListener(v -> {
@@ -180,8 +191,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         AdView adView = findViewById(R.id.bannerAdView);
 
 
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        adView.loadAd(adRequest);
+        AdRequest adRequest = new AdRequest.Builder().build();
+        adView.loadAd(adRequest);
         topicName.setText(getIntent().getStringExtra("topicName"));
 
         ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
@@ -272,6 +283,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     void startRepeatingTask() {
         statusChecker.run();
     }
+
     //Main Account ID: ca-app-pub-5052828179386026/7359645574
     // Dummy ID: ca-app-pub-3940256099942544/1033173712
 
@@ -279,7 +291,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         AdRequest adRequest = new AdRequest.Builder().build();
         MobileAds.initialize(this, initializationStatus -> {
             // TODO : Need to change the Ad ID here
-            InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest,
+            InterstitialAd.load(this, "ca-app-pub-5052828179386026/7359645574", adRequest,
                     new InterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -328,7 +340,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         // Use the test ad unit ID to load an ad.
         // TODO : ca-app-pub-5052828179386026/3242847727
         // DUMMY ID : ca-app-pub-3940256099942544/5354046379
-        RewardedInterstitialAd.load(QuestionAnsActivity.this, "ca-app-pub-3940256099942544/5354046379",
+        RewardedInterstitialAd.load(QuestionAnsActivity.this, "ca-app-pub-5052828179386026/3242847727",
                 new AdRequest.Builder().build(), new RewardedInterstitialAdLoadCallback() {
                     @Override
                     public void onAdLoaded(@NonNull RewardedInterstitialAd ad) {
@@ -592,22 +604,24 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     @Override
     public void onBackPressed() {
         browserView = findViewById(R.id.browser_web_view);
-        if (browserView.canGoBack()) {
-            browserView.goBack();
-        } else {
-            new AlertDialog.Builder(this)
-                    .setMessage("Are you sure you want to go back?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes", (dialog, which) -> {
-                        Intent intent = new Intent(QuestionAnsActivity.this,
-                                QuizActivity.class);
-                        startActivity(intent);
-                        finish();
-                    })
-                    .setNegativeButton("No", null)
-                    .show();
-            overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
-        }
+        try {
+            if (browserView.canGoBack()) {
+                browserView.goBack();
+            } else {
+                new AlertDialog.Builder(this)
+                        .setMessage("Are you sure you want to go back?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", (dialog, which) -> {
+                            Intent intent = new Intent(QuestionAnsActivity.this,
+                                    QuizActivity.class);
+                            startActivity(intent);
+                            finish();
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+                overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
+            }
+        } catch (Exception ignored) {}
     }
 
     //==============================================================================================
@@ -1190,7 +1204,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
             // Otherwise it'll set the starting time to 24 Hours or 86400000 milliseconds
             else {
-                START_TIME_IN_MILLIS = 300000;
+                START_TIME_IN_MILLIS = 180000;
             }
         });
 
@@ -1816,5 +1830,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     private interface userTimerInformation {
         void timerInfo(Long value);
+    }
+
+    public float convertFromDp(int input) {
+        final float scale = getResources().getDisplayMetrics().density;
+        return ((input - 0.8f) / scale);
     }
 }
