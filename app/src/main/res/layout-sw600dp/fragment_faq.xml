@@ -63,7 +63,7 @@
             android:textSize="26sp"
             android:text="@string/faq_eighth_question"
             android:textColor="@color/orange"
-            android:layout_margin="10dp"
+            android:layout_margin="20dp"
             android:fontFamily="@font/geeks_job_regular"/>
 
         <TextView
@@ -72,7 +72,7 @@
             android:textSize="24sp"
             android:text="@string/faq_eighth_answer"
             android:textColor="@color/orange"
-            android:layout_margin="10dp"
+            android:layout_margin="20dp"
             android:fontFamily="@font/geeks_job_regular"/>
     </LinearLayout>
 
@@ -100,7 +100,7 @@
                 android:textSize="26sp"
                 android:text="@string/faq_first_question"
                 android:textColor="@color/orange"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:fontFamily="@font/geeks_job_regular"/>
 
             <TextView
@@ -109,7 +109,7 @@
                 android:textSize="24sp"
                 android:text="@string/faq_first_answer"
                 android:textColor="@color/orange"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:fontFamily="@font/geeks_job_regular"/>
             </LinearLayout>
 
@@ -135,7 +135,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@string/faq_second_question"
                 android:textColor="@color/orange"
                 android:textSize="26sp"
@@ -144,7 +144,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@string/faq_second_answer"
                 android:textColor="@color/orange"
                 android:textSize="24sp"
@@ -174,7 +174,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@string/faq_third_question"
                 android:textColor="@color/orange"
                 android:textSize="26sp"
@@ -183,7 +183,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@string/faq_third_answer"
                 android:textColor="@color/orange"
                 android:textSize="24sp"
@@ -212,7 +212,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@string/faq_fourth_question"
                 android:textColor="@color/orange"
                 android:textSize="26sp"
@@ -221,7 +221,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@string/faq_fourth_answer"
                 android:textColor="@color/orange"
                 android:textSize="24sp"
@@ -250,7 +250,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@string/faq_fifth_question"
                 android:textColor="@color/orange"
                 android:textSize="26sp"
@@ -259,7 +259,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@string/faq_fifth_answer"
                 android:textColor="@color/orange"
                 android:textSize="24sp"
@@ -288,7 +288,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@string/faq_sixth_question"
                 android:textColor="@color/orange"
                 android:textSize="26sp"
@@ -297,7 +297,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@string/faq_sixth_answer"
                 android:textColor="@color/orange"
                 android:textSize="24sp"
@@ -326,7 +326,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@string/faq_seventh_question"
                 android:textColor="@color/orange"
                 android:textSize="26sp"
@@ -335,7 +335,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="20dp"
                 android:text="@string/faq_seventh_answer"
                 android:textColor="@color/orange"
                 android:textSize="24sp"

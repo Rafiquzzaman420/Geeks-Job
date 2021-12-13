@@ -142,19 +142,19 @@ public class QuizActivity extends AppCompatActivity {
         ImageView historyImage = findViewById(R.id.history_image);
         ImageView sportsImage = findViewById(R.id.sports_image);
 
-        religionText.setTextSize(convertFromDp(50));
-        moviesText.setTextSize(convertFromDp(50));
-        sportsText.setTextSize(convertFromDp(50));
-        scienceText.setTextSize(convertFromDp(50));
-        historyText.setTextSize(convertFromDp(50));
-        curriculumText.setTextSize(convertFromDp(50));
+        religionText.setTextSize(convertFromDp(45));
+        moviesText.setTextSize(convertFromDp(45));
+        sportsText.setTextSize(convertFromDp(45));
+        scienceText.setTextSize(convertFromDp(45));
+        historyText.setTextSize(convertFromDp(45));
+        curriculumText.setTextSize(convertFromDp(45));
 
-        imageSizeSetter(religionImage, 300);
-        imageSizeSetter(curriculumImage, 300);
-        imageSizeSetter(moviesImage, 300);
-        imageSizeSetter(scienceImage, 300);
-        imageSizeSetter(historyImage, 300);
-        imageSizeSetter(sportsImage, 300);
+        imageSizeSetter(religionImage, 280);
+        imageSizeSetter(curriculumImage, 280);
+        imageSizeSetter(moviesImage, 280);
+        imageSizeSetter(scienceImage, 280);
+        imageSizeSetter(historyImage, 280);
+        imageSizeSetter(sportsImage, 280);
 
 
 
