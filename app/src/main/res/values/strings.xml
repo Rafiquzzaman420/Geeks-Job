@@ -231,4 +231,7 @@
         This section is only used for sending messages to the user of Geeks Job from \"Defender Studio\".
         When you win, you\'ll get your messages in this block. Thanks for using Geeks Job.
     </string>
+    <string name="user_position">position</string>
+    <string name="user_image">Users Image</string>
+    <string name="app_logo">App Logo</string>
 </resources>

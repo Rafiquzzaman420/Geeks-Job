@@ -1,8 +1,7 @@
 package com.defenderstudio.geeksjob;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +15,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.ViewHolder> {
 
@@ -45,18 +43,38 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
         Glide.with(context).load(photoUrl).
                 apply(RequestOptions.circleCropTransform()).into(holder.userImage);
         position++;
-        holder.userPosition.setText(String.valueOf(position));
+
+        if (position == 1) {
+            trophyImageSetter(holder, R.drawable.gold_trophy);
+        }
+        else if (position == 2) {
+            trophyImageSetter(holder, R.drawable.silver_trophy);
+        }
+        else if (position == 3) {
+            trophyImageSetter(holder, R.drawable.bronze_trophy);
+        }
+        else {
+            holder.trophyImage.setVisibility(View.GONE);
+            holder.userPosition.setVisibility(View.VISIBLE);
+            holder.userPosition.setText(String.valueOf(position));
+        }
+    }
+
+    private void trophyImageSetter(ViewHolder holder, int drawableResID) {
+        holder.userPosition.setVisibility(View.GONE);
+        holder.trophyImage.setVisibility(View.VISIBLE);
+        Glide.with(context).load(drawableResID).
+                apply(RequestOptions.circleCropTransform()).into(holder.trophyImage);
     }
 
     @Override
     public int getItemCount() {
         return list.size();
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView userName, pointsInfo, userPosition;
-        ImageView userImage;
+        ImageView userImage, trophyImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -65,6 +83,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
             pointsInfo = itemView.findViewById(R.id.user_points_competition);
             userImage = itemView.findViewById(R.id.LeaderBoardUserImage);
             userPosition = itemView.findViewById(R.id.user_position);
+            trophyImage = itemView.findViewById(R.id.trophy);
         }
     }
 }

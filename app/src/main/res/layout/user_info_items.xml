@@ -4,48 +4,52 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:ignore="NestedWeights" >
+    tools:ignore="NestedWeights">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="120dp"
-        android:layout_margin="10dp"
-        app:cardCornerRadius="10dp"
-        android:elevation="10dp"
-        android:translationZ="10dp">
+        android:layout_height="match_parent"
+        android:background="@color/light_orange"
+        app:cardBackgroundColor="@color/orange"
+        app:cardCornerRadius="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="5dp">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight=".7"
-                android:layout_marginEnd="2.5dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginStart="5dp"
-                android:layout_marginBottom="5dp">
-
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="2.5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_weight=".7">
 
                 <ImageView
                     android:id="@+id/LeaderBoardUserImage"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_gravity="center"
                     android:layout_margin="10dp"
-                    android:background="@drawable/profile"
-                    android:layout_gravity="center"/>
+                    android:background="@drawable/ic_baseline_account_circle_24"
+                    android:contentDescription="@string/user_image" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight=".3"
-                android:layout_marginEnd="5dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginStart="2.5dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
+                android:layout_weight=".3"
                 android:orientation="vertical">
 
                 <LinearLayout
@@ -58,61 +62,70 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight=".7"
+                        android:fontFamily="@font/geeks_job_medium"
                         android:gravity="center"
-                        android:textColor="@color/orange"
+                        android:textColor="@color/white"
                         android:textSize="18sp"
-                        android:textStyle="bold"/>
+                        android:textStyle="bold"
+                        android:visibility="gone" />
+
+                    <ImageView
+                        android:id="@+id/trophy"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:layout_weight=".7"
+                        android:visibility="gone"
+                        android:layout_margin="5dp"
+                        android:contentDescription="@string/user_position" />
 
                     <TextView
                         android:id="@+id/user_name_competition"
-                        android:layout_weight=".3"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="@string/not_applicable"
-                        android:gravity="center"
-                        android:textSize="18sp"
                         android:layout_marginEnd="10dp"
-                        android:textColor="@color/orange"
-                        android:textStyle="bold"/>
+                        android:layout_weight=".3"
+                        android:gravity="center"
+                        android:text="@string/not_applicable"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/geeks_job_medium"/>
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
                     android:layout_weight=".6"
-                    >
+                    android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/leader_board_points"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="@string/points"
-                        android:gravity="center"
                         android:layout_weight=".7"
-                        android:textColor="@color/orange"
-                        android:textStyle="bold"
-                        android:textSize="18sp" />
+                        android:gravity="center"
+                        android:text="@string/points"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"
+                        android:fontFamily="@font/geeks_job_medium"/>
 
                     <TextView
                         android:id="@+id/user_points_competition"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_weight=".3"
-                        android:text="@string/not_applicable"
-                        android:gravity="center"
                         android:layout_marginEnd="10dp"
-                        android:textColor="@color/orange"
-                        android:textStyle="bold"
-                        android:textSize="20sp" />
+                        android:layout_weight=".3"
+                        android:gravity="center"
+                        android:text="@string/not_applicable"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/geeks_job_medium"/>
 
                 </LinearLayout>
 
             </LinearLayout>
 
-
-        </LinearLayout>
-
-
+    </LinearLayout>
     </androidx.cardview.widget.CardView>
 
 </LinearLayout>

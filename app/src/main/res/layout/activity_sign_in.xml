@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@drawable/sign_in_480"
+    android:background="@drawable/splash"
     tools:context=".SignInActivity"
     tools:ignore="NestedWeights">
 
@@ -82,9 +82,8 @@
                         android:text="@string/sign_in"
                         android:gravity="center"
                         android:textSize="28sp"
-                        android:textStyle="bold"
                         android:fontFamily="@font/geeks_job_regular"
-                        android:textColor="@color/orange"/>
+                        android:textColor="#A3A3A3"/>
 
 
                 </LinearLayout>
@@ -109,6 +108,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:indeterminateTint="@color/white"
+                android:layout_gravity="center"
                 android:visibility="gone" />
 
         </LinearLayout>

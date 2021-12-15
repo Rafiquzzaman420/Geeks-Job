@@ -44,7 +44,7 @@ public class Rewards extends AppCompatActivity {
     private static long START_TIME_IN_MILLIS;
     int initialPointValue = 0;
     private long chancesLeft;
-    private RewardedAd mRewardedAd;
+    private RewardedAd rewardedAd;
 
     private boolean dialogShown = false;
 
@@ -310,7 +310,7 @@ public class Rewards extends AppCompatActivity {
                     @Override
                     public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
                         // Handle the error.
-                        mRewardedAd = null;
+                        rewardedAd = null;
                         Toast.makeText(getApplicationContext(), "Please try again",
                                 Toast.LENGTH_LONG).show();
                     }
@@ -321,8 +321,8 @@ public class Rewards extends AppCompatActivity {
 
                     @Override
                     public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
-                        mRewardedAd = rewardedAd;
-                        mRewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
+                        Rewards.this.rewardedAd = rewardedAd;
+                        Rewards.this.rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                             @Override
                             public void onAdShowedFullScreenContent() {
                                 // Called when ad is shown.
@@ -342,7 +342,7 @@ public class Rewards extends AppCompatActivity {
                             public void onAdDismissedFullScreenContent() {
                                 // Called when ad is dismissed.
                                 // Set the ad reference to null so you don't show the ad a second time.
-                                mRewardedAd = null;
+                                Rewards.this.rewardedAd = null;
                                 rewardedAdLoader();
                                 userChancesLeftCallBack(value -> chancesLeft = value);
                                 TextView chancesLeftText = findViewById(R.id.chancesLeft);
@@ -387,9 +387,9 @@ public class Rewards extends AppCompatActivity {
     // Shows Ad to the user
     //==============================================================================================================================
     private void adShow() {
-        if (mRewardedAd != null) {
+        if (rewardedAd != null) {
             Activity activityContext = Rewards.this;
-            mRewardedAd.show(activityContext, rewardItem -> {
+            rewardedAd.show(activityContext, rewardItem -> {
 
                 DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
                 FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();

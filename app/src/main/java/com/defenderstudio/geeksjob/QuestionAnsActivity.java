@@ -70,10 +70,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             leaveButton,
             submitButton,
             hintBrowser,
-            goBackFromBrowser,
             rewardTimer,
             rewardedAdButton;
-    WebView browserView;
     List<ScienceQuestion> scienceQuestionList;
     List<ReligionQuestion> religionQuestionList;
     List<MoviesQuestion> moviesQuestionList;
@@ -152,10 +150,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         rewardedAdButton.setTextSize(convertFromDp(30));
         submitButton = findViewById(R.id.submit);
         submitButton.setTextSize(convertFromDp(30));
-        hintBrowser = findViewById(R.id.question_hint);
         hintBrowser.setTextSize(convertFromDp(30));
         leaveButton = findViewById(R.id.leave);
         leaveButton.setTextSize(convertFromDp(30));
+        leaveButton.setBackgroundColor(getResources().getColor(R.color.red));
 
 
         MobileAds.initialize(this, initializationStatus -> {
@@ -185,8 +183,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         option4 = findViewById(R.id.option4);
         leaveButton = findViewById(R.id.leave);
         submitButton = findViewById(R.id.submit);
-        hintBrowser = findViewById(R.id.question_hint);
-        browserView = findViewById(R.id.browser_web_view);
         total_earning = findViewById(R.id.total_earning);
         AdView adView = findViewById(R.id.bannerAdView);
 
@@ -263,7 +259,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         } else if (topicInfo.equals("Movies & Sports")) {
             moviesQuizCallFromFirebase(moviesList, topicInfo);
         }
-//        curriculumQuizCallFromFirebase(curriculumList);
 
     }
 
@@ -586,14 +581,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                         "Loading. Please wait...", Toast.LENGTH_LONG).show();
                 Toast.makeText(getApplicationContext(),
                         "Swipe Right to go back!", Toast.LENGTH_LONG).show();
-                goBackFromBrowser = findViewById(R.id.go_back_from_browser);
-                goBackFromBrowser.setOnClickListener(v1 -> browserDrawer.closeDrawer(Gravity.RIGHT));
-                browserView = findViewById(R.id.browser_web_view);
-                browserView.setWebViewClient(new WebViewClient());
-                browserView.getSettings().setJavaScriptEnabled(true);
-                browserView.getSettings().setJavaScriptCanOpenWindowsAutomatically(true);
-                browserView.getSettings().setMediaPlaybackRequiresUserGesture(false);
-                browserView.loadUrl("https://google.com");
             }
         });
     }
@@ -603,25 +590,22 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
     @Override
     public void onBackPressed() {
-        browserView = findViewById(R.id.browser_web_view);
         try {
-            if (browserView.canGoBack()) {
-                browserView.goBack();
-            } else {
-                new AlertDialog.Builder(this)
-                        .setMessage("Are you sure you want to go back?")
-                        .setCancelable(false)
-                        .setPositiveButton("Yes", (dialog, which) -> {
-                            Intent intent = new Intent(QuestionAnsActivity.this,
-                                    QuizActivity.class);
-                            startActivity(intent);
-                            finish();
-                        })
-                        .setNegativeButton("No", null)
-                        .show();
-                overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
-            }
-        } catch (Exception ignored) {}
+            new AlertDialog.Builder(this)
+                    .setMessage("Are you sure you want to go back?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", (dialog, which) -> {
+                        Intent intent = new Intent(QuestionAnsActivity.this,
+                                QuizActivity.class);
+                        startActivity(intent);
+                        finish();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+            overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
+
+        }
+        catch (Exception ignored) {}
     }
 
     //==============================================================================================

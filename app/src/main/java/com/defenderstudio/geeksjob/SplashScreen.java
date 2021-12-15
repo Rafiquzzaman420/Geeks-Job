@@ -5,14 +5,14 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.TextView;
+import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 
 public class SplashScreen extends AppCompatActivity {
 
-    Animation mainAnim, bottomAnim;
+    Animation mainAnim;
 
     SharedPreferences sharedpreferences;
     boolean splash;
@@ -32,17 +32,10 @@ public class SplashScreen extends AppCompatActivity {
             setContentView(R.layout.splash_screen);
 
             mainAnim = AnimationUtils.loadAnimation(getApplicationContext(),
-                    R.anim.main_animation);
+                    R.anim.fade_in);
 
-            bottomAnim = AnimationUtils.loadAnimation(this, R.anim.company_name_anim);
-
-            TextView appName = findViewById(R.id.app_name);
-            TextView company_name = findViewById(R.id.company_name);
-
-            appName.setTextSize(convertFromDp(170));
-
-            appName.startAnimation(mainAnim);
-            company_name.setAnimation(bottomAnim);
+            ImageView appLogo = findViewById(R.id.appLogo);
+            appLogo.startAnimation(mainAnim);
 
             mainAnim.setAnimationListener((new Animation.AnimationListener() {
                 @Override

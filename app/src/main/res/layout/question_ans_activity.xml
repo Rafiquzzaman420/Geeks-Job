@@ -8,7 +8,8 @@
     tools:ignore="NestedWeights"
     android:id="@+id/question_ans_drawer_layout"
     android:orientation="horizontal"
-    tools:openDrawer="end">
+    tools:openDrawer="end"
+    android:background="@drawable/gradient">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -19,8 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight=".60"
-            android:orientation="vertical"
-            android:background="@color/preferred_color">
+            android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
@@ -95,7 +95,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight=".60"
-            android:background="@color/preferred_color"
             android:orientation="vertical">
 
 
@@ -186,7 +185,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight=".5"
-                android:background="@color/preferred_color"
                 android:orientation="horizontal">
 
 
@@ -195,7 +193,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="20dp"
-                    android:layout_marginEnd="2.5dp"
+                    android:layout_marginEnd="20dp"
                     android:layout_weight=".4"
                     android:elevation="5dp"
                     android:translationZ="5dp"
@@ -209,23 +207,7 @@
                 </Button>
 
 
-
-                    <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/rewardButton"
-                        android:text="@string/reward_Button"
-                        android:gravity="center"
-                        android:layout_weight=".6"
-                        android:textSize="18sp"
-                        android:layout_marginStart="2.5dp"
-                        android:layout_marginEnd="20dp"
-                        android:fontFamily="@font/geeks_job_medium"
-                        android:textStyle="bold"
-                        android:textColor="@color/white"
-                        android:visibility="visible" />
-
-                    <Button
+                <Button
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/rewardTimer"
@@ -244,7 +226,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight=".5"
-                android:background="@color/preferred_color"
                 android:orientation="horizontal">
 
                 <Button
@@ -252,18 +233,15 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginStart="20dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
                     android:layout_weight=".66"
-                    android:background="@drawable/ripple"
+                    android:layout_marginEnd="2.5dp"
                     android:elevation="5dp"
                     android:translationZ="5dp"
                     android:fontFamily="@font/geeks_job_medium"
                     android:text="@string/leave"
                     android:textColor="@color/white"
                     android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:theme="@style/red.GeeksJob">
+                    android:textSize="18sp">
 
                 </Button>
 
@@ -285,38 +263,24 @@
                     android:theme="@style/purple.GeeksJob" />
 
                 <Button
-                    android:id="@+id/question_hint"
+                    android:id="@+id/rewardButton"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="2.5dp"
                     android:layout_marginEnd="20dp"
-                    android:layout_marginBottom="5dp"
-                    android:layout_marginTop="5dp"
                     android:layout_weight=".66"
-                    android:background="@drawable/ripple"
-                    android:elevation="5dp"
-                    android:translationZ="5dp"
                     android:fontFamily="@font/geeks_job_medium"
-                    android:text="@string/hint"
+                    android:gravity="center"
+                    android:text="@string/reward_Button"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
                     android:textSize="18sp"
-                    android:theme="@style/purple.GeeksJob" />
-
-
-
+                    android:textStyle="bold"
+                    android:visibility="visible" />
 
             </LinearLayout>
 
         </LinearLayout>
 
     </LinearLayout>
-    <com.google.android.material.navigation.NavigationView
-        android:id="@+id/browser_navigation_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_gravity="right"
-        android:layout_marginEnd="-65dp"
-        app:headerLayout="@layout/activity_browser"
-        tools:ignore="RtlHardcoded" />
 
 </androidx.drawerlayout.widget.DrawerLayout>
