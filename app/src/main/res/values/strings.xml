@@ -64,7 +64,7 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="science">Science</string>
-    <string name="science_and_history">Science &amp; history</string>
+    <string name="science_and_history">Science &amp; History</string>
     <string name="movies_and_sports">Movies &amp; Sports</string>
     <string name="economy">Economy</string>
     <string name="withdrawal_amount">Withdrawal Amount: (Coins)</string>
@@ -127,7 +127,7 @@
     </string-array>
 
     <string name="faq_initial">
-        <b>Before you begin, please note that every section of "Rewards" will give the user an extra
+        <b>Before you begin, please note that every section of "Rewards" will give you an extra
             scope to earn more points. So it is highly recommended to use them more often!</b>
     </string>
 
@@ -135,21 +135,22 @@
     <b>What is the use of Points?</b>
 </string>
     <string name="faq_first_answer">
-        <b> <u>Answer :</u></b> Points are used to redeem "Cash Prizes". If you are able to reach one of the top positions in
-        the <b>"Leaderboard"</b>, you\'ll be able to redeem points into real money. But you must have at least
-        <b>10000 points</b> to be eligible for redeem <b>(Minimum requirements)</b>
+        <b> <u>Answer :</u></b> Points are must for being in the top position of the <b>"Leaderboard"</b>. If you are
+        able to reach one of the top positions, you\'ll be able to redeem points into real money.
+        But you must have at least
+        <b>10000 points</b> to be eligible for one of the <b>"Leaderboard"</b> positions <b>(Minimum requirement)</b>
 </string>
 
     <string name="faq_second_question">
     <b>What does "Rewards" section do?</b>
 </string>
     <string name="faq_second_answer">
-        <b> <u>Answer :</u></b> If you answer only quiz, you\'ll get only 10 points for each answer. But if you go to <b>"Rewards"</b>
-        section and watch ads (only 20), you\'ll get 50 points for each. That means a total of <b>1000 Points</b> which is a big deal.
+        <b> <u>Answer :</u></b> If you answer quiz, you\'ll get only 10 points for each answer. But if you go to <b>"Rewards"</b>
+        section and watch ads (only 20), you\'ll get 50 points for each. That means a total of <b>1000 Points</b> which is quite a big deal.
         <p/>If you don\'t want to use it
         you\'re welcome. But if other users use that efficiently, they might get to the top position way faster than you.
         <p/>But note that you\'ll get only 20 chances.
-        After that there will be a <b>12 hours</b> cool down. But in the mean time you can still answer quiz to earn points.
+        After that there will be a <b>8 hours</b> cool down. But in the mean time you can still answer quiz to earn points.
 </string>
 
     <string name="faq_third_question">
@@ -157,8 +158,8 @@
     </string>
 
     <string name="faq_third_answer">
-        <b> <u>Answer :</u></b> Top Three (3) users (will increase if participants increases) rom each
-        10 days of a month will get the cash prize (Note: They must have at least 10000 points to withdraw).
+        <b> <u>Answer :</u></b> Top Three (5) users (will increase if participants increases) from each
+        10 days of a month will get the cash prize (Note: They must have at least 10000 coins to withdraw).
     </string>
 
     <string name="faq_fourth_question">
@@ -166,7 +167,7 @@
     </string>
 
     <string name="faq_fourth_answer">
-        <b><u>Answer: </u></b>You\'ll find all the answered question amount and earned points in "Profile".
+        <b><u>Answer: </u></b>You\'ll find all the answered question number and earned points in "Profile".
         You\'ll also get your Login information like username, email and profile photo.
     </string>
 
@@ -175,11 +176,12 @@
     </string>
 
     <string name="faq_fifth_answer">
-        <b><u>Answer: </u></b>If you become one of the top Three (3) (will increase if participants increases)
-        users, you will be able to withdraw money by exchanging your points.
+        <b><u>Answer: </u></b>If you become one of the top Three (5) (will increase if participants increases)
+        users, you will be able to withdraw money by exchanging your coins which will be given only when you are able to
+        reach one of the top positions.
         <p/>If you are from Bangladesh,
-        you\'ll be able to withdraw money using Bkash.
-        <p/>But if you\'re from other countries, you can withdraw using Paypal.
+        you\'ll be able to withdraw money using \"Bkash\" &amp; \"Rocket\".
+        <p/>But if you\'re from other countries, you can withdraw using \"Paypal\".
         If you still get any problem, you can join our facebook group and ask for help. You\'ll be notified in not more than one hour.
     </string>
 
@@ -202,10 +204,10 @@
         You can answer quiz from the Movies and sports or Science and History, any section you like.
         But note that Religion and Curriculum is still under development. Until then, you can use other sections.
 
-        <p/>If you answer a wrong question, you\'ll get a penalty for about 20 seconds. But no points will be deducted from your account.
+        <p/>If you answer a wrong question, you\'ll get a penalty for about 10 seconds. But no points will be deducted from your account.
         It\'s an won and won situation.
 
-        You won\'t be able to pass or skip any question. If you don\'t know the answer, you use the <b>"Hint"</b>.
+        You won\'t be able to pass or skip any question.
         <b><p/>Please note that: </b> If you leave application for any reason, you\'ll have to start again.
     </string>
 
@@ -215,8 +217,8 @@
 
     <string name="faq_eighth_answer">
         <b><u>Answer: </u></b>The \"Reward\" in the quiz section is for additional points for the user.
-        If you\'re answering quiz, you should also use \"Reward\". Because Reward in the Quiz section gives 30 points to the user.
-        <b><p/>Note that: </b>Reward in Quiz section comes in every 5 minutes after watching!.
+        If you\'re answering quiz, you should also use \"Reward\". Because Reward in the Quiz section gives 30 points.
+        <b><p/>Note that: </b>Reward in Quiz section comes in every 3 minutes after watching!.
     </string>
     <string name="adNotLoaded">
         Ad couldn\'t be loaded right now. Please try again sometimes later.
@@ -234,4 +236,10 @@
     <string name="user_position">position</string>
     <string name="user_image">Users Image</string>
     <string name="app_logo">App Logo</string>
+    <string name="third">3rd</string>
+    <string name="second">2nd</string>
+    <string name="first">1st</string>
+    <string name="second_image">Second Image</string>
+    <string name="first_image">First Image</string>
+    <string name="third_image">Third Image</string>
 </resources>

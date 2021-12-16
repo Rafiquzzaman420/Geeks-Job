@@ -48,7 +48,7 @@
                     android:layout_marginBottom="10dp"
                     android:text="@string/religion"
                     android:gravity="center"
-                    android:textColor="@color/orange"
+                    android:textColor="#9a9a9a"
                     android:fontFamily="@font/geeks_job_medium"/>
 
                 <ImageView
@@ -112,7 +112,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:text="@string/science"
-                        android:textColor="@color/orange"
+                        android:textColor="#9a9a9a"
                         android:fontFamily="@font/geeks_job_medium"/>
 
 
@@ -124,7 +124,7 @@
                     android:text="@string/and_symbol"
                     android:layout_gravity="center"
                     android:textSize="40sp"
-                    android:textColor="@color/orange"
+                    android:textColor="#9a9a9a"
                     android:fontFamily="@font/geeks_job_medium"/>
 
 
@@ -150,7 +150,7 @@
                         android:text="@string/history"
                         android:layout_gravity="center"
                         android:fontFamily="@font/geeks_job_medium"
-                        android:textColor="@color/orange"/>
+                        android:textColor="#9a9a9a"/>
 
                 </LinearLayout>
 
@@ -204,7 +204,7 @@
                android:text="@string/curriculum"
                android:gravity="center"
                android:fontFamily="@font/geeks_job_medium"
-               android:textColor="@color/orange"/>
+               android:textColor="#9a9a9a"/>
 
        </LinearLayout>
         </androidx.cardview.widget.CardView>
@@ -254,7 +254,7 @@
                         android:text="@string/movies"
                         android:layout_gravity="center"
                         android:fontFamily="@font/geeks_job_medium"
-                        android:textColor="@color/orange"/>
+                        android:textColor="#9a9a9a"/>
 
 
                 </LinearLayout>
@@ -265,7 +265,7 @@
                     android:text="@string/and_symbol"
                     android:layout_gravity="center"
                     android:textSize="40sp"
-                    android:textColor="@color/orange"
+                    android:textColor="#9a9a9a"
                     android:fontFamily="@font/geeks_job_medium"/>
 
 
@@ -292,7 +292,7 @@
                         android:text="@string/sports"
                         android:layout_gravity="center"
                         android:fontFamily="@font/geeks_job_medium"
-                        android:textColor="@color/orange"/>
+                        android:textColor="#9a9a9a"/>
 
                 </LinearLayout>
 

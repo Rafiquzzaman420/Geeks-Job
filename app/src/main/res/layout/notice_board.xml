@@ -29,7 +29,7 @@
                 android:layout_height="match_parent"
                 android:textSize="28sp"
                 android:layout_margin="20dp"
-                android:textColor="@color/orange"
+                android:textColor="@color/blue"
                 android:gravity="center"
                 android:layout_weight=".8"
                 android:textStyle="bold"
@@ -44,7 +44,7 @@
                 android:textSize="22sp"
                 android:layout_margin="20dp"
                 android:text="@string/user_notice_body"
-                android:textColor="@color/orange"
+                android:textColor="#9a9a9a"
                 android:gravity="center"
                 android:fontFamily="@font/geeks_job_medium"/>
 

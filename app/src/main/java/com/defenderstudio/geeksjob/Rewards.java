@@ -106,7 +106,7 @@ public class Rewards extends AppCompatActivity {
             if (value == 0) {
                 informationValidationAfterGettingZero();
             } else {
-                START_TIME_IN_MILLIS = 43200000;
+                START_TIME_IN_MILLIS = 28800000;
 
                 // Loading the Rewarded Ads
                 rewardedAdLoader();
@@ -187,8 +187,7 @@ public class Rewards extends AppCompatActivity {
 
                 }, 3000);
             } else {
-                // Otherwise it'll set the starting time to 12 Hours or 43200000 milliseconds
-                START_TIME_IN_MILLIS = 43200000;
+                START_TIME_IN_MILLIS = 28800000;
 
                 // Loading the Rewarded Ads
                 rewardedAdLoader();
@@ -257,7 +256,7 @@ public class Rewards extends AppCompatActivity {
             }
             // Otherwise it'll set the starting time to 24 Hours or 86400000 milliseconds
             else {
-                START_TIME_IN_MILLIS = 43200000;
+                START_TIME_IN_MILLIS = 28800000;
             }
         });
 
@@ -438,7 +437,7 @@ public class Rewards extends AppCompatActivity {
 
     private void timerTimeSendToServer() {
         long currentTime = Calendar.getInstance().getTimeInMillis();
-        long timerTime = currentTime + 43200000;
+        long timerTime = currentTime + 28800000;
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 

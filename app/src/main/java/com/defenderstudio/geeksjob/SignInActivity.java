@@ -1,13 +1,14 @@
 package com.defenderstudio.geeksjob;
 
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -34,82 +35,122 @@ import java.util.Objects;
 public class SignInActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 100;
-    TextView appNameTextView, companyNameTextView;
+    TextView companyNameTextView;
+    Animation logoAnimation, signInAnimation;
     // [START declare_auth]
-    private FirebaseAuth mAuth;
+    private FirebaseAuth firebaseAuth;
     private ProgressBar progressBar;
-    private GoogleSignInClient mGoogleSignInClient;
-    private ImageView googleIcon;
-    private String valueFromServer;
+    private GoogleSignInClient googleSignInClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+                WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_sign_in);
-        // [START config_signin]
-        // Configure Google Sign In
-        overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
 
 
         CardView signInButton = findViewById(R.id.sign_in_button);
-
-        appNameTextView = findViewById(R.id.app_name_sign_in_window);
+        ImageView appLogo = findViewById(R.id.appLogo);
         companyNameTextView = findViewById(R.id.company_name_sign_in);
-
-
-        appNameTextView.setTextSize(convertFromDp(160));
+        TextView SignInButtonText = findViewById(R.id.sign_in_button_text);
+        ImageView googleImage = findViewById(R.id.googleImage);
 
         Animation right_animation = AnimationUtils.loadAnimation(this, R.anim.company_name_anim);
-        appNameTextView.setAnimation(right_animation);
-
-        companyNameTextView.setAnimation(right_animation);
-
-        googleIcon = findViewById(R.id.google_icon);
-
         progressBar = findViewById(R.id.progressbar_sign_in);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken("1096631451357-nm97s6b45hllm30r8ij6935bdg40seii.apps.googleusercontent.com")
                 .requestEmail()
                 .build();
+        googleSignInClient = GoogleSignIn.getClient(this, gso);
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        // [END config_signin]
 
-        // [START initialize_auth]
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
-        // [END initialize_auth]
+        logoAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
+                R.anim.fade_in);
+        appLogo.startAnimation(logoAnimation);
+
+
+        logoAnimation.setAnimationListener((new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                animatorMethod(appLogo, (int) convertFromDp(-100));
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                appLogo.clearAnimation();
+
+                signInButton.setVisibility(View.VISIBLE);
+                companyNameTextView.setVisibility(View.VISIBLE);
+                SignInButtonText.setTextSize(convertFromDp(40));
+                googleImage.getLayoutParams().height = (int) convertFromDp(600);
+                googleImage.getLayoutParams().width = (int) convertFromDp(600);
+                signInAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
+                        R.anim.fade_in_fast);
+                signInButton.startAnimation(signInAnimation);
+
+                signInAnimation.setAnimationListener(new Animation.AnimationListener() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+
+                    }
+                });
+                companyNameTextView.setAnimation(right_animation);
+
+            }
+        }));
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
         signInButton.setOnClickListener(v -> {
-            googleIconSpinner googleIconSpinner = new googleIconSpinner();
-            googleIconSpinner.googleIconSpinnerStart();
             signIn();
             progressBar.setVisibility(View.VISIBLE);
         });
     }
 
-    // [START on_start_check_user]
+    private void animatorMethod(View view, float value) {
+        ObjectAnimator objectAnimator = ObjectAnimator.ofFloat(view, "TranslationY", value);
+        objectAnimator.setDuration(2000);
+        objectAnimator.start();
+    }
+
+
     @Override
     public void onStart() {
         super.onStart();
     }
 
-    // [END on_start_check_user]
 
-    // [START onactivityresult]
+
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
 
             try {
-                // Google Sign In was successful, authenticate with Firebase
+
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
+
                 progressBar.setVisibility(View.GONE);
                 Toast.makeText(getApplicationContext(),
                         "Sign in failed. Please be sure to turn on internet", Toast.LENGTH_LONG).show();
@@ -117,16 +158,13 @@ public class SignInActivity extends AppCompatActivity {
             }
         }
     }
-    // [END onactivityresult]
 
-    // [START auth_with_google]
     private void firebaseAuthWithGoogle(String idToken) {
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
-        mAuth.signInWithCredential(credential)
+        firebaseAuth.signInWithCredential(credential)
                 .addOnCompleteListener(this, task -> {
-                    progressBar.setVisibility(View.GONE);
                     if (task.isSuccessful()) {
-                        // Sign in success, update UI with the signed-in user's information
+                        progressBar.setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(),
                                 "Signed in successfully", Toast.LENGTH_SHORT).show();
 
@@ -137,16 +175,16 @@ public class SignInActivity extends AppCompatActivity {
 
 
                     } else {
-                        // If sign in fails, display a message to the user.
                         progressBar.setVisibility(View.GONE);
                         try {
                             Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
+                            Toast.makeText(getApplicationContext(),
+                                    "Sign in failed. Be sure to turn on internet connection", Toast.LENGTH_LONG).show();
                         } catch (Exception e) {
                             if (isOnline()) {
                                 Toast.makeText(getApplicationContext(),
                                         "Sorry. You've been banned for misusing Geeks Job", Toast.LENGTH_LONG).show();
                             } else {
-                                progressBar.setVisibility(View.GONE);
                                 Toast.makeText(getApplicationContext(),
                                         "Sign in failed. Be sure to turn on internet connection", Toast.LENGTH_LONG).show();
                             }
@@ -163,15 +201,11 @@ public class SignInActivity extends AppCompatActivity {
         return netInfo != null && netInfo.isConnected();
     }
 
-    // [END auth_with_google]
-
-    // [START sign in]
 
     private void signIn() {
-        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-        startActivityForResult(signInIntent, RC_SIGN_IN);
+            Intent signInIntent = googleSignInClient.getSignInIntent();
+            startActivityForResult(signInIntent, RC_SIGN_IN);
     }
-    // [END signing]
 
     @Override
     public void onBackPressed() {
@@ -182,20 +216,6 @@ public class SignInActivity extends AppCompatActivity {
                 .setNegativeButton("No", null)
                 .show();
     }
-
-
-    private class googleIconSpinner {
-        @SuppressLint("Recycle")
-        ObjectAnimator rotateAnimation = ObjectAnimator.ofFloat(googleIcon, "rotation", 0, 360);
-
-        private void googleIconSpinnerStart() {
-            this.rotateAnimation.start();
-            this.rotateAnimation.setDuration(1000);
-            this.rotateAnimation.setRepeatCount(15);
-        }
-
-    }
-
 
     public float convertFromDp(int input) {
         final float scale = getResources().getDisplayMetrics().density;

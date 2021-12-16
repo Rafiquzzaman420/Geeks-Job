@@ -5,16 +5,24 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,8 +38,9 @@ public class LeaderBoard extends AppCompatActivity {
     DatabaseReference databaseReference;
     LeaderBoardAdapter leaderBoardAdapter;
     ArrayList<LeaderBoardUser> leaderBoardUserArrayList;
+    ImageView firstUser, secondUser, thirdUser;
+    ConstraintLayout constraintLayout;
     private boolean dialogShown = false;
-
     Runnable statusChecker = () -> {
         try {
             Dialog dialog = new Dialog(LeaderBoard.this, R.style.dialogue);
@@ -46,7 +55,6 @@ public class LeaderBoard extends AppCompatActivity {
                 }
             });
             // If Internet connection is gone
-// TODO : NEED TO ADD ONLINE ACCESS IF POSSIBLE
             if (!isOnline()) {
                 if (!dialogShown) {
                     dialogShown = true;
@@ -68,6 +76,25 @@ public class LeaderBoard extends AppCompatActivity {
         setContentView(R.layout.leaderboard_activity);
 
         startConnectionRepeatingTask();
+        firstUser = findViewById(R.id.first_user);
+        secondUser = findViewById(R.id.second_user);
+        thirdUser = findViewById(R.id.third_user);
+
+        constraintLayout = findViewById(R.id.constraint_layout_leader_board);
+        parameterSetter(constraintLayout);
+
+        firstUser.getLayoutParams().height = (int) convertFromDp(200);
+        secondUser.getLayoutParams().height = (int) convertFromDp(200);
+        thirdUser.getLayoutParams().height = (int) convertFromDp(200);
+
+        firstUser.getLayoutParams().width = (int) convertFromDp(200);
+        secondUser.getLayoutParams().width = (int) convertFromDp(200);
+        thirdUser.getLayoutParams().width = (int) convertFromDp(200);
+
+        SharedPreferences infoGetter = getSharedPreferences("position", MODE_PRIVATE);
+        String firstPosition = infoGetter.getString("FIRST_URL", null);
+        String secondPosition = infoGetter.getString("SECOND_URL", null);
+        String thirdPosition = infoGetter.getString("THIRD_URL", null);
 
         recyclerView = findViewById(R.id.competition_recycler_view);
         databaseReference = FirebaseDatabase.getInstance().
@@ -97,6 +124,13 @@ public class LeaderBoard extends AppCompatActivity {
                         leaderBoardUserArrayList.add(leaderBoardUser);
                         assert leaderBoardUser != null;
                     }
+                    Glide.with(getApplicationContext()).load(firstPosition).
+                            apply(RequestOptions.circleCropTransform()).into(firstUser);
+                    Glide.with(getApplicationContext()).load(secondPosition).
+                            apply(RequestOptions.circleCropTransform()).into(secondUser);
+                    Glide.with(getApplicationContext()).load(thirdPosition).
+                            apply(RequestOptions.circleCropTransform()).into(thirdUser);
+
                     Collections.reverse(leaderBoardUserArrayList);
                     leaderBoardAdapter.notifyDataSetChanged();
                 }
@@ -130,4 +164,17 @@ public class LeaderBoard extends AppCompatActivity {
         startActivity(goBackIntent);
         finish();
     }
+
+    public float convertFromDp(int input) {
+        final float scale = getResources().getDisplayMetrics().density;
+        return ((input - 0.8f) / scale);
+    }
+
+    private void parameterSetter(View view) {
+        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
+        layoutParams.height = (int) convertFromDp(700);
+        layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
+        view.setLayoutParams(layoutParams);
+    }
+
 }

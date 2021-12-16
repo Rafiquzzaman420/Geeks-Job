@@ -31,7 +31,7 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/community_group"
-                android:textColor="@color/orange" />
+                android:textColor="@color/blue" />
 
             <TextView
                 android:id="@+id/header_text"
@@ -41,7 +41,7 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/group_chat_text"
-                android:textColor="@color/orange" />
+                android:textColor="@color/light_gray" />
 
 
             <TextView
@@ -76,7 +76,7 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/tail_text"
-                android:textColor="@color/orange" />
+                android:textColor="@color/light_gray" />
 
             <TextView
                 android:id="@+id/youtube_link"

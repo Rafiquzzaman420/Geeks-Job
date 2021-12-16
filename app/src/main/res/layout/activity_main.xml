@@ -18,7 +18,7 @@
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?actionBarSize"
-            android:background="@color/orange"
+            android:background="@drawable/gradient"
             app:titleTextAppearance="@style/geeks_job_large"
             app:titleTextColor="@color/white"
             android:elevation="4dp"/>

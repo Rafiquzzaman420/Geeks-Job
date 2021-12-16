@@ -1,14 +1,17 @@
 package com.defenderstudio.geeksjob;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -29,13 +32,15 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.user_info_items, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.leader_board, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        @SuppressLint("WorldReadableFiles")
+        SharedPreferences shareInfo = this.context.getSharedPreferences("position", Context.MODE_PRIVATE);
         LeaderBoardUser leaderBoardUser = list.get(position);
         holder.userName.setText(leaderBoardUser.getUserName().toUpperCase());
         holder.pointsInfo.setText(String.valueOf(leaderBoardUser.getPointsValue()));
@@ -46,12 +51,15 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
 
         if (position == 1) {
             trophyImageSetter(holder, R.drawable.gold_trophy);
+            shareInfo.edit().putString("FIRST_URL", photoUrl).apply();
         }
         else if (position == 2) {
             trophyImageSetter(holder, R.drawable.silver_trophy);
+            shareInfo.edit().putString("SECOND_URL", photoUrl).apply();
         }
         else if (position == 3) {
             trophyImageSetter(holder, R.drawable.bronze_trophy);
+            shareInfo.edit().putString("THIRD_URL", photoUrl).apply();
         }
         else {
             holder.trophyImage.setVisibility(View.GONE);
@@ -74,7 +82,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView userName, pointsInfo, userPosition;
-        ImageView userImage, trophyImage;
+        ImageView userImage, trophyImage, firstUser, secondUser, thirdUser;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

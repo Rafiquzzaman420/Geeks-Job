@@ -4,8 +4,8 @@
     android:layout_height="350dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="30dp"
-    android:layout_marginStart="60dp"
-    android:layout_marginEnd="60dp"
+    android:layout_marginStart="80dp"
+    android:layout_marginEnd="80dp"
     android:elevation="10dp"
     android:translationZ="10dp"
     android:layout_gravity="center"
@@ -14,7 +14,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/gradient">
         
         <TextView
             android:layout_width="match_parent"
@@ -23,8 +24,7 @@
             android:text="@string/adNotLoaded"
             android:textSize="46sp"
             android:gravity="center"
-            android:textColor="@color/orange"
-            android:textStyle="bold"
+            android:textColor="@color/white"
             android:layout_margin="20dp"/>
         <Button
             android:id="@+id/adNotAvailableButton"

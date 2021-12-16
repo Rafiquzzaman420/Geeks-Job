@@ -28,7 +28,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="10dp"
-            app:cardCornerRadius="20dp">
+            app:cardCornerRadius="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -42,8 +42,7 @@
                     android:layout_height="50dp"
                     android:background="@drawable/bkash"
                     android:layout_gravity="center"
-                    android:layout_margin="20dp"
-                    />
+                    android:layout_margin="20dp" />
 
                 <EditText
                     android:maxLength="11"
@@ -56,10 +55,10 @@
                     android:hint="@string/bkash"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-                    android:textColor="@color/orange"
-                    android:textColorHint="@color/orange"
+                    android:textColor="@color/blue"
+                    android:textColorHint="#9a9a9a"
                     android:textSize="15sp"
-                    android:backgroundTint="@color/orange"/>
+                    android:backgroundTint="@color/blue"/>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -74,7 +73,7 @@
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
             android:layout_marginBottom="20dp"
-            app:cardCornerRadius="20dp">
+            app:cardCornerRadius="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -98,10 +97,10 @@
                     android:layout_height="match_parent"
                     android:hint="@string/paypal"
                     android:layout_marginEnd="10dp"
+                    android:textColor="@color/blue"
+                    android:textColorHint="#9a9a9a"
                     android:textSize="15sp"
-                    android:textColorHint="@color/orange"
-                    android:textColor="@color/orange"
-                    android:backgroundTint="@color/orange"/>
+                    android:backgroundTint="@color/blue"/>
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
@@ -133,7 +132,7 @@
                     android:id="@+id/withdrawal_amount_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textColor="@color/orange"
+                    android:textColor="#9a9a9a"
                     android:fontFamily="@font/geeks_job_regular"
                     android:textSize="20sp"
                     android:text="@string/withdrawal_amount"
@@ -164,7 +163,7 @@
                 android:layout_margin="10dp"
                 android:theme="@style/white.GeeksJob"
                 android:text="@string/ten_thousand"
-                android:textColor="@color/orange"
+                android:textColor="@color/blue"
                 android:fontFamily="@font/geeks_job_regular"
                 android:textStyle="bold"
                 android:focusable="true"
@@ -180,7 +179,7 @@
                 android:layout_margin="10dp"
                 android:theme="@style/white.GeeksJob"
                 android:text="@string/twenty_thousand"
-                android:textColor="@color/orange"
+                android:textColor="@color/blue"
                 android:fontFamily="@font/geeks_job_regular"
                 android:textStyle="bold"
                 android:focusable="true"
@@ -196,7 +195,7 @@
                 android:layout_margin="10dp"
                 android:theme="@style/white.GeeksJob"
                 android:text="@string/fifty_thousand"
-                android:textColor="@color/orange"
+                android:textColor="@color/blue"
                 android:fontFamily="@font/geeks_job_regular"
                 android:textStyle="bold"
                 android:focusable="true"
@@ -242,7 +241,7 @@
                     android:layout_weight=".3"
                     android:text="@string/points_Info"
                     android:gravity="center"
-                    android:textColor="@color/orange"
+                    android:textColor="#9a9a9a"
                     android:fontFamily="@font/geeks_job_regular"
                     android:textStyle="bold"
                     android:textSize="20sp"/>
@@ -251,12 +250,12 @@
                         android:id="@+id/pointAmount"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="@string/not_applicable"
                         android:layout_weight=".7"
-                        android:textColor="@color/orange"
+                        android:fontFamily="@font/geeks_job_regular"
                         android:gravity="center"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/geeks_job_regular"/>
+                        android:text="@string/not_applicable"
+                        android:textColor="@color/blue"
+                        android:textSize="20sp" />
 
                 </LinearLayout>
 

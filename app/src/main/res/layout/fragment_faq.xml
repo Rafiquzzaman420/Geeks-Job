@@ -19,10 +19,8 @@
         android:layout_marginStart="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="10dp"
-        app:cardBackgroundColor="@color/orange"
-        app:cardCornerRadius="15dp"
-        android:elevation="10dp"
-        android:translationZ="10dp">
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="@android:color/transparent">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,7 +33,7 @@
             android:textSize="24sp"
             android:text="@string/faq_initial"
             android:textColor="@color/white"
-            android:layout_margin="10dp"
+            android:layout_margin="15dp"
             android:gravity="center"
             android:fontFamily="@font/geeks_job_regular"/>
     </LinearLayout>
@@ -49,7 +47,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="10dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="10dp"
         android:elevation="10dp"
         android:translationZ="10dp">
 
@@ -62,8 +60,8 @@
             android:layout_height="wrap_content"
             android:textSize="22sp"
             android:text="@string/faq_eighth_question"
-            android:textColor="@color/orange"
-            android:layout_margin="10dp"
+            android:textColor="@color/blue"
+            android:layout_margin="15dp"
             android:fontFamily="@font/geeks_job_regular"/>
 
         <TextView
@@ -71,8 +69,8 @@
             android:layout_height="wrap_content"
             android:textSize="18sp"
             android:text="@string/faq_eighth_answer"
-            android:textColor="@color/orange"
-            android:layout_margin="10dp"
+            android:textColor="@color/light_gray"
+            android:layout_margin="15dp"
             android:fontFamily="@font/geeks_job_regular"/>
     </LinearLayout>
 
@@ -86,7 +84,7 @@
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="10dp"
             app:cardBackgroundColor="@color/white"
-            app:cardCornerRadius="15dp"
+            app:cardCornerRadius="10dp"
             android:elevation="10dp"
             android:translationZ="10dp">
 
@@ -99,8 +97,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="22sp"
                 android:text="@string/faq_first_question"
-                android:textColor="@color/orange"
-                android:layout_margin="10dp"
+                android:textColor="@color/blue"
+                android:layout_margin="15dp"
                 android:fontFamily="@font/geeks_job_regular"/>
 
             <TextView
@@ -108,8 +106,8 @@
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:text="@string/faq_first_answer"
-                android:textColor="@color/orange"
-                android:layout_margin="10dp"
+                android:textColor="@color/light_gray"
+                android:layout_margin="15dp"
                 android:fontFamily="@font/geeks_job_regular"/>
             </LinearLayout>
 
@@ -123,7 +121,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="10dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="10dp"
         android:elevation="10dp"
         android:translationZ="10dp">
 
@@ -135,18 +133,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="@string/faq_second_question"
-                android:textColor="@color/orange"
+                android:textColor="@color/blue"
                 android:textSize="22sp"
                 android:fontFamily="@font/geeks_job_regular"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="@string/faq_second_answer"
-                android:textColor="@color/orange"
+                android:textColor="@color/light_gray"
                 android:textSize="18sp"
                 android:fontFamily="@font/geeks_job_regular"/>
         </LinearLayout>
@@ -162,7 +160,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="10dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="10dp"
         android:elevation="10dp"
         android:translationZ="10dp">
 
@@ -174,18 +172,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="@string/faq_third_question"
-                android:textColor="@color/orange"
+                android:textColor="@color/blue"
                 android:textSize="22sp"
                 android:fontFamily="@font/geeks_job_regular"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="@string/faq_third_answer"
-                android:textColor="@color/orange"
+                android:textColor="@color/light_gray"
                 android:textSize="18sp"
                 android:fontFamily="@font/geeks_job_regular"/>
         </LinearLayout>
@@ -200,7 +198,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="10dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="10dp"
         android:elevation="10dp"
         android:translationZ="10dp">
 
@@ -212,18 +210,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="@string/faq_fourth_question"
-                android:textColor="@color/orange"
+                android:textColor="@color/blue"
                 android:textSize="22sp"
                 android:fontFamily="@font/geeks_job_regular"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="@string/faq_fourth_answer"
-                android:textColor="@color/orange"
+                android:textColor="@color/light_gray"
                 android:textSize="18sp"
                 android:fontFamily="@font/geeks_job_regular"/>
         </LinearLayout>
@@ -238,7 +236,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="10dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="10dp"
         android:elevation="10dp"
         android:translationZ="10dp">
 
@@ -250,9 +248,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="@string/faq_fifth_question"
-                android:textColor="@color/orange"
+                android:textColor="@color/blue"
                 android:textSize="22sp"
                 android:fontFamily="@font/geeks_job_regular"/>
 
@@ -261,7 +259,7 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:text="@string/faq_fifth_answer"
-                android:textColor="@color/orange"
+                android:textColor="@color/light_gray"
                 android:textSize="18sp"
                 android:fontFamily="@font/geeks_job_regular"/>
         </LinearLayout>
@@ -276,7 +274,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="10dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="10dp"
         android:elevation="10dp"
         android:translationZ="10dp">
 
@@ -288,18 +286,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="@string/faq_sixth_question"
-                android:textColor="@color/orange"
+                android:textColor="@color/blue"
                 android:textSize="22sp"
                 android:fontFamily="@font/geeks_job_regular"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="@string/faq_sixth_answer"
-                android:textColor="@color/orange"
+                android:textColor="@color/light_gray"
                 android:textSize="18sp"
                 android:fontFamily="@font/geeks_job_regular"/>
         </LinearLayout>
@@ -314,7 +312,7 @@
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="20dp"
         app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="15dp"
+        app:cardCornerRadius="10dp"
         android:elevation="10dp"
         android:translationZ="10dp">
 
@@ -326,18 +324,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="@string/faq_seventh_question"
-                android:textColor="@color/orange"
+                android:textColor="@color/blue"
                 android:textSize="22sp"
                 android:fontFamily="@font/geeks_job_regular"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="15dp"
                 android:text="@string/faq_seventh_answer"
-                android:textColor="@color/orange"
+                android:textColor="@color/light_gray"
                 android:textSize="18sp"
                 android:fontFamily="@font/geeks_job_regular"/>
         </LinearLayout>

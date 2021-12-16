@@ -9,7 +9,7 @@
     android:id="@+id/question_ans_drawer_layout"
     android:orientation="horizontal"
     tools:openDrawer="end"
-    android:background="@drawable/gradient">
+    android:background="@drawable/color_gradient">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -60,7 +60,7 @@
                     android:fontFamily="@font/geeks_job_medium"
                     android:gravity="center"
                     android:text="@string/topic_name"
-                    android:textColor="@color/orange"
+                    android:textColor="#9a9a9a"
                     android:textSize="18sp"
                     android:textStyle="bold"
                     tools:ignore="NestedWeights">
@@ -73,14 +73,13 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight=".35"
-                    android:background="@color/orange"
+                    android:background="#9a9a9a"
                     android:elevation="5sp"
                     android:fontFamily="@font/geeks_job_medium"
                     android:gravity="center"
                     android:text="@string/questionVIew"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:textStyle="bold"
                     android:padding="10dp">
 
                 </TextView>
@@ -110,7 +109,7 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/answer_one"
-                android:textColor="@color/orange"
+                android:textColor="#9a9a9a"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:theme="@style/white.GeeksJob"
@@ -130,7 +129,7 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/answer_two"
-                android:textColor="@color/orange"
+                android:textColor="#9a9a9a"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:theme="@style/white.GeeksJob" />
@@ -148,7 +147,7 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/answer_three"
-                android:textColor="@color/orange"
+                android:textColor="#9a9a9a"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:theme="@style/white.GeeksJob" />
@@ -167,7 +166,7 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/answer_four"
-                android:textColor="@color/orange"
+                android:textColor="#9a9a9a"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:theme="@style/white.GeeksJob" />
@@ -200,7 +199,6 @@
                     android:fontFamily="@font/geeks_job_medium"
                     android:text="@string/submit"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
                     android:textSize="18sp"
                     tools:ignore="InefficientWeight,TouchTargetSizeCheck">
 
@@ -240,7 +238,6 @@
                     android:fontFamily="@font/geeks_job_medium"
                     android:text="@string/leave"
                     android:textColor="@color/white"
-                    android:textStyle="bold"
                     android:textSize="18sp">
 
                 </Button>
@@ -251,15 +248,15 @@
                     android:layout_height="match_parent"
                     android:layout_margin="5dp"
                     android:layout_weight=".80"
-                    android:background="@drawable/ripple_white"
-                    android:backgroundTint="@color/orange"
+                    android:background="@color/white"
                     android:elevation="5dp"
                     android:translationZ="5dp"
                     android:gravity="center"
                     android:text="@string/initial_number"
                     android:textAppearance="@style/geeks_job_large"
-                    android:textColor="@color/white"
+                    android:textColor="#E91E63"
                     android:textSize="20sp"
+                    android:textStyle="bold"
                     android:theme="@style/purple.GeeksJob" />
 
                 <Button
@@ -274,7 +271,6 @@
                     android:text="@string/reward_Button"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:textStyle="bold"
                     android:visibility="visible" />
 
             </LinearLayout>

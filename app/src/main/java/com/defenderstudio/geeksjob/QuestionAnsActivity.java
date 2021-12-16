@@ -19,8 +19,6 @@ import android.os.Handler;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -69,7 +67,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             option4,
             leaveButton,
             submitButton,
-            hintBrowser,
             rewardTimer,
             rewardedAdButton;
     List<ScienceQuestion> scienceQuestionList;
@@ -86,7 +83,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     long correctCount = 0;
     private InterstitialAd mInterstitialAd;
     private RewardedInterstitialAd rewardedInterstitialAd;
-    private Handler adHandler;
+    private Handler handler;
 
     Runnable statusChecker = new Runnable() {
         @Override
@@ -95,7 +92,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 interstitialAdLoader();
             } finally {
                 int interval = 180000;
-                adHandler.postDelayed(statusChecker, interval);
+                handler.postDelayed(statusChecker, interval);
             }
         }
     };
@@ -143,14 +140,13 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
         startConnectionRepeatingTask();
 
-        adHandler = new Handler();
+        handler = new Handler();
         startRepeatingTask();
 
         rewardedAdButton = findViewById(R.id.rewardButton);
         rewardedAdButton.setTextSize(convertFromDp(30));
         submitButton = findViewById(R.id.submit);
         submitButton.setTextSize(convertFromDp(30));
-        hintBrowser.setTextSize(convertFromDp(30));
         leaveButton = findViewById(R.id.leave);
         leaveButton.setTextSize(convertFromDp(30));
         leaveButton.setBackgroundColor(getResources().getColor(R.color.red));
@@ -215,7 +211,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 }, 3000);
             } else {
                 // Otherwise it'll set the starting time to 5 Minutes or 300000 milliseconds
-                START_TIME_IN_MILLIS = 300000;
+                START_TIME_IN_MILLIS = 180000;
                 dialog.dismiss();
             }
         });
@@ -227,9 +223,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
 // Takes action when leave button or back button is clicked
         onLeaveButtonClicked();
-// Takes action when hint button is clicked and opens a browser window with intent
-        onHintClicked();
-
 
         //==============================================================================================
         // Getting Quiz from the firebase server
@@ -561,30 +554,12 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     })
                     .setNegativeButton("No", null)
                     .show();
-            overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
         });
     }
 
     //==============================================================================================
     // When Hint button is clicked, this will open a side browser from the drawer layout
     //==============================================================================================
-    @SuppressLint({"RtlHardcoded", "SetJavaScriptEnabled"})
-    private void onHintClicked() {
-        hintBrowser.setOnClickListener(v -> {
-
-            DrawerLayout browserDrawer = findViewById(R.id.question_ans_drawer_layout);
-            if (browserDrawer.isDrawerOpen(Gravity.RIGHT))
-                browserDrawer.closeDrawer(Gravity.RIGHT);
-            else {
-                browserDrawer.openDrawer(Gravity.RIGHT);
-                Toast.makeText(getApplicationContext(),
-                        "Loading. Please wait...", Toast.LENGTH_LONG).show();
-                Toast.makeText(getApplicationContext(),
-                        "Swipe Right to go back!", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
     //==============================================================================================
     // Takes action when back button is pressed. <Same as the leave button above>
     //==============================================================================================
@@ -602,7 +577,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     })
                     .setNegativeButton("No", null)
                     .show();
-            overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
 
         }
         catch (Exception ignored) {}
@@ -1112,7 +1086,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     private void timerTimeSendToServer() {
         long currentTime = Calendar.getInstance().getTimeInMillis();
-        long timerTime = currentTime + 300000;
+        long timerTime = currentTime + 180000;
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -1799,6 +1773,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     @Override
     protected void onDestroy() {
+        stopRepeatingTask();
         super.onDestroy();
     }
 
@@ -1819,5 +1794,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     public float convertFromDp(int input) {
         final float scale = getResources().getDisplayMetrics().density;
         return ((input - 0.8f) / scale);
+    }
+    void stopRepeatingTask() {
+        handler.removeCallbacks(statusChecker);
     }
 }

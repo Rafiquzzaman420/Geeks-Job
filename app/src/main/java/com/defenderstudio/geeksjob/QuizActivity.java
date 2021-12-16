@@ -47,6 +47,7 @@ public class QuizActivity extends AppCompatActivity {
     private moviesDatabaseLoadWithAsyncTask moviesDatabaseLoadWithAsyncTask;
 
     private boolean dialogShown = false;
+    private Handler handler;
 
     Runnable statusChecker = () -> {
         try {
@@ -85,6 +86,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_section_activity);
 
+        handler = new Handler();
         startConnectionRepeatingTask();
 
         MobileAds.initialize(
@@ -248,13 +250,14 @@ public class QuizActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
+        stopRepeatingTask();
         if (scienceDatabaseLoadWithAsyncTask != null) {
             scienceDatabaseLoadWithAsyncTask.cancel(true);
         }
         if (moviesDatabaseLoadWithAsyncTask != null) {
             moviesDatabaseLoadWithAsyncTask.cancel(true);
         }
+        super.onDestroy();
     }
 
     public float convertFromDp(int input) {
@@ -374,5 +377,8 @@ public class QuizActivity extends AppCompatActivity {
     private void imageSizeSetter(ImageView imageView, int size) {
         imageView.getLayoutParams().width = (int) convertFromDp(size);
         imageView.getLayoutParams().height = (int) convertFromDp(size);
+    }
+    void stopRepeatingTask() {
+        handler.removeCallbacks(statusChecker);
     }
 }

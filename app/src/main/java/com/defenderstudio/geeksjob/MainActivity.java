@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             new Handler().postDelayed(this::startRepeatingTask, interval);
         }
     };
-    private Handler adHandler;
+    private Handler handler;
     private InterstitialAd mInterstitialAd;
     Runnable adStatusChecker = new Runnable() {
         @Override
@@ -98,7 +99,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 interstitialAdLoader();
             } finally {
                 int interval = 180000;
-                adHandler.postDelayed(statusChecker, interval);
+                handler.postDelayed(statusChecker, interval);
             }
         }
     };
@@ -113,15 +114,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         total_earning = findViewById(R.id.total_earning);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        handler = new Handler();
         startRepeatingTask();
-
-        adHandler = new Handler();
         startAdRepeatingTask();
 
         readVersionInformationFromFirebase(value -> {
             // Always use application BuildConfig from package
-            long appVersion = 5;
+            long appVersion = 8;
             if (value != appVersion) {
                 ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
                 progressDialog.setCancelable(false);
@@ -167,21 +166,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
-        readUpdateInformationFromFirebase(value -> {
-            new Handler().postDelayed(() -> {
-                if (value != null) {
-                    if (value.equals(updating)) {
-                        FirebaseAuth.getInstance().signOut();
-                        Toast.makeText(getApplicationContext(),
-                                "Application is being Updated. Please Try again later...",
-                                Toast.LENGTH_LONG).show();
-                        Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
-                        startActivity(logOut);
-                        finish();
-                    }
+        readUpdateInformationFromFirebase(value -> new Handler().postDelayed(() -> {
+            if (value != null) {
+                if (value.equals(updating)) {
+                    FirebaseAuth.getInstance().signOut();
+                    Toast.makeText(getApplicationContext(),
+                            "Application is being Updated. Please Try again later...",
+                            Toast.LENGTH_LONG).show();
+                    Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
+                    startActivity(logOut);
+                    finish();
                 }
-            }, 3000);
-        });
+            }
+        }, 3000));
 
         @SuppressLint("HardwareIds")
         String ANDROID_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -256,6 +253,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         statusChecker.run();
     }
 
+    void stopRepeatingTask() {
+        handler.removeCallbacks(statusChecker);
+    }
+
     private boolean isOnline() {
         ConnectivityManager connectivityManager =
                 (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -281,7 +282,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }).setNegativeButton("No", null)
                 .show();
 
-        overridePendingTransition(R.anim.left_in_anim, R.anim.left_out_anim);
     }
 
     @Override
@@ -336,8 +336,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             startActivity(signOutIntent);
                             finish();
                         });
-
-
                 Toast.makeText(getApplicationContext(), "Signed out successfully", Toast.LENGTH_SHORT).show();
 
         }
@@ -394,7 +392,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @SuppressLint("HardwareIds")
             String ANDROID_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
             signInInformation.setValue(ANDROID_ID);
-        } else return;
+        }
     }
 
     public void readUpdateInformationFromFirebase(MainActivity.readUpdateInformation readUpdateInformation) {
@@ -486,6 +484,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onDestroy() {
+        stopRepeatingTask();
         super.onDestroy();
     }
 
@@ -496,7 +495,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         AdRequest adRequest = new AdRequest.Builder().build();
         MobileAds.initialize(this, initializationStatus -> {
             // TODO : Need to change the Ad ID here
-            InterstitialAd.load(this, "ca-app-pub-3940256099942544/1033173712", adRequest,
+            InterstitialAd.load(this, "ca-app-pub-5052828179386026/7359645574", adRequest,
                     new InterstitialAdLoadCallback() {
                         @Override
                         public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
@@ -504,12 +503,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             // an ad is loaded.
                             // TODO : Need to show the Ad only when the user makes a mistake
                             mInterstitialAd = interstitialAd;
-                            if (mInterstitialAd != null) {
-                                mInterstitialAd.show(MainActivity.this);
-                            } else {
-                                Toast.makeText(getApplicationContext(), "Ad wasn't ready yet!",
-                                        Toast.LENGTH_SHORT).show();
-                            }
+                            mInterstitialAd.show(MainActivity.this);
                             mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 @Override
                                 public void onAdDismissedFullScreenContent() {
@@ -558,9 +552,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         void readUpdateInfo(String value);
     }
 
-
-    //Main Account ID: ca-app-pub-5052828179386026/7359645574
-    // Dummy ID: ca-app-pub-3940256099942544/1033173712
 
     public interface readVersionInformation {
         void readVersionInfo(Double value);

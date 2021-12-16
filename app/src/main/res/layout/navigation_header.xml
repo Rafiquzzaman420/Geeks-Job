@@ -4,7 +4,7 @@
     android:layout_height="220dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:background="@color/orange"
+    android:background="@drawable/menu_background"
     android:gravity="center">
 
     <androidx.cardview.widget.CardView
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/not_applicable"
-        android:textColor="@color/orange"
+        android:textColor="#9a9a9a"
         android:textSize="18sp"
         android:layout_margin="10dp"
         android:gravity="center"

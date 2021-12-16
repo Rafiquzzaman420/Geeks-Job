@@ -1,17 +1,101 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".LeaderBoard"
-    android:padding="10dp"
     android:orientation="vertical"
-    android:background="@color/preferred_color">
+    android:background="@color/preferred_color"
+    android:translationZ="10dp"
+    android:elevation="10dp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_layout_leader_board"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:background="@drawable/leader_board_background">
+
+        <ImageView
+            android:contentDescription="@string/first_image"
+            android:id="@+id/first_user"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_baseline_account_circle_24"
+            android:layout_marginBottom="70dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:contentDescription="@string/first_image"
+            android:id="@+id/first_trophy"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/gold_cup"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/first_user"/>
+
+
+        <ImageView
+            android:contentDescription="@string/second_image"
+            android:id="@+id/second_user"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="@drawable/ic_baseline_account_circle_24"
+            android:layout_marginStart="220dp"
+            android:layout_marginTop="75dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:contentDescription="@string/second_image"
+            android:id="@+id/second_trophy"
+            android:src="@drawable/silver_cup"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="220dp"
+            app:layout_constraintBottom_toBottomOf="@id/second_user"/>
+
+
+        <ImageView
+            android:id="@+id/third_user"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginTop="100dp"
+            android:layout_marginEnd="220dp"
+            android:background="@drawable/ic_baseline_account_circle_24"
+            android:contentDescription="@string/third_image"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:contentDescription="@string/third_image"
+            android:id="@+id/third_trophy"
+            android:src="@drawable/bronze_cup"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginEnd="220dp"
+            app:layout_constraintBottom_toBottomOf="@id/third_user"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/competition_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@drawable/color_gradient">
 
 
     </androidx.recyclerview.widget.RecyclerView>

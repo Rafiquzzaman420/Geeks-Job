@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.GeeksJob"
-        tools:ignore="LockedOrientationActivity">
+        tools:ignore="LockedOrientationActivity"
+        android:largeHeap="true">
         <activity
             android:name=".LeaderBoard"
             android:exported="false"
@@ -36,19 +37,14 @@
             android:name=".Rewards"
             android:noHistory="true"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".SignInActivity"
-            android:exported="false"
-            android:noHistory="true"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".SplashScreen"
             android:exported="true"
             android:noHistory="true"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

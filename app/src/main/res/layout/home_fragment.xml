@@ -5,7 +5,7 @@
     android:id="@+id/home_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/home"
+    android:background="@drawable/splash"
     android:orientation="vertical"
     tools:context=".Home"
     tools:targetApi="o"
@@ -53,8 +53,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:textSize="25sp"
-                android:textColor="@color/orange"
-                android:textStyle="bold"
+                android:textColor="#9a9a9a"
+                android:fontFamily="@font/geeks_job_regular"
                 android:layout_gravity="center" />
 
 
@@ -80,10 +80,10 @@
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:textSize="20sp"
-                    android:textColor="@color/orange"
-                    android:textStyle="bold"
+                    android:textColor="#9a9a9a"
                     android:layout_gravity="center"
                     android:text="@string/points"
+                    android:fontFamily="@font/geeks_job_medium"
                     android:id="@+id/points_text"/>
 
                 <TextView
@@ -93,7 +93,7 @@
                     android:layout_height="match_parent"
                     android:layout_margin="10dp"
                     android:textSize="20sp"
-                    android:textColor="@color/orange"
+                    android:textColor="#9a9a9a"
                     android:textStyle="bold"
                     android:text="@string/zero"
                     android:layout_gravity="center" />
@@ -155,7 +155,7 @@
                         android:fontFamily="@font/geeks_job_medium"
                         android:gravity="center"
                         android:text="@string/quiz"
-                        android:textColor="@color/orange"
+                        android:textColor="#9a9a9a"
                         android:id="@+id/quiz_text"/>
 
                 </LinearLayout>
@@ -199,7 +199,7 @@
                         android:fontFamily="@font/geeks_job_medium"
                         android:gravity="center"
                         android:text="@string/reward"
-                        android:textColor="@color/orange"
+                        android:textColor="#9a9a9a"
                         android:id="@+id/rewards_text"/>
 
                 </LinearLayout>
@@ -252,7 +252,7 @@
                             android:fontFamily="@font/geeks_job_medium"
                             android:gravity="center"
                             android:text="@string/group_chat"
-                            android:textColor="@color/orange"
+                            android:textColor="#9a9a9a"
                             android:id="@+id/group_chat_text"/>
 
                 </LinearLayout>
@@ -303,7 +303,7 @@
                             android:fontFamily="@font/geeks_job_medium"
                             android:gravity="center"
                             android:text="@string/leader_board"
-                            android:textColor="@color/orange"
+                            android:textColor="#9a9a9a"
                             android:id="@+id/Leader_board_text" />
 
 

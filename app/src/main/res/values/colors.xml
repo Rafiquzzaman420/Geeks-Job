@@ -9,6 +9,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="purple">#7C45DD</color>
     <color name="blue">#2196F3</color>
+    <color name="light_gray">#9a9a9a</color>
     <color name="light_blue_600">#FF039BE5</color>
     <color name="light_blue_900">#FF01579B</color>
     <color name="light_blue_A200">#FF40C4FF</color>

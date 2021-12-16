@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@drawable/home"
+    android:background="@drawable/splash"
     tools:context=".Profile"
     tools:ignore="NestedWeights">
 
@@ -51,12 +51,13 @@
             android:gravity="center"
             android:text="@string/not_applicable"
             android:fontFamily="@font/geeks_job_medium"
-            android:textColor="@color/orange"
+            android:textColor="#9a9a9a"
             android:layout_marginTop="5dp"
             android:layout_marginBottom="5dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:textStyle="bold" />
+
         </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
@@ -78,7 +79,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:fontFamily="@font/geeks_job_medium"
-                android:textColor="@color/orange"
+                android:textColor="#9a9a9a"
                 android:textStyle="bold" />
         </androidx.cardview.widget.CardView>
 
@@ -107,6 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight=".3"
+                android:background="@drawable/gradient"
                 android:orientation="horizontal">
 
                 <TextView
@@ -121,7 +123,7 @@
                     android:gravity="center"
                     android:text="@string/answered_question"
                     android:fontFamily="@font/geeks_job_medium"
-                    android:textColor="@color/orange"
+                    android:textColor="@color/white"
                     android:textStyle="bold" />
 
 
@@ -137,7 +139,7 @@
                     android:gravity="center"
                     android:text="@string/not_applicable"
                     android:fontFamily="@font/geeks_job_medium"
-                    android:textColor="@color/orange"
+                    android:textColor="@color/white"
                     android:textStyle="bold" />
 
             </LinearLayout>
@@ -160,6 +162,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight=".3"
+                android:background="@drawable/gradient"
                 android:orientation="horizontal">
 
                 <TextView
@@ -174,7 +177,7 @@
                     android:gravity="center"
                     android:text="@string/total_earning"
                     android:fontFamily="@font/geeks_job_medium"
-                    android:textColor="@color/orange"
+                    android:textColor="@color/white"
                     android:textStyle="bold" />
 
                 <TextView
@@ -189,7 +192,7 @@
                     android:gravity="center"
                     android:text="@string/not_applicable"
                     android:fontFamily="@font/geeks_job_medium"
-                    android:textColor="@color/orange"
+                    android:textColor="@color/white"
                     android:textStyle="bold" />
             </LinearLayout>
 
