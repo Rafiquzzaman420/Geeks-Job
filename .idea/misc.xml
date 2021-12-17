@@ -32,6 +32,7 @@
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/drawable/ripple_white.xml" value="0.2203125" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/drawable/round_image.xml" value="0.14290540540540542" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/drawable/roundbutton.xml" value="0.2203125" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/drawable/sent_drawable.xml" value="0.19583333333333333" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/drawable/splash.xml" value="0.19583333333333333" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/drawable/submit_button_ripple.xml" value="0.2203125" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/drawable/toolbar_gradient.xml" value="0.2203125" />
@@ -101,6 +102,8 @@
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/fragment_profile.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/fragment_share.xml" value="0.1" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/home_fragment.xml" value="0.25" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/item_receive_group.xml" value="0.67" />
+        <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/item_sent_group.xml" value="0.5" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/leader_board.xml" value="0.33" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/leaderboard_activity.xml" value="0.25" />
         <entry key="..\:/Documents/Geeks Job/app/src/main/res/layout/menu_background.xml" value="0.1814814814814815" />

@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 if (value.equals(updating)) {
                     FirebaseAuth.getInstance().signOut();
                     Toast.makeText(getApplicationContext(),
-                            "Application is being Updated. Please Try again later...",
+                            "Constructing Quiz Result. Please Try again later...",
                             Toast.LENGTH_LONG).show();
                     Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
                     startActivity(logOut);

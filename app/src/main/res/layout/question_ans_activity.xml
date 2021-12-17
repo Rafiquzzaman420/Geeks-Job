@@ -109,7 +109,7 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/answer_one"
-                android:textColor="#9a9a9a"
+                android:textColor="@color/blue"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:theme="@style/white.GeeksJob"
@@ -129,7 +129,7 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/answer_two"
-                android:textColor="#9a9a9a"
+                android:textColor="@color/blue"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:theme="@style/white.GeeksJob" />
@@ -147,7 +147,7 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/answer_three"
-                android:textColor="#9a9a9a"
+                android:textColor="@color/blue"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:theme="@style/white.GeeksJob" />
@@ -166,7 +166,7 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/answer_four"
-                android:textColor="#9a9a9a"
+                android:textColor="@color/blue"
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:theme="@style/white.GeeksJob" />
@@ -254,7 +254,7 @@
                     android:gravity="center"
                     android:text="@string/initial_number"
                     android:textAppearance="@style/geeks_job_large"
-                    android:textColor="#E91E63"
+                    android:textColor="@color/blue"
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:theme="@style/purple.GeeksJob" />

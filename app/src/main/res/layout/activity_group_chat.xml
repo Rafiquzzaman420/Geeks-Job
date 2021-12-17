@@ -34,10 +34,10 @@
                 android:layout_weight="1"
                 android:hint="Type a message..."
                 android:inputType="textPersonName"
-                android:backgroundTint="#E91E63"
+                android:backgroundTint="@color/blue"
                 android:padding="8dp"
                 android:textSize="14sp"
-                android:textColor="@color/orange"
+                android:textColor="@color/blue"
                 />
         </LinearLayout>
     </androidx.cardview.widget.CardView>

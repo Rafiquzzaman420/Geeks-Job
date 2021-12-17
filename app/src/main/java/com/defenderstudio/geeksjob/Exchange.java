@@ -142,10 +142,10 @@ public class Exchange extends Fragment {
             FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
             assert firebaseUser != null;
-            DatabaseReference bkashNumber = firebaseDatabase.child("AllUsers").
+            DatabaseReference bkashNumber = firebaseDatabase.child("Winning Persons").
                     child("User").child(firebaseUser.getUid()).child("UserInformation").child("BkashAccount");
 
-            DatabaseReference paypalEmail = firebaseDatabase.child("AllUsers").
+            DatabaseReference paypalEmail = firebaseDatabase.child("Winning Persons").
                     child("User").child(firebaseUser.getUid()).child("UserInformation").child("PaypalEmail");
 
             new Handler().postDelayed(() -> {
@@ -167,36 +167,50 @@ public class Exchange extends Fragment {
                         DatabaseReference name = firebaseDatabase.child("Winning Persons").
                                 child("User").child(firebaseUser.getUid()).child("UserInformation").child("Name");
                         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                        if (tenThousandButton.isSelected()) {
-                            name.setValue(user.getDisplayName());
-                            tenThousandPoints.setValue(10000);
-                        } else if (twentyThousandButton.isSelected()) {
-                            DatabaseReference twentyThousandPoints = firebaseDatabase.child("Winning Persons").
-                                    child("User").child(firebaseUser.getUid()).child("UserInformation").child("Amount");
-                            name.setValue(user.getDisplayName());
-                            twentyThousandPoints.setValue(20000);
-                        } else if (fiftyThousandButton.isSelected()) {
-                            DatabaseReference fiftyThousandPoints = firebaseDatabase.child("Winning Persons").
-                                    child("User").child(firebaseUser.getUid()).child("UserInformation").child("Amount");
-                            name.setValue(user.getDisplayName());
-                            fiftyThousandPoints.setValue(50000);
-                        }
-                        Toast.makeText(requireActivity().getApplicationContext(),
-                                "Submitted Successfully",
-                                Toast.LENGTH_LONG).show();
-                        progressBar.setVisibility(View.GONE);
+
+                            if (tenThousandButton.isSelected()) {
+                                name.setValue(user.getDisplayName());
+                                tenThousandPoints.setValue(10000);
+                                Toast.makeText(requireActivity().getApplicationContext(),
+                                        "Submitted Successfully",
+                                        Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
+                            } else if (twentyThousandButton.isSelected()) {
+                                DatabaseReference twentyThousandPoints = firebaseDatabase.child("Winning Persons").
+                                        child("User").child(firebaseUser.getUid()).child("UserInformation").child("Amount");
+                                name.setValue(user.getDisplayName());
+                                twentyThousandPoints.setValue(20000);
+                                Toast.makeText(requireActivity().getApplicationContext(),
+                                        "Submitted Successfully",
+                                        Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
+                            } else if (fiftyThousandButton.isSelected()) {
+                                DatabaseReference fiftyThousandPoints = firebaseDatabase.child("Winning Persons").
+                                        child("User").child(firebaseUser.getUid()).child("UserInformation").child("Amount");
+                                name.setValue(user.getDisplayName());
+                                fiftyThousandPoints.setValue(50000);
+                                Toast.makeText(requireActivity().getApplicationContext(),
+                                        "Submitted Successfully",
+                                        Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
+                            }else{
+                                Toast.makeText(requireActivity().getApplicationContext(),
+                                        "Please select your amount",
+                                        Toast.LENGTH_LONG).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
+
+
                     } else {
-                        bkashAccount.setError("Enter a phone number");
-                        bkashAccount.requestFocus();
                         paypalAccount.setError("Enter an email address");
                         paypalAccount.requestFocus();
+                        bkashAccount.setError("Enter a phone number");
+                        bkashAccount.requestFocus();
                         Toast.makeText(requireActivity().getApplicationContext(),
                                 "Complete the required fields!",
                                 Toast.LENGTH_LONG).show();
                         progressBar.setVisibility(View.GONE);
                     }
-
-
                 });
 
             }, 3000);
@@ -217,12 +231,12 @@ public class Exchange extends Fragment {
                 tenThousandButton.setSelected(true);
                 twentyThousandButton.setSelected(false);
                 fiftyThousandButton.setSelected(false);
-                tenThousandButton.setBackgroundColor(getResources().getColor(R.color.green));
+                tenThousandButton.setBackgroundColor(getResources().getColor(R.color.blue));
                 tenThousandButton.setTextColor(Color.WHITE);
                 fiftyThousandButton.setBackgroundColor(Color.WHITE);
-                fiftyThousandButton.setTextColor(getResources().getColor(R.color.orange));
+                fiftyThousandButton.setTextColor(getResources().getColor(R.color.blue));
                 twentyThousandButton.setBackgroundColor(Color.WHITE);
-                twentyThousandButton.setTextColor(getResources().getColor(R.color.orange));
+                twentyThousandButton.setTextColor(getResources().getColor(R.color.blue));
 
             });
         }
@@ -238,12 +252,12 @@ public class Exchange extends Fragment {
                 twentyThousandButton.setSelected(true);
                 tenThousandButton.setSelected(false);
                 fiftyThousandButton.setSelected(false);
-                twentyThousandButton.setBackgroundColor(getResources().getColor(R.color.green));
+                twentyThousandButton.setBackgroundColor(getResources().getColor(R.color.blue));
                 twentyThousandButton.setTextColor(Color.WHITE);
                 fiftyThousandButton.setBackgroundColor(Color.WHITE);
                 tenThousandButton.setBackgroundColor(Color.WHITE);
-                fiftyThousandButton.setTextColor(getResources().getColor(R.color.orange));
-                tenThousandButton.setTextColor(getResources().getColor(R.color.orange));
+                fiftyThousandButton.setTextColor(getResources().getColor(R.color.blue));
+                tenThousandButton.setTextColor(getResources().getColor(R.color.blue));
 
             });
         }
@@ -260,9 +274,9 @@ public class Exchange extends Fragment {
                 twentyThousandButton.setSelected(false);
                 twentyThousandButton.setBackgroundColor(Color.WHITE);
                 tenThousandButton.setBackgroundColor(Color.WHITE);
-                twentyThousandButton.setTextColor(getResources().getColor(R.color.orange));
-                tenThousandButton.setTextColor(getResources().getColor(R.color.orange));
-                fiftyThousandButton.setBackgroundColor(getResources().getColor(R.color.green));
+                twentyThousandButton.setTextColor(getResources().getColor(R.color.blue));
+                tenThousandButton.setTextColor(getResources().getColor(R.color.blue));
+                fiftyThousandButton.setBackgroundColor(getResources().getColor(R.color.blue));
                 fiftyThousandButton.setTextColor(Color.WHITE);
 
             });

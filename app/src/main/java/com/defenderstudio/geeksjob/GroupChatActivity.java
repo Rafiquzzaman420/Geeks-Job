@@ -1,6 +1,5 @@
 package com.defenderstudio.geeksjob;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -70,10 +69,10 @@ public class GroupChatActivity extends AppCompatActivity {
         binding.sendBtn.setOnClickListener(v -> {
             String messageTxt = binding.messageBox.getText().toString();
 
-            if (messageTxt.isEmpty()){
+            if (messageTxt.isEmpty()) {
                 Toast.makeText(getApplicationContext(), "Enter some text",
                         Toast.LENGTH_LONG).show();
-            }else {
+            } else {
                 Message message = new Message(messageTxt, senderUid);
                 binding.messageBox.setText("");
 

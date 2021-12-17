@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="center"
             android:orientation="vertical"
-            android:background="@drawable/color_gradient">
+            android:background="@drawable/gradient">
 
             <TextView
                 android:id="@+id/rewards_text_view_point"

@@ -714,7 +714,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         penaltyDialog.setMessage("Penalty started...");
         penaltyDialog.show();
         penaltyDialog.setCancelable(false);
-        new Handler().postDelayed(penaltyDialog::dismiss, 20000);
+        new Handler().postDelayed(penaltyDialog::dismiss, 10000);
     }
 
 
@@ -839,13 +839,13 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     //==============================================================================================
     public void resetButtonColor() {
         option1.setBackgroundColor(Color.WHITE);
-        option1.setTextColor(getResources().getColor(R.color.orange));
+        option1.setTextColor(getResources().getColor(R.color.blue));
         option2.setBackgroundColor(Color.WHITE);
-        option2.setTextColor(getResources().getColor(R.color.orange));
+        option2.setTextColor(getResources().getColor(R.color.blue));
         option3.setBackgroundColor(Color.WHITE);
-        option3.setTextColor(getResources().getColor(R.color.orange));
+        option3.setTextColor(getResources().getColor(R.color.blue));
         option4.setBackgroundColor(Color.WHITE);
-        option4.setTextColor(getResources().getColor(R.color.orange));
+        option4.setTextColor(getResources().getColor(R.color.blue));
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
     }
 

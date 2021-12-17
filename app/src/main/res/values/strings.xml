@@ -242,4 +242,5 @@
     <string name="second_image">Second Image</string>
     <string name="first_image">First Image</string>
     <string name="third_image">Third Image</string>
+    <string name="text">Text</string>
 </resources>
