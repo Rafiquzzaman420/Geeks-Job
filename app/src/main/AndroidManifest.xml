@@ -9,24 +9,29 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
-        android:allowBackup="true"
-        android:fullBackupContent="true"
         android:icon="@mipmap/logo"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/logo"
         android:supportsRtl="true"
+        android:hardwareAccelerated="false"
         android:theme="@style/Theme.GeeksJob"
         tools:ignore="LockedOrientationActivity"
-        android:largeHeap="true">
+        android:largeHeap="true"
+        android:allowBackup="false">
+
         <activity
             android:name=".LeaderBoard"
             android:exported="false"
             android:noHistory="true"
             android:screenOrientation="portrait" />
 
+<!--  Old ID:      ca-app-pub-5052828179386026~6268256882-->
+<!--  New ID:      ca-app-pub-8576099614774380~1173819634-->
+
+
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-5052828179386026~6268256882" />
+            android:value="ca-app-pub-8576099614774380~1173819634" />
 
         <activity
             android:name=".GroupChatActivity"

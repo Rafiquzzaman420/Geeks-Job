@@ -150,14 +150,14 @@ public class QuizActivity extends AppCompatActivity {
         scienceText.setTextSize(convertFromDp(45));
         historyText.setTextSize(convertFromDp(45));
         curriculumText.setTextSize(convertFromDp(45));
-
-        imageSizeSetter(religionImage, 280);
-        imageSizeSetter(curriculumImage, 280);
-        imageSizeSetter(moviesImage, 280);
-        imageSizeSetter(scienceImage, 280);
-        imageSizeSetter(historyImage, 280);
-        imageSizeSetter(sportsImage, 280);
-
+try {
+    imageSizeSetter(religionImage, 280);
+    imageSizeSetter(curriculumImage, 280);
+    imageSizeSetter(moviesImage, 280);
+    imageSizeSetter(scienceImage, 280);
+    imageSizeSetter(historyImage, 280);
+    imageSizeSetter(sportsImage, 280);
+}catch (Exception ignored){}
 
 
 //==================================================================================================

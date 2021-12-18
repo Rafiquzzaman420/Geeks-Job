@@ -6,13 +6,10 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
@@ -27,8 +24,6 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.Objects;
 
 
 /**
@@ -85,7 +80,7 @@ public class Home extends Fragment {
         }
 
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -112,7 +107,7 @@ public class Home extends Fragment {
         readPointDataFromFirebase(value -> {
             if (value != null) {
                 userPointReference.setText(String.valueOf(value));
-            }else{
+            } else {
                 userPointReference.setText(String.valueOf(0));
             }
             userPointReference.invalidate();
@@ -136,15 +131,19 @@ public class Home extends Fragment {
         userPointReference.setTextSize(convertFromDp(30));
         pointsText.setTextSize(convertFromDp(30));
 
-        quizImage.getLayoutParams().height = (int) convertFromDp(250);
-        rewardsImage.getLayoutParams().height = (int) convertFromDp(250);
-        chatImage.getLayoutParams().height = (int) convertFromDp(250);
-        leaderBoardImage.getLayoutParams().height = (int) convertFromDp(250);
+        try {
+            quizImage.getLayoutParams().height = (int) convertFromDp(250);
+            rewardsImage.getLayoutParams().height = (int) convertFromDp(250);
+            chatImage.getLayoutParams().height = (int) convertFromDp(250);
+            leaderBoardImage.getLayoutParams().height = (int) convertFromDp(250);
 
-        quizImage.getLayoutParams().width = (int) convertFromDp(250);
-        rewardsImage.getLayoutParams().width = (int) convertFromDp(250);
-        chatImage.getLayoutParams().width = (int) convertFromDp(250);
-        leaderBoardImage.getLayoutParams().width = (int) convertFromDp(250);
+            quizImage.getLayoutParams().width = (int) convertFromDp(250);
+            rewardsImage.getLayoutParams().width = (int) convertFromDp(250);
+            chatImage.getLayoutParams().width = (int) convertFromDp(250);
+            leaderBoardImage.getLayoutParams().width = (int) convertFromDp(250);
+
+        } catch (Exception ignored) {}
+
 
         groupChat.setOnClickListener(v -> {
             Intent intent = new Intent(Home.this.getActivity(), GroupChatActivity.class);
@@ -191,7 +190,8 @@ public class Home extends Fragment {
                 Long longValue = snapshot.getValue(Long.class);
                 try {
                     userPointInfoCallBack.userPointInfo(longValue);
-                }catch (Exception ignored){}
+                } catch (Exception ignored) {
+                }
 
             }
 
@@ -202,15 +202,10 @@ public class Home extends Fragment {
         });
     }
 
-    public interface userPointInfoCallBack {
-        void userPointInfo(Long value);
-    }
-
     public float convertFromDp(int input) {
         final float scale = requireActivity().getResources().getDisplayMetrics().density;
         return ((input - 0.7f) / scale);
     }
-
 
     @Override
     public void onDestroy() {
@@ -225,5 +220,9 @@ public class Home extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+    }
+
+    public interface userPointInfoCallBack {
+        void userPointInfo(Long value);
     }
 }

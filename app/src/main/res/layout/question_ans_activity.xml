@@ -80,7 +80,7 @@
                     android:text="@string/questionVIew"
                     android:textColor="@color/white"
                     android:textSize="20sp"
-                    android:padding="10dp">
+                    android:padding="15dp">
 
                 </TextView>
 

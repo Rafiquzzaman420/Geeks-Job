@@ -82,14 +82,15 @@ public class LeaderBoard extends AppCompatActivity {
 
         constraintLayout = findViewById(R.id.constraint_layout_leader_board);
         parameterSetter(constraintLayout);
+try {
+    firstUser.getLayoutParams().height = (int) convertFromDp(200);
+    secondUser.getLayoutParams().height = (int) convertFromDp(200);
+    thirdUser.getLayoutParams().height = (int) convertFromDp(200);
 
-        firstUser.getLayoutParams().height = (int) convertFromDp(200);
-        secondUser.getLayoutParams().height = (int) convertFromDp(200);
-        thirdUser.getLayoutParams().height = (int) convertFromDp(200);
-
-        firstUser.getLayoutParams().width = (int) convertFromDp(200);
-        secondUser.getLayoutParams().width = (int) convertFromDp(200);
-        thirdUser.getLayoutParams().width = (int) convertFromDp(200);
+    firstUser.getLayoutParams().width = (int) convertFromDp(200);
+    secondUser.getLayoutParams().width = (int) convertFromDp(200);
+    thirdUser.getLayoutParams().width = (int) convertFromDp(200);
+}catch (Exception ignored){}
 
         SharedPreferences infoGetter = getSharedPreferences("position", MODE_PRIVATE);
         String firstPosition = infoGetter.getString("FIRST_URL", null);

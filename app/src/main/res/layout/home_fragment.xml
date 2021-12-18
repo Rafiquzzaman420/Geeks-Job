@@ -155,6 +155,7 @@
                         android:fontFamily="@font/geeks_job_medium"
                         android:gravity="center"
                         android:text="@string/quiz"
+                        android:textSize="22sp"
                         android:textColor="#9a9a9a"
                         android:id="@+id/quiz_text"/>
 
@@ -199,6 +200,7 @@
                         android:fontFamily="@font/geeks_job_medium"
                         android:gravity="center"
                         android:text="@string/reward"
+                        android:textSize="22sp"
                         android:textColor="#9a9a9a"
                         android:id="@+id/rewards_text"/>
 
@@ -253,6 +255,7 @@
                             android:gravity="center"
                             android:text="@string/group_chat"
                             android:textColor="#9a9a9a"
+                            android:textSize="22sp"
                             android:id="@+id/group_chat_text"/>
 
                 </LinearLayout>
@@ -304,6 +307,7 @@
                             android:gravity="center"
                             android:text="@string/leader_board"
                             android:textColor="#9a9a9a"
+                            android:textSize="22sp"
                             android:id="@+id/Leader_board_text" />
 
 
