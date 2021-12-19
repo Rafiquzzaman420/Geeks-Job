@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "1096631451357",
+    "firebase_url": "https://geeks-job-b0e71-default-rtdb.firebaseio.com",
     "project_id": "geeks-job-b0e71",
     "storage_bucket": "geeks-job-b0e71.appspot.com"
   },
@@ -13,6 +14,30 @@
         }
       },
       "oauth_client": [
+        {
+          "client_id": "1096631451357-9d2ub5qe736a5fug04n56679epek0anh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.defenderstudio.geeksjob",
+            "certificate_hash": "b005f63c2572b609265fe8559c7523d4495f5d1e"
+          }
+        },
+        {
+          "client_id": "1096631451357-fnlvbmn0p8asnsv9aqnhhtg2si2eamh4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.defenderstudio.geeksjob",
+            "certificate_hash": "307f0e6ad24886fbdd6092495aefea86f8480be7"
+          }
+        },
+        {
+          "client_id": "1096631451357-h5ivo13f08s9v0l4v6tnemh1f4t7j3iv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.defenderstudio.geeksjob",
+            "certificate_hash": "6257cc4e270170611a6f61e5e6b8f57c8dd6c528"
+          }
+        },
         {
           "client_id": "1096631451357-nm97s6b45hllm30r8ij6935bdg40seii.apps.googleusercontent.com",
           "client_type": 3
