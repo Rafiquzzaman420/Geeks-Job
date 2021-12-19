@@ -75,7 +75,7 @@
             android:layout_height="match_parent"
             android:textSize="28sp"
             android:layout_margin="20dp"
-            android:textColor="@color/orange"
+            android:textColor="@color/blue"
             android:gravity="center"
             android:layout_weight=".8"
             android:textStyle="bold"
@@ -88,7 +88,7 @@
             android:layout_height="match_parent"
             android:textSize="22sp"
             android:layout_margin="20dp"
-            android:textColor="@color/orange"
+            android:textColor="@color/blue"
             android:gravity="center"
             android:fontFamily="@font/geeks_job_medium"/>
 

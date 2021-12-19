@@ -8,12 +8,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,14 +27,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class LeaderBoard extends AppCompatActivity {
     // TODO : NEED TO DO SOME WORK IN HERE
@@ -39,6 +49,7 @@ public class LeaderBoard extends AppCompatActivity {
     LeaderBoardAdapter leaderBoardAdapter;
     ArrayList<LeaderBoardUser> leaderBoardUserArrayList;
     ImageView firstUser, secondUser, thirdUser;
+    TextView leaderBoardTimer;
     ConstraintLayout constraintLayout;
     private boolean dialogShown = false;
     Runnable statusChecker = () -> {
@@ -79,6 +90,21 @@ public class LeaderBoard extends AppCompatActivity {
         firstUser = findViewById(R.id.first_user);
         secondUser = findViewById(R.id.second_user);
         thirdUser = findViewById(R.id.third_user);
+        leaderBoardTimer = findViewById(R.id.leaderBoardTimer);
+
+        long currentTime = Calendar.getInstance().getTimeInMillis();
+        getTimerInformation(time -> {
+            if (time <= currentTime){
+                FirebaseAuth.getInstance().signOut();
+                Intent signOutIntent = new Intent(LeaderBoard.this, SignInActivity.class);
+                startActivity(signOutIntent);
+                finish();
+                Toast.makeText(getApplicationContext(), "Calculating Result. Please try again later...", Toast.LENGTH_LONG).show();
+            }
+            else{
+                startTimer((time-currentTime));
+            }
+        });
 
         constraintLayout = findViewById(R.id.constraint_layout_leader_board);
         parameterSetter(constraintLayout);
@@ -137,9 +163,12 @@ public class LeaderBoard extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
+                    progressDialog.dismiss();
                 }
             });
-            progressDialog.dismiss();
+            try {
+                progressDialog.dismiss();
+            }catch (Exception ignored){}
         }, 3000);
 
     }
@@ -177,4 +206,66 @@ public class LeaderBoard extends AppCompatActivity {
         view.setLayoutParams(layoutParams);
     }
 
+    private void getTimerInformation(getTimerInfo getTimerInfo) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference databaseReference = database.getReference().child("Tournament Timer").child("Time left");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                Long value = snapshot.getValue(Long.class);
+                try {
+                    getTimerInfo.getInfo(value);
+                }catch (Exception e){
+                    getTimerInfo.getInfo((long)0);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+    }
+
+    private interface getTimerInfo {
+        void getInfo(Long time);
+    }
+
+
+    private void startTimer(long timeLeftInMillis) {
+
+        new CountDownTimer(timeLeftInMillis, 1000) {
+            @Override
+            public void onTick(long millisUntilFinished) {
+                String duration = String.format(Locale.ENGLISH, "%02d days %02d Hours %02d Minutes %02d Seconds",
+                        TimeUnit.MILLISECONDS.toDays(millisUntilFinished),
+                        TimeUnit.MILLISECONDS.toHours(millisUntilFinished) -
+                                TimeUnit.DAYS.toHours(TimeUnit.MILLISECONDS.toDays(millisUntilFinished)),
+                        TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
+                                TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
+                        TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
+                                TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
+
+                leaderBoardTimer.setText(duration);
+            }
+
+            @Override
+            public void onFinish() {
+                FirebaseAuth.getInstance().signOut();
+                Intent signOutIntent = new Intent(LeaderBoard.this, SignInActivity.class);
+                startActivity(signOutIntent);
+                finish();
+                Toast.makeText(getApplicationContext(), "Signed out successfully", Toast.LENGTH_SHORT).show();
+            }
+        }.start();
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        ProgressDialog progressDialog = new ProgressDialog(LeaderBoard.this, R.style.ProgressDialogStyle);
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+        super.onDestroy();
+    }
 }

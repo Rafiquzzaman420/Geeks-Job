@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="350dp"
+    android:layout_height="450dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:cardCornerRadius="30dp"
-    android:layout_marginStart="80dp"
-    android:layout_marginEnd="80dp"
+    android:layout_margin="100dp"
     android:elevation="10dp"
     android:translationZ="10dp"
     android:layout_gravity="center"
@@ -22,7 +21,7 @@
             android:layout_height="match_parent"
             android:layout_weight=".35"
             android:text="@string/adNotLoaded"
-            android:textSize="46sp"
+            android:textSize="50sp"
             android:gravity="center"
             android:textColor="@color/white"
             android:layout_margin="20dp"/>
