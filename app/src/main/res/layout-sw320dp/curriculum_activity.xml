@@ -43,8 +43,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight=".4"
-                android:textSize="23sp"
-                android:layout_marginTop="10dp"
+                android:textSize="18sp"
                 android:text="@string/competition"
                 android:gravity="center"
                 android:fontFamily="@font/geeks_job_medium"
@@ -62,7 +61,6 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="5dp"
                     android:layout_weight=".4"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/status"
                     android:gravity="center"
@@ -72,8 +70,8 @@
 
                 <ImageView
                     android:id="@+id/competition_online"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:layout_marginEnd="40dp"
                     android:background="@drawable/offline"/>
@@ -83,8 +81,8 @@
             <ImageView
                 android:contentDescription="@string/competition"
                 android:id="@+id/competition_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginTop="10dp"
@@ -130,8 +128,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight=".4"
-                android:textSize="23sp"
-                android:layout_marginTop="10dp"
+                android:textSize="18sp"
                 android:text="@string/university"
                 android:gravity="center"
                 android:fontFamily="@font/geeks_job_medium"
@@ -149,7 +146,6 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="5dp"
                     android:layout_weight=".4"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/status"
                     android:gravity="center"
@@ -159,8 +155,8 @@
 
                 <ImageView
                     android:id="@+id/university_online"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:layout_marginEnd="40dp"
                     android:background="@drawable/offline"/>
@@ -170,8 +166,8 @@
             <ImageView
                 android:contentDescription="@string/university"
                 android:id="@+id/university_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginTop="10dp"
@@ -218,8 +214,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight=".4"
-                android:textSize="23sp"
-                android:layout_marginTop="10dp"
+                android:textSize="18sp"
                 android:text="@string/medical"
                 android:gravity="center"
                 android:fontFamily="@font/geeks_job_medium"
@@ -237,7 +232,6 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="5dp"
                     android:layout_weight=".4"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/status"
                     android:gravity="center"
@@ -247,8 +241,8 @@
 
                 <ImageView
                     android:id="@+id/medical_online"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:layout_marginEnd="40dp"
                     android:background="@drawable/offline"/>
@@ -258,11 +252,11 @@
             <ImageView
                 android:contentDescription="@string/medical"
                 android:id="@+id/medical_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="30dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/medical"
                 android:layout_gravity="center"/>
@@ -307,10 +301,9 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="5dp"
                     android:layout_weight=".4"
-                    android:layout_marginTop="10dp"
                     android:text="@string/hsc_preparation"
                     android:gravity="center"
-                    android:textSize="23sp"
+                    android:textSize="18sp"
                     android:fontFamily="@font/geeks_job_medium"
                     android:textColor="#9a9a9a"/>
 
@@ -326,7 +319,6 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="5dp"
                     android:layout_weight=".4"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/status"
                     android:gravity="center"
@@ -336,8 +328,8 @@
 
                     <ImageView
                         android:id="@+id/hsc_online"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
                         android:layout_gravity="center"
                         android:layout_marginEnd="40dp"
                         android:background="@drawable/offline"/>
@@ -350,11 +342,11 @@
             <ImageView
                 android:contentDescription="@string/hsc_preparation"
                 android:id="@+id/hsc_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="30dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/hsc"
                 android:layout_gravity="center"/>
@@ -398,8 +390,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="5dp"
                 android:layout_weight=".4"
-                android:textSize="23sp"
-                android:layout_marginTop="10dp"
+                android:textSize="18sp"
                 android:text="@string/ssc_preparation"
                 android:gravity="center"
                 android:fontFamily="@font/geeks_job_medium"
@@ -416,7 +407,6 @@
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="5dp"
                     android:layout_weight=".4"
-                    android:layout_marginTop="10dp"
                     android:layout_marginBottom="10dp"
                     android:text="@string/status"
                     android:gravity="center"
@@ -426,8 +416,8 @@
 
                 <ImageView
                     android:id="@+id/ssc_online"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
                     android:layout_gravity="center"
                     android:layout_marginEnd="40dp"
                     android:background="@drawable/offline"/>
@@ -438,11 +428,11 @@
             <ImageView
                 android:contentDescription="@string/ssc_preparation"
                 android:id="@+id/ssc_image"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="30dp"
-                android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp"
                 android:background="@drawable/ssc"
                 android:layout_gravity="center"/>

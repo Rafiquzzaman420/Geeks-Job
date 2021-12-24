@@ -12,8 +12,8 @@
 
     <ImageView
         android:id="@+id/appLogo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
         android:layout_marginBottom="100dp"
         android:background="@drawable/logo_pro"
         android:contentDescription="@string/app_logo"
@@ -26,14 +26,14 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/sign_in_button"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:clickable="true"
         android:focusable="true"
         android:visibility="visible"
         android:layout_marginTop="150dp"
         android:layout_marginBottom="100dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
         android:foreground="?android:attr/selectableItemBackground"
         app:cardCornerRadius="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginStart="10dp"
+                android:layout_margin="10dp"
                 android:layout_weight=".8"
                 android:src="@drawable/google" />
 

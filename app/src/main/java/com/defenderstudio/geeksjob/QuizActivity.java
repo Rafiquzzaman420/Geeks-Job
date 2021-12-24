@@ -140,11 +140,11 @@ public class QuizActivity extends AppCompatActivity {
         });
 
        curriculumButton.setOnClickListener(view -> {
-           Toast.makeText(getApplicationContext(), "Coming Soon!", Toast.LENGTH_SHORT).show();
-//           Intent intent = new Intent(QuizActivity.this, Curriculum.class);
-//           intent.putExtra("Curriculum", "Curriculum");
-//           startActivity(intent);
-//           finish();
+//           Toast.makeText(getApplicationContext(), "Coming Soon!", Toast.LENGTH_SHORT).show();
+           Intent intent = new Intent(QuizActivity.this, Curriculum.class);
+           intent.putExtra("Curriculum", "Curriculum");
+           startActivity(intent);
+           finish();
        });
 
 

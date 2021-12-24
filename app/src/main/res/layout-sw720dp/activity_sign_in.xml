@@ -12,9 +12,9 @@
 
     <ImageView
         android:id="@+id/appLogo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginBottom="100dp"
+        android:layout_width="240dp"
+        android:layout_height="240dp"
+        android:layout_marginBottom="300dp"
         android:background="@drawable/logo_pro"
         android:contentDescription="@string/app_logo"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -26,16 +26,16 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/sign_in_button"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="120dp"
         android:clickable="true"
         android:focusable="true"
         android:visibility="visible"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:layout_marginBottom="100dp"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
+        android:layout_marginStart="100dp"
+        android:layout_marginEnd="100dp"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="50dp"
+        app:cardCornerRadius="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toTopOf="@+id/appLogo"
         android:tooltipText="@string/sign_in"
@@ -44,15 +44,15 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
 
             <ImageView
-                android:contentDescription="@string/app_logo"
                 android:id="@+id/googleImage"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_marginStart="10dp"
+                android:layout_margin="20dp"
                 android:layout_weight=".8"
                 android:src="@drawable/google" />
 
@@ -65,7 +65,7 @@
                 android:gravity="center"
                 android:text="@string/sign_in"
                 android:textColor="#A3A3A3"
-                android:textSize="28sp" />
+                android:textSize="60sp" />
 
 
         </LinearLayout>
@@ -87,7 +87,7 @@
         app:layout_constraintTop_toBottomOf="@+id/sign_in_button" />
 
     <TextView
-        android:visibility="visible"
+        android:visibility="gone"
         android:id="@+id/company_name_sign_in"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -98,7 +98,7 @@
         android:shadowDx="3.0"
         android:shadowDy="3.0"
         android:shadowRadius="1"
-        android:layout_marginBottom="26sp"
+        android:layout_marginBottom="20dp"
         android:text="@string/company_name"
         android:textColor="@color/white"
         android:textSize="24sp"

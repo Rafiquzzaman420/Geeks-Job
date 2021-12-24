@@ -149,8 +149,8 @@
                     <ImageView
                         android:contentDescription="@string/quiz"
                         android:id="@+id/quiz_image"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_gravity="center"
                         android:background="@drawable/choose" />
 
@@ -194,8 +194,8 @@
                     <ImageView
                         android:contentDescription="@string/reward"
                         android:id="@+id/rewards_image"
-                        android:layout_width="90dp"
-                        android:layout_height="90dp"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
                         android:layout_gravity="center"
                         android:background="@drawable/premium" />
 
@@ -249,8 +249,8 @@
                         <ImageView
                             android:contentDescription="@string/group_chat"
                             android:id="@+id/chat_image"
-                            android:layout_width="90dp"
-                            android:layout_height="90dp"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
                             android:layout_gravity="center"
                             android:background="@drawable/group_chat" />
 
@@ -301,8 +301,8 @@
                         <ImageView
                             android:contentDescription="@string/leader_board"
                             android:id="@+id/leader_board_image"
-                            android:layout_width="90dp"
-                            android:layout_height="90dp"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
                             android:layout_gravity="center"
                             android:background="@drawable/leaderboard" />
 

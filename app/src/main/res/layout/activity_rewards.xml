@@ -15,14 +15,14 @@
         android:layout_weight=".6"
         android:elevation="5dp"
         android:translationZ="10dp"
-        app:cardCornerRadius="10dp">
+        app:cardCornerRadius="20dp"
+        app:cardBackgroundColor="@android:color/transparent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:orientation="vertical"
-            android:background="@drawable/gradient">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/rewards_text_view_point"
@@ -91,8 +91,7 @@
                 android:id="@+id/rewardedAdButton"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
+               android:layout_margin="20dp"
                 android:elevation="5dp"
                 android:text="@string/watch_ad"
                 android:textSize="30sp"
@@ -106,17 +105,19 @@
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:cardCornerRadius="10dp"
+            app:cardCornerRadius="20dp"
             android:elevation="10dp"
             android:translationZ="10dp"
             android:layout_weight=".3"
-            android:layout_margin="10dp">
+            android:layout_marginBottom="20dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            app:cardBackgroundColor="@android:color/transparent">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@drawable/gradient"
                 android:gravity="center">
 
                 <ImageView

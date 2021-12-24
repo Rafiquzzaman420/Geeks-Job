@@ -72,7 +72,7 @@ public class SignInActivity extends AppCompatActivity {
         logoAnimation.setAnimationListener((new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                animatorMethod(appLogo, (int) convertFromDp(-100));
+                animatorMethod(appLogo, -100);
             }
 
             @Override
@@ -85,9 +85,6 @@ public class SignInActivity extends AppCompatActivity {
 
                 signInButton.setVisibility(View.VISIBLE);
                 companyNameTextView.setVisibility(View.VISIBLE);
-                SignInButtonText.setTextSize(convertFromDp(40));
-                googleImage.getLayoutParams().height = (int) convertFromDp(600);
-                googleImage.getLayoutParams().width = (int) convertFromDp(600);
                 signInAnimation = AnimationUtils.loadAnimation(getApplicationContext(),
                         R.anim.fade_in_fast);
                 signInButton.startAnimation(signInAnimation);
@@ -212,11 +209,6 @@ public class SignInActivity extends AppCompatActivity {
                 .setPositiveButton("Yes", (dialog, id) -> SignInActivity.super.onBackPressed())
                 .setNegativeButton("No", null)
                 .show();
-    }
-
-    public float convertFromDp(int input) {
-        final float scale = getResources().getDisplayMetrics().density;
-        return ((input - 0.8f) / scale);
     }
 
     @Override
