@@ -10,7 +10,6 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -34,16 +33,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class LeaderBoard extends AppCompatActivity {
-    // TODO : NEED TO DO SOME WORK IN HERE
     RecyclerView recyclerView;
     DatabaseReference databaseReference;
     LeaderBoardAdapter leaderBoardAdapter;

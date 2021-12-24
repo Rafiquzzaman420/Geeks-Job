@@ -29,25 +29,22 @@ import java.util.List;
 
 public class QuizActivity extends AppCompatActivity {
 
-    public static ArrayList<MoviesQuestion> moviesList;
-    public static ArrayList<CurriculumQuestion> curriculumList;
-    public static ArrayList<ReligionQuestion> religionList;
-    public static ArrayList<ScienceQuestion> scienceList;
+    public static ArrayList<TournamentQuestions> tournamentList;
 
     private final int index = 0;
 
-    List<ReligionQuestion> religionQuestionList = new ArrayList<>();
-    List<CurriculumQuestion> curriculumQuestionList = new ArrayList<>();
-    List<MoviesQuestion> moviesQuestionList = new ArrayList<>();
-    List<ScienceQuestion> scienceQuestionList = new ArrayList<>();
+    List<TournamentQuestions> tournamentQuestionsList = new ArrayList<>();
 
-    MoviesQuestion moviesQuestion;
-    ScienceQuestion scienceQuestion;
-    private scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask;
-    private moviesDatabaseLoadWithAsyncTask moviesDatabaseLoadWithAsyncTask;
+    TournamentQuestions tournamentQuestions;
+    private tournamentDatabaseLoadWithAsyncTask tournamentDatabaseLoadWithAsyncTask;
 
     private boolean dialogShown = false;
     private Handler handler;
+    String TotalUser = "Total Users";
+    String OnlineUser = "Online Users";
+
+    DatabaseReference databaseReference;
+    ValueEventListener listener;
 
     Runnable statusChecker = () -> {
         try {
@@ -78,6 +75,9 @@ public class QuizActivity extends AppCompatActivity {
         }
     };
 
+    public QuizActivity() {
+    }
+
     //==================================================================================================
     // onCreate() activity starts here
 //==================================================================================================
@@ -94,31 +94,11 @@ public class QuizActivity extends AppCompatActivity {
                 initializationStatus -> {
                 });
 
+        tournamentList = new ArrayList<>();
+        tournamentQuestionsList = tournamentList;
 
-        curriculumList = new ArrayList<>();
-        religionList = new ArrayList<>();
-        moviesList = new ArrayList<>();
-        scienceList = new ArrayList<>();
-
-
-        religionQuestionList = religionList;
-        curriculumQuestionList = curriculumList;
-        moviesQuestionList = moviesList;
-        scienceQuestionList = scienceList;
-
-        moviesDatabaseLoadWithAsyncTask moviesDatabaseLoadWithAsyncTask = new moviesDatabaseLoadWithAsyncTask();
-        moviesDatabaseLoadWithAsyncTask.execute();
-        scienceDatabaseLoadWithAsyncTask scienceDatabaseLoadWithAsyncTask = new scienceDatabaseLoadWithAsyncTask();
-        scienceDatabaseLoadWithAsyncTask.execute();
-
-
-        curriculumDatabaseLoadWithAsyncTask curriculumDatabaseLoadWithAsyncTask = new curriculumDatabaseLoadWithAsyncTask();
-        // This will be activated in the next couple of Updates Inshaallah
-        //        curriculumDatabaseLoadWithAsyncTask.execute();
-
-        religionDatabaseLoadWithAsyncTask religionDatabaseLoadWithAsyncTask = new religionDatabaseLoadWithAsyncTask();
-        // This will be activated in the next couple of Updates Inshaallah
-//        religionDatabaseLoadWithAsyncTask.execute();
+        tournamentDatabaseLoadWithAsyncTask = new tournamentDatabaseLoadWithAsyncTask();
+        tournamentDatabaseLoadWithAsyncTask.execute();
 
 
 //==================================================================================================
@@ -126,66 +106,54 @@ public class QuizActivity extends AppCompatActivity {
 //==================================================================================================
 
         CardView curriculumButton = findViewById(R.id.curriculum);
-        CardView religionButton = findViewById(R.id.religion);
-        CardView moviesButton = findViewById(R.id.movies);
-        CardView scienceButton = findViewById(R.id.science);
-
-        TextView religionText = findViewById(R.id.religion_text);
+        CardView tournamentButton = findViewById(R.id.tournament);
         TextView curriculumText = findViewById(R.id.curriculum_text);
-        TextView moviesText = findViewById(R.id.movies_text);
-        TextView sportsText = findViewById(R.id.sports_text);
-        TextView scienceText = findViewById(R.id.science_text);
-        TextView historyText = findViewById(R.id.history_text);
+        TextView tournamentText = findViewById(R.id.tournament_text);
+        ImageView online = findViewById(R.id.online);
+        TextView totalUsers = findViewById(R.id.total_users);
+        TextView onlineUsers = findViewById(R.id.online_users);
 
-        ImageView religionImage = findViewById(R.id.religion_image);
+
         ImageView curriculumImage = findViewById(R.id.curriculum_image);
-        ImageView moviesImage = findViewById(R.id.movies_image);
-        ImageView scienceImage= findViewById(R.id.science_image);
-        ImageView historyImage = findViewById(R.id.history_image);
-        ImageView sportsImage = findViewById(R.id.sports_image);
+        ImageView tournamentImage = findViewById(R.id.tournament_image);
 
-        religionText.setTextSize(convertFromDp(45));
-        moviesText.setTextSize(convertFromDp(45));
-        sportsText.setTextSize(convertFromDp(45));
-        scienceText.setTextSize(convertFromDp(45));
-        historyText.setTextSize(convertFromDp(45));
         curriculumText.setTextSize(convertFromDp(45));
+        tournamentText.setTextSize(convertFromDp(45));
 
-        imageSizeSetter(religionImage, 280);
-        imageSizeSetter(curriculumImage, 280);
-        imageSizeSetter(moviesImage, 280);
-        imageSizeSetter(scienceImage, 280);
-        imageSizeSetter(historyImage, 280);
-        imageSizeSetter(sportsImage, 280);
-
-
-
-//==================================================================================================
-        // Common intent for all the question buttons
-//==================================================================================================
-
+        imageSizeSetter(curriculumImage);
+        imageSizeSetter(tournamentImage);
 
 //==================================================================================================
         // Setting all the OnClickListener for all the buttons
 //==================================================================================================
 
-        curriculumButton.setOnClickListener(v ->
-                Toast.makeText(getApplicationContext(), "Coming soon!", Toast.LENGTH_SHORT).show()
-        );
-
-        religionButton.setOnClickListener(v ->
-                Toast.makeText(getApplicationContext(), "Coming soon!", Toast.LENGTH_SHORT).show()
-        );
-
-        moviesButton.setOnClickListener(v -> {
-            moviesQuestionAnswerLoadingIntent("Movies & Sports", "Movies & Sports", moviesList);
+        UserInfo(TotalUser, info -> {
+            if (info != 0){
+                totalUsers.setText(String.valueOf(info));
+            }
         });
+
+        UserInfo(OnlineUser, info -> {
+            if (info != 0){
+                onlineUsers.setText(String.valueOf(info));
+            }
+        });
+
+       curriculumButton.setOnClickListener(view -> {
+           Toast.makeText(getApplicationContext(), "Coming Soon!", Toast.LENGTH_SHORT).show();
+//           Intent intent = new Intent(QuizActivity.this, Curriculum.class);
+//           intent.putExtra("Curriculum", "Curriculum");
+//           startActivity(intent);
+//           finish();
+       });
+
+
+        tournamentButton.setOnClickListener(v ->
+                tournamentQuestionLoadingIntent("Tournament", "Tournament", tournamentList)
+        );
 
 
         //==============================================================================================
-        scienceButton.setOnClickListener(v -> {
-            ScienceQuestionAnswerLoadingIntent("Science & History", "Science & History", scienceList);
-        });
     }
 
     //==============================================================================================
@@ -200,24 +168,6 @@ public class QuizActivity extends AppCompatActivity {
 
     //==============================================================================================
 
-    public void moviesQuestionAnswerLoadingIntent(String message, String topicName, ArrayList<MoviesQuestion> arrayList) {
-        ProgressDialog dialog = new ProgressDialog(QuizActivity.this, R.style.ProgressDialogStyle);
-        dialog.setMessage(message + " Quiz loading...");
-        dialog.setCancelable(false);
-        dialog.show();
-        new Handler().postDelayed(() -> {
-            try {
-                moviesQuestion = arrayList.get(index);
-                Intent intent = new Intent(QuizActivity.this, QuestionAnsActivity.class);
-                intent.putExtra("topicName", topicName);
-                startActivity(intent);
-            } catch (Exception exception) {
-                Toast.makeText(getApplicationContext(), "Please try again!", Toast.LENGTH_LONG).show();
-            }
-            dialog.dismiss();
-        }, 3000);
-    }
-
     void startConnectionRepeatingTask() {
         statusChecker.run();
     }
@@ -230,14 +180,14 @@ public class QuizActivity extends AppCompatActivity {
                 connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
-    public void ScienceQuestionAnswerLoadingIntent(String message, String topicName, ArrayList<ScienceQuestion> arrayList) {
+    public void tournamentQuestionLoadingIntent(String message, String topicName, ArrayList<TournamentQuestions> arrayList) {
         ProgressDialog dialog = new ProgressDialog(QuizActivity.this, R.style.ProgressDialogStyle);
         dialog.setMessage(message + " Quiz loading...");
         dialog.setCancelable(false);
         dialog.show();
         new Handler().postDelayed(() -> {
             try {
-                scienceQuestion = arrayList.get(index);
+                tournamentQuestions = arrayList.get(index);
                 Intent intent = new Intent(QuizActivity.this, QuestionAnsActivity.class);
                 intent.putExtra("topicName", topicName);
                 startActivity(intent);
@@ -251,11 +201,8 @@ public class QuizActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         stopRepeatingTask();
-        if (scienceDatabaseLoadWithAsyncTask != null) {
-            scienceDatabaseLoadWithAsyncTask.cancel(true);
-        }
-        if (moviesDatabaseLoadWithAsyncTask != null) {
-            moviesDatabaseLoadWithAsyncTask.cancel(true);
+        if (tournamentDatabaseLoadWithAsyncTask != null) {
+            tournamentDatabaseLoadWithAsyncTask.cancel(true);
         }
         super.onDestroy();
     }
@@ -265,119 +212,61 @@ public class QuizActivity extends AppCompatActivity {
         return ((input - 0.8f) / scale);
     }
 
-    class curriculumDatabaseLoadWithAsyncTask extends AsyncTask<CurriculumQuestion, Void, Void> {
-        DatabaseReference curriculumReference;
+    class tournamentDatabaseLoadWithAsyncTask extends AsyncTask<TournamentQuestions, Void, Void> {
 
         @Override
-        protected Void doInBackground(CurriculumQuestion... lists) {
+        protected Void doInBackground(TournamentQuestions... lists) {
 
-            curriculumReference = FirebaseDatabase.getInstance().getReference("Questions/CurriculumQuestion/Curriculum");
-            curriculumReference.addValueEventListener(new ValueEventListener() {
+            databaseReference = FirebaseDatabase.getInstance().getReference("Questions/Tournament/Questions");
+            listener = new ValueEventListener() {
 
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    curriculumList = new ArrayList<>();
-                    curriculumQuestionList = curriculumList;
+                    tournamentList = new ArrayList<>();
+                    tournamentQuestionsList = tournamentList;
                     for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        CurriculumQuestion curriculumQuestion = dataSnapshot.getValue(CurriculumQuestion.class);
-                        curriculumList.add(curriculumQuestion);
+                        TournamentQuestions tournamentQuestions = dataSnapshot.getValue(TournamentQuestions.class);
+                        tournamentList.add(tournamentQuestions);
                     }
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
-            });
+            };
+            databaseReference.addValueEventListener(listener);
             return null;
         }
     }
 
-    class scienceDatabaseLoadWithAsyncTask extends AsyncTask<ScienceQuestion, Void, Void> {
-        DatabaseReference scienceReference;
-
-        @Override
-        protected Void doInBackground(ScienceQuestion... lists) {
-
-            scienceReference = FirebaseDatabase.getInstance().getReference("Questions/ScienceQuestion/Science");
-
-            scienceReference.addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    scienceList = new ArrayList<>();
-                    scienceQuestionList = scienceList;
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        ScienceQuestion scienceQuestion = dataSnapshot.getValue(ScienceQuestion.class);
-                        scienceList.add(scienceQuestion);
-                    }
+    private void UserInfo(String path, totalUsers users) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("Total Users").child(path);
+        listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                try {
+                    Long info = snapshot.getValue(Long.class);
+                    users.info(info);
+                } catch (Exception e) {
+                    users.info(0);
                 }
+            }
+            @Override
+            public void onCancelled (@NonNull DatabaseError error){
+            }
+        };
+        databaseReference.addValueEventListener(listener);
 
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-            return null;
-        }
+    }
+    private interface totalUsers {
+        void info(long info);
     }
 
-    class religionDatabaseLoadWithAsyncTask extends AsyncTask<ReligionQuestion, Void, Void> {
-        DatabaseReference religionReference;
-
-        @Override
-        protected Void doInBackground(ReligionQuestion... lists) {
-            religionReference = FirebaseDatabase.getInstance().getReference("Questions/ReligionQuestion/Religion");
-            religionReference.addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    religionList = new ArrayList<>();
-                    religionQuestionList = religionList;
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        ReligionQuestion religionQuestion = dataSnapshot.getValue(ReligionQuestion.class);
-                        religionList.add(religionQuestion);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-
-            return null;
-        }
+    private void imageSizeSetter(ImageView imageView) {
+        imageView.getLayoutParams().width = (int) convertFromDp(280);
+        imageView.getLayoutParams().height = (int) convertFromDp(280);
     }
 
-    class moviesDatabaseLoadWithAsyncTask extends AsyncTask<MoviesQuestion, Void, Void> {
-        DatabaseReference moviesReference;
-
-        @Override
-        protected Void doInBackground(MoviesQuestion... lists) {
-
-            moviesReference = FirebaseDatabase.getInstance().getReference("Questions/MoviesQuestion/Movies");
-            moviesReference.addValueEventListener(new ValueEventListener() {
-
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                    moviesList = new ArrayList<>();
-                    moviesQuestionList = moviesList;
-                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
-                        MoviesQuestion moviesQuestion = dataSnapshot.getValue(MoviesQuestion.class);
-                        moviesList.add(moviesQuestion);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-                }
-            });
-            return null;
-        }
-    }
-
-    private void imageSizeSetter(ImageView imageView, int size) {
-        imageView.getLayoutParams().width = (int) convertFromDp(size);
-        imageView.getLayoutParams().height = (int) convertFromDp(size);
-    }
     void stopRepeatingTask() {
         handler.removeCallbacks(statusChecker);
     }

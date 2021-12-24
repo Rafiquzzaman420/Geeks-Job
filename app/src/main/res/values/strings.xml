@@ -67,13 +67,13 @@
     <string name="science_and_history">Science &amp; History</string>
     <string name="movies_and_sports">Movies &amp; Sports</string>
     <string name="economy">Economy</string>
-    <string name="withdrawal_amount">Withdrawal Amount: (Coins)</string>
+    <string name="withdrawal">Withdrawal</string>
     <string name="bkash">Bkash Account...</string>
     <string name="paypal">Paypal Email...</string>
     <string name="ten_thousand">10000</string>
     <string name="twenty_thousand">20000</string>
     <string name="fifty_thousand">50000</string>
-    <string name="points_Info">You have (Coins):</string>
+    <string name="points_Info">You have :</string>
     <string name="reward">Rewards</string>
     <string name="chance">Chances left: </string>
     <string name="watch_ad">Watch</string>
@@ -244,4 +244,13 @@
     <string name="third_image">Third Image</string>
     <string name="text">Text</string>
     <string name="day_timer">00:00:00</string>
+    <string name="tournament">Tournament</string>
+    <string name="university">University</string>
+    <string name="medical">Medical</string>
+    <string name="hsc_preparation">HSC Preparation</string>
+    <string name="ssc_preparation">SSC Preparation</string>
+    <string name="online">Online</string>
+    <string name="status">Status</string>
+    <string name="total_users">Total User</string>
+    <string name="online_users">Users Online</string>
 </resources>

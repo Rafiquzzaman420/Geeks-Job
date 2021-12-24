@@ -1,0 +1,448 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".Curriculum"
+    android:background="@drawable/gradient"
+    tools:ignore="NestedWeights">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".75"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="7.5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:cardCornerRadius="10dp"
+        android:elevation="10dp"
+        android:translationZ="10dp"
+        android:id="@+id/competition"
+        android:clickable="true"
+        android:focusable="true"
+        android:tooltipText="@string/competition"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/competition_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight=".4"
+                android:textSize="23sp"
+                android:layout_marginTop="10dp"
+                android:text="@string/competition"
+                android:gravity="center"
+                android:fontFamily="@font/geeks_job_medium"
+                android:textColor="#9a9a9a" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight=".4"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/status"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/geeks_job_medium"
+                    android:textColor="#9a9a9a"/>
+
+                <ImageView
+                    android:id="@+id/competition_online"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="40dp"
+                    android:background="@drawable/offline"/>
+            </LinearLayout>
+        </LinearLayout>
+
+            <ImageView
+                android:id="@+id/competition_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/competition"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".75"
+        android:layout_marginTop="7.5dp"
+        android:layout_marginBottom="7.5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:cardCornerRadius="10dp"
+        android:elevation="10dp"
+        android:translationZ="10dp"
+        android:id="@+id/university"
+        android:clickable="true"
+        android:focusable="true"
+        android:tooltipText="@string/university"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/university_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight=".4"
+                android:textSize="23sp"
+                android:layout_marginTop="10dp"
+                android:text="@string/university"
+                android:gravity="center"
+                android:fontFamily="@font/geeks_job_medium"
+                android:textColor="#9a9a9a"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight=".4"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/status"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/geeks_job_medium"
+                    android:textColor="#9a9a9a"/>
+
+                <ImageView
+                    android:id="@+id/university_online"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="40dp"
+                    android:background="@drawable/offline"/>
+            </LinearLayout>
+        </LinearLayout>
+
+            <ImageView
+                android:id="@+id/university_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/university"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".75"
+        android:layout_marginTop="7.5dp"
+        android:layout_marginBottom="7.5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:cardCornerRadius="10dp"
+        android:elevation="10dp"
+        android:translationZ="10dp"
+        android:id="@+id/medical"
+        android:clickable="true"
+        android:focusable="true"
+        android:tooltipText="@string/medical"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/medical_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight=".4"
+                android:textSize="23sp"
+                android:layout_marginTop="10dp"
+                android:text="@string/medical"
+                android:gravity="center"
+                android:fontFamily="@font/geeks_job_medium"
+                android:textColor="#9a9a9a"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight=".4"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/status"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/geeks_job_medium"
+                    android:textColor="#9a9a9a"/>
+
+                <ImageView
+                    android:id="@+id/medical_online"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="40dp"
+                    android:background="@drawable/offline"/>
+            </LinearLayout>
+        </LinearLayout>
+
+            <ImageView
+                android:id="@+id/medical_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/medical"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".75"
+        android:layout_marginTop="7.5dp"
+        android:layout_marginBottom="7.5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:cardCornerRadius="10dp"
+        android:elevation="10dp"
+        android:translationZ="10dp"
+        android:id="@+id/hsc_preparation"
+        android:clickable="true"
+        android:focusable="true"
+        android:tooltipText="@string/hsc_preparation"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/hsc_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight=".4"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/hsc_preparation"
+                    android:gravity="center"
+                    android:textSize="23sp"
+                    android:fontFamily="@font/geeks_job_medium"
+                    android:textColor="#9a9a9a"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight=".5"
+                    android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight=".4"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/status"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/geeks_job_medium"
+                    android:textColor="#9a9a9a"/>
+
+                    <ImageView
+                        android:id="@+id/hsc_online"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_gravity="center"
+                        android:layout_marginEnd="40dp"
+                        android:background="@drawable/offline"/>
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+
+            <ImageView
+                android:id="@+id/hsc_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/hsc"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight=".75"
+        android:layout_marginTop="7.5dp"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        app:cardCornerRadius="10dp"
+        android:elevation="10dp"
+        android:translationZ="10dp"
+        android:id="@+id/ssc_preparation"
+        android:clickable="true"
+        android:focusable="true"
+        android:tooltipText="@string/curriculum"
+        android:foreground="?android:attr/selectableItemBackground">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight=".5"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/ssc_text"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="5dp"
+                android:layout_weight=".4"
+                android:textSize="23sp"
+                android:layout_marginTop="10dp"
+                android:text="@string/ssc_preparation"
+                android:gravity="center"
+                android:fontFamily="@font/geeks_job_medium"
+                android:textColor="#9a9a9a"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight=".5"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_weight=".4"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="@string/status"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/geeks_job_medium"
+                    android:textColor="#9a9a9a"/>
+
+                <ImageView
+                    android:id="@+id/ssc_online"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="40dp"
+                    android:background="@drawable/offline"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+            <ImageView
+                android:id="@+id/ssc_image"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/ssc"
+                android:layout_gravity="center"/>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</LinearLayout>

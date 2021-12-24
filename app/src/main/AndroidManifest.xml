@@ -17,8 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GeeksJob"
         tools:ignore="LockedOrientationActivity"
-        android:largeHeap="true"
-        android:hardwareAccelerated="false">
+        android:largeHeap="true">
         <activity
             android:name=".LeaderBoard"
             android:exported="false"
@@ -35,6 +34,11 @@
             android:screenOrientation="portrait" />
 
         <activity
+            android:name=".Curriculum"
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+
+        <activity
             android:name=".Rewards"
             android:noHistory="true"
             android:screenOrientation="portrait" />
@@ -43,7 +47,8 @@
             android:name=".SignInActivity"
             android:exported="true"
             android:noHistory="true"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:hardwareAccelerated="false">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

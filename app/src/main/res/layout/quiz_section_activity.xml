@@ -2,10 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:background="@drawable/notice_board_background"
     android:layout_height="match_parent"
+    android:background="@drawable/notice_board_background"
+    android:orientation="vertical"
     tools:context=".QuizActivity"
     tools:ignore="NestedWeights">
 
@@ -13,24 +13,121 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/splash">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/religion"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight=".75"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="7.5dp"
+            android:layout_weight=".5"
+            android:orientation="vertical">
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="50dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="25dp"
+                android:layout_weight=".5" >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:textSize="24sp"
+                        android:layout_weight=".35"
+                        android:text="@string/total_users"/>
+
+                    <TextView
+                        android:id="@+id/total_users"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".7"
+                        android:gravity="center"
+                        android:text="@string/zero"
+                        android:textSize="24sp" />
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="50dp"
+                android:layout_weight=".5">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight=".8"
+                        android:gravity="center"
+                        android:layout_margin="10dp">
+
+                        <ImageView
+                            android:id="@+id/online"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:gravity="center"
+                            android:background="@drawable/online" />
+                    </LinearLayout>
+
+
+
+                    <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="24sp"
+                    android:layout_weight=".35"
+                    android:text="@string/online_users"/>
+
+                <TextView
+                    android:id="@+id/online_users"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="24sp"
+                    android:layout_weight=".7"
+                    android:text="@string/zero" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/tournament"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
             android:layout_marginEnd="15dp"
-            app:cardCornerRadius="20dp"
-            android:elevation="10dp"
-            android:translationZ="10dp"
+            android:layout_marginBottom="7.5dp"
+            android:layout_weight=".75"
             android:clickable="true"
+            android:elevation="10dp"
             android:focusable="true"
-            android:tooltipText="@string/religion"
-            android:foreground="?android:attr/selectableItemBackground">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:tooltipText="@string/tournament"
+            android:translationZ="10dp"
+            app:cardCornerRadius="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -38,268 +135,85 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/religion_text"
+                    android:id="@+id/tournament_text"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight=".5"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
                     android:layout_marginBottom="10dp"
-                    android:text="@string/religion"
+                    android:layout_weight=".5"
+                    android:fontFamily="@font/geeks_job_medium"
                     android:gravity="center"
+                    android:text="@string/tournament"
                     android:textColor="#9a9a9a"
-                    android:fontFamily="@font/geeks_job_medium"/>
+                    android:textSize="23sp" />
 
                 <ImageView
-                    android:id="@+id/religion_image"
+                    android:id="@+id/tournament_image"
                     android:layout_width="100dp"
                     android:layout_height="100dp"
+                    android:layout_gravity="center"
                     android:layout_marginStart="5dp"
-                    android:layout_marginEnd="30dp"
                     android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
                     android:layout_marginBottom="10dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/angel"/>
+                    android:background="@drawable/tournament" />
 
             </LinearLayout>
-
-
-
         </androidx.cardview.widget.CardView>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/science"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="7.5dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginBottom="7.5dp"
-            android:layout_weight=".66"
-            android:elevation="10dp"
-            android:translationZ="10dp"
-            app:cardCornerRadius="20dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:tooltipText="@string/science_and_history"
-            android:foreground="?android:attr/selectableItemBackground">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".5"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/science_image"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/medicallaboratory"
-                        android:layout_gravity="center"/>
-
-                    <TextView
-                        android:id="@+id/science_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="@string/science"
-                        android:textColor="#9a9a9a"
-                        android:fontFamily="@font/geeks_job_medium"/>
-
-
-                </LinearLayout>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/and_symbol"
-                    android:layout_gravity="center"
-                    android:textSize="40sp"
-                    android:textColor="#9a9a9a"
-                    android:fontFamily="@font/geeks_job_medium"/>
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".5"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/history_image"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/history"
-                        android:layout_gravity="center"/>
-
-                    <TextView
-                        android:id="@+id/history_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/history"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/geeks_job_medium"
-                        android:textColor="#9a9a9a"/>
-
-                </LinearLayout>
-
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight=".75"
-            android:layout_marginTop="7.5dp"
-            android:layout_marginBottom="7.5dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
-            app:cardCornerRadius="20dp"
-            android:elevation="10dp"
-            android:translationZ="10dp"
             android:id="@+id/curriculum"
-            android:clickable="true"
-            android:focusable="true"
-            android:tooltipText="@string/curriculum"
-            android:foreground="?android:attr/selectableItemBackground">
-
-       <LinearLayout
-           android:layout_width="match_parent"
-           android:layout_height="match_parent"
-           android:orientation="horizontal">
-
-           <ImageView
-               android:id="@+id/curriculum_image"
-               android:layout_width="100dp"
-               android:layout_height="100dp"
-               android:layout_marginStart="30dp"
-               android:layout_marginEnd="5dp"
-               android:layout_marginTop="10dp"
-               android:layout_marginBottom="10dp"
-               android:background="@drawable/cv"
-               android:layout_gravity="center"/>
-
-           <TextView
-               android:id="@+id/curriculum_text"
-               android:layout_width="0dp"
-               android:layout_height="match_parent"
-               android:layout_marginStart="5dp"
-               android:layout_marginEnd="10dp"
-               android:layout_weight=".5"
-               android:layout_marginTop="10dp"
-               android:layout_marginBottom="10dp"
-               android:text="@string/curriculum"
-               android:gravity="center"
-               android:fontFamily="@font/geeks_job_medium"
-               android:textColor="#9a9a9a"/>
-
-       </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/movies"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="15dp"
             android:layout_marginTop="7.5dp"
             android:layout_marginEnd="15dp"
             android:layout_marginBottom="15dp"
-            android:layout_weight=".66"
-            android:elevation="10dp"
-            android:translationZ="10dp"
-            app:cardCornerRadius="20dp"
+            android:layout_weight=".75"
             android:clickable="true"
+            android:elevation="10dp"
             android:focusable="true"
-            android:tooltipText="@string/movies_and_sports"
-            android:foreground="?android:attr/selectableItemBackground">
+            android:foreground="?android:attr/selectableItemBackground"
+            android:tooltipText="@string/curriculum"
+            android:translationZ="10dp"
+            app:cardCornerRadius="10dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight=".5"
-                    android:orientation="vertical">
-
-                    <ImageView
-                        android:id="@+id/movies_image"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_marginEnd="5dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/clapperboard"
-                        android:layout_gravity="center"/>
-
-                    <TextView
-                        android:id="@+id/movies_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/movies"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/geeks_job_medium"
-                        android:textColor="#9a9a9a"/>
-
-
-                </LinearLayout>
-
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/and_symbol"
-                    android:layout_gravity="center"
-                    android:textSize="40sp"
-                    android:textColor="#9a9a9a"
-                    android:fontFamily="@font/geeks_job_medium"/>
-
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                    android:id="@+id/curriculum_text"
+                    android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="5dp"
+                    android:layout_marginBottom="10dp"
                     android:layout_weight=".5"
-                    android:orientation="vertical">
+                    android:fontFamily="@font/geeks_job_medium"
+                    android:gravity="center"
+                    android:text="@string/curriculum"
+                    android:textColor="#9a9a9a"
+                    android:textSize="23sp" />
 
-                    <ImageView
-                        android:id="@+id/sports_image"
-                        android:layout_width="100dp"
-                        android:layout_height="100dp"
-                        android:layout_marginTop="20dp"
-                        android:layout_marginBottom="10dp"
-                        android:background="@drawable/sports"
-                        android:layout_gravity="center"/>
 
-                    <TextView
-                        android:id="@+id/sports_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/sports"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/geeks_job_medium"
-                        android:textColor="#9a9a9a"/>
-
-                </LinearLayout>
-
+                <ImageView
+                    android:id="@+id/curriculum_image"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="30dp"
+                    android:layout_marginBottom="10dp"
+                    android:background="@drawable/cv" />
 
             </LinearLayout>
-
-
         </androidx.cardview.widget.CardView>
 
     </LinearLayout>

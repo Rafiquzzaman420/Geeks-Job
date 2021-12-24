@@ -7,11 +7,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.view.menu.MenuView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -82,7 +80,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView userName, pointsInfo, userPosition;
-        ImageView userImage, trophyImage, firstUser, secondUser, thirdUser;
+        ImageView userImage, trophyImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

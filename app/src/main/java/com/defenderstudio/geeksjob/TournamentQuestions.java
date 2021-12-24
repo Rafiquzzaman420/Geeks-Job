@@ -1,6 +1,8 @@
 package com.defenderstudio.geeksjob;
 
-public class CurriculumQuestion {
+import android.util.Log;
+
+public class TournamentQuestions {
 
     String question;
     String option1;
@@ -12,15 +14,14 @@ public class CurriculumQuestion {
     //==================================================================================================
 //                                      Empty constructor
 //==================================================================================================
-    public CurriculumQuestion() {
-    }
+    public TournamentQuestions() {}
 
 
     //==================================================================================================
 //                                       Constructor
 //==================================================================================================
-    public CurriculumQuestion(String question, String option1, String option2,
-                          String option3, String option4, String answer) {
+    public TournamentQuestions(String question, String option1, String option2,
+                               String option3, String option4, String answer) {
         this.question = question;
         this.option1 = option1;
         this.option2 = option2;

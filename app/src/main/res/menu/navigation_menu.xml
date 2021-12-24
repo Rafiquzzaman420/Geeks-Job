@@ -11,12 +11,6 @@
             android:title="@string/home"
             android:tooltipText="@string/home"/>
 
-        <item android:id="@+id/profile"
-            android:icon="@drawable/profile"
-            android:title="@string/profile"
-            android:tooltipText="@string/profile"/>
-
-
         <item
             android:id="@+id/exchange"
             android:icon="@drawable/exchange"

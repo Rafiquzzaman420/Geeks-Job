@@ -10,7 +10,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
@@ -54,10 +53,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView user_name_text_view;
     ImageView user_image;
     GoogleSignInClient googleSignInClient;
-    TextView total_earning;
     FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
     String BREAK = "BREAK";
     String updating = "Updating";
+    DatabaseReference databaseReference;
+    ValueEventListener eventListener;
+    ProgressDialog progressDialog;
     private boolean dialogShown = false;
     Runnable statusChecker = () -> {
         try {
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             new Handler().postDelayed(this::startRepeatingTask, interval);
         }
     };
+    private DrawerLayout drawerLayout;
     private Handler handler;
     private InterstitialAd mInterstitialAd;
     Runnable adStatusChecker = new Runnable() {
@@ -103,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     };
-    private DrawerLayout drawerLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +112,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         FirebaseAuth.getInstance().getCurrentUser();
-        total_earning = findViewById(R.id.total_earning);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         handler = new Handler();
@@ -120,9 +120,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         readVersionInformationFromFirebase(value -> {
             // Always use application BuildConfig from package
-            long appVersion = 7;
+            long appVersion = 9;
             if (value != appVersion) {
-                ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
+                progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
                 progressDialog.setCancelable(false);
                 progressDialog.setMessage("Checking version...");
                 progressDialog.show();
@@ -145,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         readBannedInformationFromFirebase(value -> {
             if (value != null) {
                 if (value) {
-                    ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
+                    progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
                     progressDialog.setCancelable(false);
                     progressDialog.setMessage("Checking validity of your account...");
                     progressDialog.show();
@@ -255,6 +255,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     void stopRepeatingTask() {
         handler.removeCallbacks(statusChecker);
+        handler.removeCallbacks(adStatusChecker);
     }
 
     private boolean isOnline() {
@@ -286,6 +287,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onPause() {
+        if (databaseReference != null && eventListener != null) {
+            databaseReference.removeEventListener(eventListener);
+        }
         super.onPause();
     }
 
@@ -296,10 +300,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.home:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new Home())
                         .commit();
-                break;
-            case R.id.profile:
-                getSupportFragmentManager().beginTransaction().replace(R.id.fragment,
-                        new Profile()).commit();
                 break;
             case R.id.exchange:
                 getSupportFragmentManager().beginTransaction().replace(R.id.fragment, new Exchange()).commit();
@@ -351,7 +351,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private void userSignInInformationCallBack(MainActivity.userSignInInformation userSignInInformation) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         assert firebaseUser != null;
         DatabaseReference userSignInInfoReference = databaseReference.child("User Information").
                 child("Users").child("Sign In Info").child(firebaseUser.getUid()).child("Info");
@@ -374,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     private void userSignOutInformationSendToServer() {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         assert firebaseUser != null;
         DatabaseReference signOutInfoReference = databaseReference.child("User Information").
                 child("Users").child("Sign In Info").child(firebaseUser.getUid()).child("Info");
@@ -397,11 +397,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public void readUpdateInformationFromFirebase(MainActivity.readUpdateInformation readUpdateInformation) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference databaseEarningReference;
         assert firebaseUser != null;
-        databaseEarningReference = FirebaseDatabase.getInstance().
+        databaseReference = FirebaseDatabase.getInstance().
                 getReference("Application Status").child("Status");
-        databaseEarningReference.addValueEventListener(new ValueEventListener() {
+        eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String stringValue = snapshot.getValue(String.class);
@@ -410,23 +409,22 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 } catch (Exception ignored) {
                     readUpdateInformation.readUpdateInfo("Running");
                 }
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        databaseReference.addValueEventListener(eventListener);
     }
 
     private void readVersionInformationFromFirebase(MainActivity.readVersionInformation readVersionInformation) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference databaseReference;
         assert firebaseUser != null;
         databaseReference = FirebaseDatabase.getInstance().
                 getReference("Application Status").child("Version");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Double versionValue = snapshot.getValue(Double.class);
@@ -437,16 +435,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        databaseReference.addValueEventListener(eventListener);
     }
 
     private void readBannedInformationFromFirebase(MainActivity.userBanInformation userBanInformation) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference banInfoReference;
         assert firebaseUser != null;
-        banInfoReference = FirebaseDatabase.getInstance().
+        databaseReference = FirebaseDatabase.getInstance().
                 getReference("Banned User Info").child("Users");
-        banInfoReference.addListenerForSingleValueEvent(new ValueEventListener() {
+        eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 userBanInformation.userBanInfo(snapshot.hasChild(firebaseUser.getUid()));
@@ -456,14 +454,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
-
+        };
+        databaseReference.addValueEventListener(eventListener);
     }
 
     private void internetConnectionCheckerWithServer(MainActivity.internetConnectionCheck internetConnectionCheck) {
-        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference AnsQuizAmountReference = firebaseDatabase.child("/.info/connected");
-        AnsQuizAmountReference.addValueEventListener(new ValueEventListener() {
+        databaseReference = FirebaseDatabase.getInstance().getReference("/.info/connected");
+        eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Boolean connected = snapshot.getValue(Boolean.class);
@@ -476,21 +473,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
             }
-        });
+        };
+        databaseReference.addValueEventListener(eventListener);
     }
 
 
     @Override
     protected void onDestroy() {
-        ProgressDialog progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
+        stopRepeatingTask();
+        if (databaseReference != null && eventListener != null) {
+            databaseReference.removeEventListener(eventListener);
+        }
+        progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-        stopRepeatingTask();
+
         super.onDestroy();
     }
+    // TODO : PROBLEM MAY BE WITH THE RUNNABLE INTERFACES I THINK :)
 
     //Main Account ID: ca-app-pub-5052828179386026/7359645574
     // Dummy ID: ca-app-pub-3940256099942544/1033173712
