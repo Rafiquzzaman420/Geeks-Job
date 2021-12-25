@@ -41,7 +41,6 @@ public class Rewards extends AppCompatActivity {
     private final String rewardedPlacement = "Rewarded_Android";
     int initialPointValue = 0;
     boolean TESTMODE = true;
-    boolean enableLoad = true;
     IUnityAdsListener unityAdsListener;
     IUnityAdsShowListener unityAdsShowListener;
     private long chancesLeft;

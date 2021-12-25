@@ -70,7 +70,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             rewardTimer,
             rewardedAdButton;
     boolean TESTMODE = true;
-    boolean enableLoad = true;
     BannerView.IListener bannerListener;
     List<TournamentQuestions> tournamentQuestionsList;
     List<HSC> hscArrayList;
