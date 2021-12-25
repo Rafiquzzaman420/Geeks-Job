@@ -1,6 +1,5 @@
 package com.defenderstudio.geeksjob;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,13 +17,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.rewarded.RewardedAd;
-import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -33,6 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.unity3d.ads.IUnityAdsListener;
+import com.unity3d.ads.IUnityAdsShowListener;
+import com.unity3d.ads.UnityAds;
 
 import java.util.Calendar;
 import java.util.Locale;
@@ -42,10 +37,14 @@ import java.util.concurrent.TimeUnit;
 public class Rewards extends AppCompatActivity {
 
     private static long START_TIME_IN_MILLIS;
+    private final String unityGameID = "4478761";
+    private final String rewardedPlacement = "Rewarded_Android";
     int initialPointValue = 0;
+    boolean TESTMODE = true;
+    boolean enableLoad = true;
+    IUnityAdsListener unityAdsListener;
+    IUnityAdsShowListener unityAdsShowListener;
     private long chancesLeft;
-    private RewardedAd rewardedAd;
-
     private boolean dialogShown = false;
 
     Runnable statusChecker = () -> {
@@ -85,19 +84,9 @@ public class Rewards extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rewards);
-
+        // TODO: NEED TO INITIALIZE AS MAIN AD HERE
+        UnityAds.initialize(this, unityGameID, TESTMODE, null);
         startConnectionRepeatingTask();
-
-        ProgressDialog dialog = new ProgressDialog(Rewards.this,
-                R.style.ProgressDialogStyle);
-        dialog.setMessage("Loading...");
-        dialog.setCancelable(false);
-        dialog.show();
-        new Handler().postDelayed(() -> {
-            rewardedAdLoader();
-            dialog.dismiss();
-        }, 5000);
-
         blockRewardButton();
         TextView chancesLeftText = findViewById(R.id.chancesLeft);
         userChancesLeftCallBack(value -> {
@@ -107,15 +96,9 @@ public class Rewards extends AppCompatActivity {
                 informationValidationAfterGettingZero();
             } else {
                 START_TIME_IN_MILLIS = 28800000;
-
-                // Loading the Rewarded Ads
-                rewardedAdLoader();
-                dialog.dismiss();
                 freeRewardButton();
             }
         });
-
-        MobileAds.initialize(this, initializationStatus -> rewardedAdLoader());
 
         Button rewardButton = findViewById(R.id.rewardedAdButton);
         rewardButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -127,7 +110,7 @@ public class Rewards extends AppCompatActivity {
             try {
                 progressDialog.show();
                 new Handler().postDelayed(() -> {
-                    adShow();
+                    rewardedAd();
                     progressDialog.dismiss();
                 }, 3000);
             } catch (Exception ignored) {
@@ -188,9 +171,6 @@ public class Rewards extends AppCompatActivity {
                 }, 3000);
             } else {
                 START_TIME_IN_MILLIS = 28800000;
-
-                // Loading the Rewarded Ads
-                rewardedAdLoader();
                 dialog.dismiss();
             }
         });
@@ -296,118 +276,92 @@ public class Rewards extends AppCompatActivity {
     }
 //==================================================================================================================================
 
-    //==================================================================================================================================
-    // Will load Rewards when called
-//==================================================================================================================================
-//    ca-app-pub-5052828179386026/8585274942
-    // DUMMY ID : ca-app-pub-3940256099942544/5224354917
-    private void rewardedAdLoader() {
-        // TODO : NEED TO CHANGE THE REWARDED AD IN MAIN SECTION ID
-        AdRequest adRequest = new AdRequest.Builder().build();
-        RewardedAd.load(this, "ca-app-pub-5052828179386026/8585274942",
-                adRequest, new RewardedAdLoadCallback() {
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error.
-                        rewardedAd = null;
-                        Toast.makeText(getApplicationContext(), "Please try again",
-                                Toast.LENGTH_LONG).show();
-                    }
-
-                    //==============================================================================================================
-                    // Called when Ad is loaded successfully
-                    //==============================================================================================================
-
-                    @Override
-                    public void onAdLoaded(@NonNull RewardedAd rewardedAd) {
-                        Rewards.this.rewardedAd = rewardedAd;
-                        Rewards.this.rewardedAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                                // Called when ad is shown.
-                            }
-
-                            //======================================================================================================
-                            // If failed to show ad in fullscreen
-                            //======================================================================================================
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                            }
-
-                            //======================================================================================================
-                            // Called when Ad is dismissed
-                            //======================================================================================================
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                // Called when ad is dismissed.
-                                // Set the ad reference to null so you don't show the ad a second time.
-                                Rewards.this.rewardedAd = null;
-                                rewardedAdLoader();
-                                userChancesLeftCallBack(value -> chancesLeft = value);
-                                TextView chancesLeftText = findViewById(R.id.chancesLeft);
-                                chancesLeftText.setText(String.valueOf(chancesLeft - 1));
-                                chancesLeftText.invalidate();
-                                if ((chancesLeft - 1) >= 1) {
-                                    chancesLeft--;
-                                    userChancesLeftSendToServer(chancesLeft);
-                                    ProgressDialog dialog = new ProgressDialog(Rewards.this,
-                                            R.style.ProgressDialogStyle);
-                                    dialog.setMessage("Loading...");
-                                    dialog.setCancelable(false);
-                                    dialog.show();
-                                    new Handler().postDelayed(() -> {
-                                        rewardedAdLoader();
-                                        dialog.dismiss();
-                                    }, 3000);
-                                } else {
-                                    userChancesLeftSendToServer(0);
-                                    blockRewardButton();
-                                    // Method to send timer information directly to the server
-                                    timerTimeSendToServer();
-
-                                    ProgressDialog dialog = new ProgressDialog(Rewards.this,
-                                            R.style.ProgressDialogStyle);
-                                    dialog.setMessage("Loading. Please wait...");
-                                    dialog.setCancelable(false);
-                                    dialog.show();
-                                    new Handler().postDelayed(() -> {
-                                        resetTimer();
-                                        dialog.dismiss();
-                                    }, 3000);
-                                    startTimer(START_TIME_IN_MILLIS);
-                                }
-                            }
-                        });
-                    }
-                });
-    }
 
     //==============================================================================================================================
     // Shows Ad to the user
     //==============================================================================================================================
-    private void adShow() {
-        if (rewardedAd != null) {
-            Activity activityContext = Rewards.this;
-            rewardedAd.show(activityContext, rewardItem -> {
+    private void rewardedAd() {
+        unityAdsListener = new IUnityAdsListener() {
+            @Override
+            public void onUnityAdsReady(String s) {
 
-                DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
-                FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+            }
 
-                assert firebaseUser != null;
+            @Override
+            public void onUnityAdsStart(String s) {
 
-                DatabaseReference EarnedPointAmountReference = firebaseDatabase.child("AllUsers").
-                        child("User").child(firebaseUser.getUid()).child("Earned_Point_Amount");
+            }
 
-                EarnedPointAmountReference.setValue(ServerValue.increment(50));
+            @Override
+            public void onUnityAdsFinish(String s, UnityAds.FinishState finishState) {
+                if (finishState.equals(UnityAds.FinishState.COMPLETED)) {
+                    userChancesLeftCallBack(value -> chancesLeft = value);
+                    TextView chancesLeftText = findViewById(R.id.chancesLeft);
+                    chancesLeftText.setText(String.valueOf(chancesLeft - 1));
+                    chancesLeftText.invalidate();
+                    if ((chancesLeft - 1) >= 1) {
+                        chancesLeft--;
+                        userChancesLeftSendToServer(chancesLeft);
+                        ProgressDialog dialog = new ProgressDialog(Rewards.this,
+                                R.style.ProgressDialogStyle);
+                        dialog.setMessage("Loading...");
+                        dialog.setCancelable(false);
+                        dialog.show();
+                        new Handler().postDelayed(dialog::dismiss, 3000);
+                    } else {
+                        userChancesLeftSendToServer(0);
+                        blockRewardButton();
+                        // Method to send timer information directly to the server
+                        timerTimeSendToServer();
 
-                Toast.makeText(getApplicationContext(), "Rewards Received!",
-                        Toast.LENGTH_SHORT).show();
+                        ProgressDialog dialog = new ProgressDialog(Rewards.this,
+                                R.style.ProgressDialogStyle);
+                        dialog.setMessage("Loading. Please wait...");
+                        dialog.setCancelable(false);
+                        dialog.show();
+                        new Handler().postDelayed(() -> {
+                            resetTimer();
+                            dialog.dismiss();
+                        }, 3000);
+                        startTimer(START_TIME_IN_MILLIS);
+                    }
+                    DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-                initialPointValue = initialPointValue + 50;
-                UserPointsValueUpdate();
-            });
+                    assert firebaseUser != null;
+
+                    DatabaseReference EarnedPointAmountReference = firebaseDatabase.child("AllUsers").
+                            child("User").child(firebaseUser.getUid()).child("Earned_Point_Amount");
+
+                    EarnedPointAmountReference.setValue(ServerValue.increment(50));
+
+                    Toast.makeText(getApplicationContext(), "Rewards Received!",
+                            Toast.LENGTH_SHORT).show();
+
+                    initialPointValue = initialPointValue + 50;
+                    UserPointsValueUpdate();
+                } else if (finishState.equals(UnityAds.FinishState.SKIPPED)) {
+                    Toast.makeText(getApplicationContext(), "Reward not received for skipping ad!",
+                            Toast.LENGTH_SHORT).show();
+                } else if (finishState.equals(UnityAds.FinishState.ERROR)) {
+                    Toast.makeText(getApplicationContext(), "Something's not right!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onUnityAdsError(UnityAds.UnityAdsError unityAdsError, String s) {
+
+            }
+        };
+
+        UnityAds.setListener(unityAdsListener);
+        UnityAds.load(rewardedPlacement);
+
+        if (UnityAds.isReady()) {
+            UnityAds.show(Rewards.this, rewardedPlacement, unityAdsShowListener);
         } else {
-            Toast.makeText(getApplicationContext(), "Please try again",
+            Toast.makeText(getApplicationContext(), "Please try again!",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -581,7 +535,7 @@ public class Rewards extends AppCompatActivity {
                 Boolean connected = snapshot.getValue(Boolean.class);
                 try {
                     internetConnectionCheck.connectionInfo(connected);
-                }catch (Exception e){
+                } catch (Exception e) {
                     internetConnectionCheck.connectionInfo(false);
                 }
             }

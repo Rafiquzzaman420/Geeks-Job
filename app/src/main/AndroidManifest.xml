@@ -41,7 +41,7 @@
 
         <activity
             android:name=".Rewards"
-            android:noHistory="true"
+            android:noHistory="false"
             android:screenOrientation="portrait" />
 
         <activity
@@ -61,11 +61,10 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".QuestionAnsActivity"
-            android:noHistory="true"
             android:screenOrientation="portrait" />
         <activity
             android:name=".QuizActivity"
-            android:noHistory="true"
+            android:noHistory="false"
             android:screenOrientation="portrait" />
 
         <activity

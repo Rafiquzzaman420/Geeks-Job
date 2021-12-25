@@ -38,17 +38,13 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical">
 
-
-
-                    <com.google.android.gms.ads.AdView
-                        xmlns:ads="http://schemas.android.com/apk/res-auto"
+                    <LinearLayout
                         android:id="@+id/bannerAdView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        ads:adSize="BANNER"
-                        ads:adUnitId="ca-app-pub-5052828179386026/8704516831">
-                    </com.google.android.gms.ads.AdView>
-
+                        android:layout_width="500dp"
+                        android:layout_height="80dp"
+                        android:layout_gravity="center"
+                        android:orientation="horizontal">
+                    </LinearLayout>
 
                 <TextView
                     android:id="@+id/topic_name"
@@ -204,20 +200,6 @@
 
                 </Button>
 
-
-                <Button
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/rewardTimer"
-                        android:visibility="gone"
-                        android:layout_marginEnd="20dp"
-                        android:text="@string/rewardTimer"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_marginStart="2.5dp"
-                        android:textColor="@color/white"
-                        android:gravity="center" />
-
                 </LinearLayout>
 
             <LinearLayout
@@ -258,6 +240,21 @@
                     android:textSize="20sp"
                     android:textStyle="bold"
                     android:theme="@style/purple.GeeksJob" />
+
+                <Button
+                    android:id="@+id/rewardTimer"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="2.5dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_weight=".66"
+                    android:fontFamily="@font/geeks_job_medium"
+                    android:gravity="center"
+                    android:text="@string/rewardTimer"
+                    android:textColor="@color/white"
+                    android:textSize="28sp"
+                    android:textStyle="bold"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/rewardButton"

@@ -7,12 +7,12 @@ import static com.defenderstudio.geeksjob.Curriculum.sscList;
 import static com.defenderstudio.geeksjob.Curriculum.universityList;
 import static com.defenderstudio.geeksjob.QuizActivity.tournamentList;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Interpolator;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,18 +28,8 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.OnUserEarnedRewardListener;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.ads.rewarded.RewardItem;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAd;
-import com.google.android.gms.ads.rewardedinterstitial.RewardedInterstitialAdLoadCallback;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +38,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.unity3d.ads.IUnityAdsListener;
+import com.unity3d.ads.IUnityAdsLoadListener;
+import com.unity3d.ads.IUnityAdsShowListener;
+import com.unity3d.ads.UnityAds;
+import com.unity3d.services.banners.BannerView;
+import com.unity3d.services.banners.UnityBannerSize;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -59,6 +56,10 @@ import java.util.concurrent.TimeUnit;
 public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarnedRewardListener {
 
     private static long START_TIME_IN_MILLIS;
+    private final String unityGameID = "4478761";
+    private final String bannerPlacement = "Banner_Android";
+    private final String interstitialPlacement = "Interstitial_Android";
+    private final String rewardedPlacement = "Rewarded_Android";
     TextView topicName, question, score;
     Button option1,
             option2,
@@ -68,25 +69,28 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             submitButton,
             rewardTimer,
             rewardedAdButton;
-
+    boolean TESTMODE = true;
+    boolean enableLoad = true;
+    BannerView.IListener bannerListener;
     List<TournamentQuestions> tournamentQuestionsList;
     List<HSC> hscArrayList;
     List<SSC> sscArrayList;
     List<Medical> medicalArrayList;
     List<University> universityArrayList;
     List<Competition> competitionArrayList;
-
     TournamentQuestions tournamentQuestions;
+    ProgressDialog progressDialog;
     HSC hsc;
     SSC ssc;
     Medical medical;
     University university;
     Competition competition;
-
+    BannerView bannerAdView;
+    LinearLayout bannerViewLayout;
+    IUnityAdsListener unityAdsListener;
+    IUnityAdsShowListener unityAdsShowListener;
     int index = 0;
     long correctCount = 0;
-    private InterstitialAd mInterstitialAd;
-    private RewardedInterstitialAd rewardedInterstitialAd;
     private Handler handler;
 
     Runnable statusChecker = new Runnable() {
@@ -142,6 +146,9 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         setContentView(R.layout.question_ans_activity);
 
         startConnectionRepeatingTask();
+        // TODO: NEED TO INITIALIZE AS MAIN AD HERE
+        // Initializing Unity Ad
+        UnityAds.initialize(this, unityGameID, TESTMODE, null);
 
         handler = new Handler();
         startRepeatingTask();
@@ -154,21 +161,20 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         leaveButton.setTextSize(convertFromDp(30));
         leaveButton.setBackgroundColor(getResources().getColor(R.color.red));
 
-
-        MobileAds.initialize(this, initializationStatus -> {
-            rewardedAdButton = findViewById(R.id.rewardButton);
-            rewardedAdButton.setOnClickListener(v -> {
-                ProgressDialog progressDialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
+        rewardedAdButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                progressDialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
                 progressDialog.setCancelable(false);
                 progressDialog.setMessage("Loading. Please wait...");
                 progressDialog.show();
                 new Handler().postDelayed(() -> {
-                    loadAd();
+                    rewardedInterstitialAd();
                     progressDialog.dismiss();
                 }, 3000);
-
-            });
+            }
         });
+
 
         //==============================================================================================
         // Hooking up all the views with ID's
@@ -182,11 +188,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         option4 = findViewById(R.id.option4);
         leaveButton = findViewById(R.id.leave);
         submitButton = findViewById(R.id.submit);
-        AdView adView = findViewById(R.id.bannerAdView);
 
-
-        AdRequest adRequest = new AdRequest.Builder().build();
-        adView.loadAd(adRequest);
         topicName.setText(getIntent().getStringExtra("topicName"));
 
         ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
@@ -218,6 +220,26 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
 
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+        bannerAdView = new BannerView(this, bannerPlacement, new UnityBannerSize(320, 70));
+        bannerAdView.setListener(bannerListener);
+        bannerViewLayout = findViewById(R.id.bannerAdView);
+        bannerViewLayout.addView(bannerAdView);
+        bannerAdView.load();
+
+
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
 
         //==============================================================================================
         // Calling important methods from here
@@ -242,21 +264,21 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
         Collections.shuffle(tournamentQuestionsList);
         String intentInfo = getIntent().getStringExtra("topicName");
-        switch (intentInfo){
+        switch (intentInfo) {
             case "HSC":
-            Collections.shuffle(hscArrayList);
+                Collections.shuffle(hscArrayList);
                 break;
             case "SSC":
-            Collections.shuffle(sscArrayList);
+                Collections.shuffle(sscArrayList);
                 break;
             case "Medical":
-            Collections.shuffle(medicalArrayList);
+                Collections.shuffle(medicalArrayList);
                 break;
             case "University":
-            Collections.shuffle(universityArrayList);
+                Collections.shuffle(universityArrayList);
                 break;
             case "Competition":
-            Collections.shuffle(competitionArrayList);
+                Collections.shuffle(competitionArrayList);
                 break;
         }
 // Trying to get information from the server. If connection is slow then it'll show error Toast to
@@ -298,111 +320,94 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
-
     void startRepeatingTask() {
         statusChecker.run();
     }
 
-    //Main Account ID: ca-app-pub-5052828179386026/7359645574
-    // Dummy ID: ca-app-pub-3940256099942544/1033173712
-
     private void interstitialAdLoader() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        MobileAds.initialize(this, initializationStatus -> InterstitialAd.load(this, "ca-app-pub-5052828179386026/7359645574", adRequest,
-                new InterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                        // The mInterstitialAd reference will be null until
-                        // an ad is loaded.
-                        mInterstitialAd = interstitialAd;
-                        mInterstitialAd.show(QuestionAnsActivity.this);
-                        mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                // Called when fullscreen content is dismissed.
-                            }
+        unityAdsListener = new IUnityAdsListener() {
+            @Override
+            public void onUnityAdsReady(String s) {
+            }
 
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                // Called when fullscreen content failed to show.
-                            }
+            @Override
+            public void onUnityAdsStart(String s) {
+            }
 
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                                // Called when fullscreen content is shown.
-                                // Make sure to set your reference to null so you don't
-                                // show it a second time.
-                                mInterstitialAd = null;
-                            }
-                        });
-                    }
+            @Override
+            public void onUnityAdsFinish(String s, UnityAds.FinishState finishState) {
 
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        // Handle the error
-                        mInterstitialAd = null;
-                    }
-                }));
+            }
+
+            @Override
+            public void onUnityAdsError(UnityAds.UnityAdsError unityAdsError, String s) {
+            }
+        };
+
+        UnityAds.setListener(unityAdsListener);
+        UnityAds.load(interstitialPlacement);
+
+        if (UnityAds.isReady()) {
+            UnityAds.show(QuestionAnsActivity.this, interstitialPlacement, unityAdsShowListener);
+        }
 
     }
 
-    public void loadAd() {
-        // Use the test ad unit ID to load an ad.
-        // TODO : ca-app-pub-5052828179386026/3242847727
-        // DUMMY ID : ca-app-pub-3940256099942544/5354046379
-        RewardedInterstitialAd.load(QuestionAnsActivity.this, "ca-app-pub-5052828179386026/3242847727",
-                new AdRequest.Builder().build(), new RewardedInterstitialAdLoadCallback() {
-                    @Override
-                    public void onAdLoaded(@NonNull RewardedInterstitialAd ad) {
-                        rewardedInterstitialAd = ad;
-                        rewardedInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            /** Called when the ad failed to show full screen content. */
-                            @Override
-                            public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                            }
+    private void rewardedInterstitialAd() {
+        unityAdsListener = new IUnityAdsListener() {
+            @Override
+            public void onUnityAdsReady(String s) {
 
-                            /** Called when ad showed the full screen content. */
-                            @Override
-                            public void onAdShowedFullScreenContent() {
-                            }
+            }
 
-                            /** Called when full screen content is dismissed. */
-                            @Override
-                            public void onAdDismissedFullScreenContent() {
-                                blockRewardButton();
-                                rewardInformationToServer();
-                                timerTimeSendToServer();
-                                ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this,
-                                        R.style.ProgressDialogStyle);
-                                dialog.setMessage("Loading...");
-                                dialog.setCancelable(false);
-                                dialog.show();
-                                new Handler().postDelayed(() -> {
-                                    resetTimer();
-                                    dialog.dismiss();
-                                }, 3000);
-                                startTimer(START_TIME_IN_MILLIS);
-                            }
-                        });
-                        Activity activityContext = QuestionAnsActivity.this;
-                        rewardedInterstitialAd.show(
-                                activityContext,
-                                rewardItem -> {
-                                    // Handle the reward.
-                                    Toast.makeText(getApplicationContext(), "Rewards Received!", Toast.LENGTH_SHORT).show();
-                                });
-                    }
+            @Override
+            public void onUnityAdsStart(String s) {
 
-                    @Override
-                    public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                        Dialog adNotAvailableDialog = new Dialog(QuestionAnsActivity.this, R.style.dialogue);
-                        adNotAvailableDialog.setCancelable(false);
-                        adNotAvailableDialog.setContentView(R.layout.ad_not_available_layout);
-                        adNotAvailableDialog.show();
-                        adNotAvailableDialog.findViewById(R.id.adNotAvailableButton).setOnClickListener(v ->
-                                adNotAvailableDialog.dismiss());
-                    }
-                });
+            }
+
+            @Override
+            public void onUnityAdsFinish(String s, UnityAds.FinishState finishState) {
+                if (finishState.equals(UnityAds.FinishState.COMPLETED)) {
+                    blockRewardButton();
+                    rewardInformationToServer();
+                    timerTimeSendToServer();
+                    ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this,
+                            R.style.ProgressDialogStyle);
+                    dialog.setMessage("Loading...");
+                    dialog.setCancelable(false);
+                    dialog.show();
+                    new Handler().postDelayed(() -> {
+                        resetTimer();
+                        dialog.dismiss();
+                    }, 3000);
+                    Toast.makeText(getApplicationContext(), "Rewards received!",
+                            Toast.LENGTH_SHORT).show();
+                    startTimer(START_TIME_IN_MILLIS);
+                }else if (finishState.equals(UnityAds.FinishState.SKIPPED)){
+                    Toast.makeText(getApplicationContext(), "Reward not received for skipping ad!",
+                            Toast.LENGTH_SHORT).show();
+                }
+                else if (finishState.equals(UnityAds.FinishState.ERROR)){
+                    Toast.makeText(getApplicationContext(), "Something's not right!",
+                            Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onUnityAdsError(UnityAds.UnityAdsError unityAdsError, String s) {
+
+            }
+        };
+
+        UnityAds.setListener(unityAdsListener);
+        UnityAds.load(rewardedPlacement);
+
+        if (UnityAds.isReady()) {
+            UnityAds.show(QuestionAnsActivity.this, rewardedPlacement, unityAdsShowListener);
+        }else{
+            Toast.makeText(getApplicationContext(), "Ad not loaded yet!",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void tournamentQuestionCall(ArrayList<TournamentQuestions> arrayList) {
@@ -410,10 +415,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             tournamentQuestions = arrayList.get(index);
 
             // Calling the optionClick methods after assigning them with information from the server
-            tournamentClickMethod(arrayList, option1);
-            tournamentClickMethod(arrayList, option2);
-            tournamentClickMethod(arrayList, option3);
-            tournamentClickMethod(arrayList, option4);
+            tournamentClickMethod(arrayList);
+            tournamentClickMethod(arrayList);
+            tournamentClickMethod(arrayList);
+            tournamentClickMethod(arrayList);
 
 
             // If fails to get data from server, then it'll try again and after that show
@@ -632,9 +637,9 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                         .setNegativeButton("No", null)
                         .show();
 
-            } catch (Exception ignored) {}
-        }
-        else{
+            } catch (Exception ignored) {
+            }
+        } else {
             try {
                 new AlertDialog.Builder(this)
                         .setMessage("Are you sure you want to go back?")
@@ -648,7 +653,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                         .setNegativeButton("No", null)
                         .show();
 
-            } catch (Exception ignored) {}
+            } catch (Exception ignored) {
+            }
         }
     }
 
@@ -1072,7 +1078,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         option1.setOnClickListener(v -> {
             if (hsc.getOption1().equals(hsc.getAnswer())) {
                 setHscButtonClickMethod(option1, arrayList);
-            }else {
+            } else {
                 setHscWrongAnswer(option1, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1080,11 +1086,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
         option2.setOnClickListener(view -> {
-            if(hsc.getOption2().equals(hsc.getAnswer())){
+            if (hsc.getOption2().equals(hsc.getAnswer())) {
                 setHscButtonClickMethod(option2, arrayList);
 
-            }
-            else {
+            } else {
                 setHscWrongAnswer(option2, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1092,11 +1097,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
         option3.setOnClickListener(view -> {
-            if(hsc.getOption3().equals(hsc.getAnswer())){
+            if (hsc.getOption3().equals(hsc.getAnswer())) {
                 setHscButtonClickMethod(option3, arrayList);
 
-            }
-            else {
+            } else {
                 setHscWrongAnswer(option3, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1104,11 +1108,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
         option4.setOnClickListener(view -> {
-            if(hsc.getOption4().equals(hsc.getAnswer())){
+            if (hsc.getOption4().equals(hsc.getAnswer())) {
                 setHscButtonClickMethod(option4, arrayList);
 
-            }
-            else {
+            } else {
                 setHscWrongAnswer(option4, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1125,7 +1128,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         option1.setOnClickListener(v -> {
             if (ssc.getOption1().equals(ssc.getAnswer())) {
                 setSscButtonClickMethod(option1, arrayList);
-            }else {
+            } else {
                 setSscWrongAnswer(option1, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1133,11 +1136,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
         option2.setOnClickListener(view -> {
-            if(ssc.getOption2().equals(ssc.getAnswer())){
+            if (ssc.getOption2().equals(ssc.getAnswer())) {
                 setSscButtonClickMethod(option2, arrayList);
 
-            }
-            else {
+            } else {
                 setSscWrongAnswer(option2, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1145,11 +1147,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
         option3.setOnClickListener(view -> {
-            if(ssc.getOption3().equals(ssc.getAnswer())){
+            if (ssc.getOption3().equals(ssc.getAnswer())) {
                 setSscButtonClickMethod(option3, arrayList);
 
-            }
-            else {
+            } else {
                 setSscWrongAnswer(option3, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1157,11 +1158,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
         option4.setOnClickListener(view -> {
-            if(ssc.getOption4().equals(ssc.getAnswer())){
+            if (ssc.getOption4().equals(ssc.getAnswer())) {
                 setSscButtonClickMethod(option4, arrayList);
 
-            }
-            else {
+            } else {
                 setSscWrongAnswer(option4, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1179,49 +1179,46 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         option1.setOnClickListener(v -> {
             if (medical.getOption1().equals(medical.getAnswer())) {
                 setMedicalButtonClickMethod(option1, arrayList);
-            }else {
+            } else {
                 setMedicalWrongAnswer(option1, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
                 interstitialAdLoader();
             }
         });
-            option2.setOnClickListener(view -> {
-                if(medical.getOption2().equals(medical.getAnswer())){
-                    setMedicalButtonClickMethod(option2, arrayList);
+        option2.setOnClickListener(view -> {
+            if (medical.getOption2().equals(medical.getAnswer())) {
+                setMedicalButtonClickMethod(option2, arrayList);
 
-                }
-                else {
-                    setMedicalWrongAnswer(option2, arrayList);
-                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                    penaltyDialogOnWrongAnswer();
-                    interstitialAdLoader();
-                }
-            });
-            option3.setOnClickListener(view -> {
-                if(medical.getOption3().equals(medical.getAnswer())){
-                    setMedicalButtonClickMethod(option3, arrayList);
+            } else {
+                setMedicalWrongAnswer(option2, arrayList);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+        option3.setOnClickListener(view -> {
+            if (medical.getOption3().equals(medical.getAnswer())) {
+                setMedicalButtonClickMethod(option3, arrayList);
 
-                }
-                else {
-                    setMedicalWrongAnswer(option3, arrayList);
-                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                    penaltyDialogOnWrongAnswer();
-                    interstitialAdLoader();
-                }
-            });
-            option4.setOnClickListener(view -> {
-                if(medical.getOption4().equals(medical.getAnswer())){
-                    setMedicalButtonClickMethod(option4, arrayList);
+            } else {
+                setMedicalWrongAnswer(option3, arrayList);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+        option4.setOnClickListener(view -> {
+            if (medical.getOption4().equals(medical.getAnswer())) {
+                setMedicalButtonClickMethod(option4, arrayList);
 
-                }
-                else {
-                    setMedicalWrongAnswer(option4, arrayList);
-                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                    penaltyDialogOnWrongAnswer();
-                    interstitialAdLoader();
-                }
-            });
+            } else {
+                setMedicalWrongAnswer(option4, arrayList);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
     }
 
 
@@ -1232,7 +1229,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         option1.setOnClickListener(v -> {
             if (university.getOption1().equals(university.getAnswer())) {
                 setUniversityButtonClickMethod(option1, arrayList);
-            }else {
+            } else {
                 setUniversityWrongAnswer(option1, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1240,11 +1237,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
         option2.setOnClickListener(view -> {
-            if(university.getOption2().equals(university.getAnswer())){
+            if (university.getOption2().equals(university.getAnswer())) {
                 setUniversityButtonClickMethod(option2, arrayList);
 
-            }
-            else {
+            } else {
                 setUniversityWrongAnswer(option2, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1252,11 +1248,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
         option3.setOnClickListener(view -> {
-            if(university.getOption3().equals(university.getAnswer())){
+            if (university.getOption3().equals(university.getAnswer())) {
                 setUniversityButtonClickMethod(option3, arrayList);
 
-            }
-            else {
+            } else {
                 setUniversityWrongAnswer(option3, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1264,11 +1259,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
         option4.setOnClickListener(view -> {
-            if(university.getOption4().equals(university.getAnswer())){
+            if (university.getOption4().equals(university.getAnswer())) {
                 setUniversityButtonClickMethod(option4, arrayList);
 
-            }
-            else {
+            } else {
                 setUniversityWrongAnswer(option4, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1285,7 +1279,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         option1.setOnClickListener(v -> {
             if (competition.getOption1().equals(competition.getAnswer())) {
                 setCompetitionButtonClickMethod(option1, arrayList);
-            }else {
+            } else {
                 setCompetitionWrongAnswer(option1, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1293,11 +1287,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
         option2.setOnClickListener(view -> {
-            if(competition.getOption2().equals(competition.getAnswer())){
+            if (competition.getOption2().equals(competition.getAnswer())) {
                 setCompetitionButtonClickMethod(option2, arrayList);
 
-            }
-            else {
+            } else {
                 setCompetitionWrongAnswer(option2, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1305,11 +1298,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
         option3.setOnClickListener(view -> {
-            if(competition.getOption3().equals(competition.getAnswer())){
+            if (competition.getOption3().equals(competition.getAnswer())) {
                 setCompetitionButtonClickMethod(option3, arrayList);
 
-            }
-            else {
+            } else {
                 setCompetitionWrongAnswer(option3, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1317,11 +1309,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
         });
         option4.setOnClickListener(view -> {
-            if(competition.getOption4().equals(university.getAnswer())){
+            if (competition.getOption4().equals(competition.getAnswer())) {
                 setCompetitionButtonClickMethod(option4, arrayList);
 
-            }
-            else {
+            } else {
                 setCompetitionWrongAnswer(option4, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
@@ -1509,38 +1500,48 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         //==============================================================================================
     }
 
-    public void tournamentClickMethod(ArrayList<TournamentQuestions> arrayList, Button button) {
+    public void tournamentClickMethod(ArrayList<TournamentQuestions> arrayList) {
         submitButton.setClickable(false);
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
         setTournamentQuestions();
-        button.setOnClickListener(v -> {
+        option1.setOnClickListener(v -> {
             if (tournamentQuestions.getOption1().equals(tournamentQuestions.getAnswer())) {
-
-                button.setBackgroundColor(getResources().getColor(R.color.green));
-                submitButton.setBackgroundColor(getResources().getColor(R.color.green));
-
-                if (index < arrayList.size() - 1) {
-                    submitButton.setClickable(false);
-                    tournamentCorrectAnswer(button, arrayList);
-                    disableButton();
-
-                } else {
-                    // This will work only when the user reaches the last Quiz section
-                    button.setTextColor(getResources().getColor(R.color.white));
-                    submitButton.setClickable(false);
-                    submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                    tournamentCorrectAnswer(button, arrayList);
-                    disableButton();
-                    submitButton.setClickable(true);
-                    submitButton.setBackgroundColor(getResources().getColor(R.color.green));
-                    Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
-                            Toast.LENGTH_LONG).show();
-                    backToQuizActivity(submitButton);
-                }
+                setTournamentButtonClickMethod(option1, arrayList);
+            } else {
+                tournamentWrongAnswer(option1, arrayList);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+        option2.setOnClickListener(view -> {
+            if (tournamentQuestions.getOption2().equals(tournamentQuestions.getAnswer())) {
+                setTournamentButtonClickMethod(option2, arrayList);
 
             } else {
-                tournamentWrongAnswer(button, arrayList);
-                submitButton.setClickable(false);
+                tournamentWrongAnswer(option2, arrayList);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+        option3.setOnClickListener(view -> {
+            if (tournamentQuestions.getOption3().equals(tournamentQuestions.getAnswer())) {
+                setTournamentButtonClickMethod(option3, arrayList);
+
+            } else {
+                tournamentWrongAnswer(option3, arrayList);
+                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+                penaltyDialogOnWrongAnswer();
+                interstitialAdLoader();
+            }
+        });
+        option4.setOnClickListener(view -> {
+            if (tournamentQuestions.getOption4().equals(tournamentQuestions.getAnswer())) {
+                setTournamentButtonClickMethod(option4, arrayList);
+
+            } else {
+                tournamentWrongAnswer(option4, arrayList);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
                 interstitialAdLoader();
@@ -1679,6 +1680,32 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             submitButton.setClickable(false);
             submitButton.setBackgroundColor(getResources().getColor(R.color.red));
             setCompetitionCorrectAnswer(button, arrayList);
+            disableButton();
+            submitButton.setClickable(true);
+            submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+            Toast.makeText(getApplicationContext(), "Congrats! Press \"Next\"",
+                    Toast.LENGTH_LONG).show();
+            backToQuizActivity(submitButton);
+        }
+    }
+
+
+    private void setTournamentButtonClickMethod(Button button, ArrayList<TournamentQuestions> arrayList) {
+
+        button.setBackgroundColor(getResources().getColor(R.color.green));
+        submitButton.setBackgroundColor(getResources().getColor(R.color.green));
+
+        if (index < arrayList.size() - 1) {
+            submitButton.setClickable(false);
+            tournamentCorrectAnswer(button, arrayList);
+            disableButton();
+
+        } else {
+            // This will work only when the user reaches the last Quiz section
+            button.setTextColor(getResources().getColor(R.color.white));
+            submitButton.setClickable(false);
+            submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+            tournamentCorrectAnswer(button, arrayList);
             disableButton();
             submitButton.setClickable(true);
             submitButton.setBackgroundColor(getResources().getColor(R.color.green));
