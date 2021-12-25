@@ -21,7 +21,8 @@
             android:background="@drawable/gradient"
             app:titleTextAppearance="@style/geeks_job_large"
             app:titleTextColor="@color/white"
-            android:elevation="4dp"/>
+            android:elevation="10dp"
+            android:translationZ="10dp"/>
 
 
         <FrameLayout

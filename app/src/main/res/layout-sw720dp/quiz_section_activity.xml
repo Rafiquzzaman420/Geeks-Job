@@ -44,7 +44,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:gravity="center"
-                        android:textSize="24sp"
+                        android:textSize="36sp"
                         android:layout_weight=".35"
                         android:text="@string/total_users"/>
 
@@ -91,12 +91,12 @@
                             android:gravity="center"
                             android:background="@drawable/online" />
                     </LinearLayout>
-
+                    
                     <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textSize="24sp"
+                    android:textSize="36sp"
                     android:layout_weight=".35"
                     android:text="@string/online_users"/>
 
@@ -149,16 +149,16 @@
                     android:gravity="center"
                     android:text="@string/tournament"
                     android:textColor="#9a9a9a"
-                    android:textSize="23sp" />
+                    android:textSize="36sp" />
 
                 <ImageView
                     android:id="@+id/tournament_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginEnd="60dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/tournament" />
 
@@ -201,17 +201,17 @@
                     android:gravity="center"
                     android:text="@string/curriculum"
                     android:textColor="#9a9a9a"
-                    android:textSize="23sp" />
+                    android:textSize="36sp" />
 
 
                 <ImageView
                     android:id="@+id/curriculum_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
-                    android:layout_marginEnd="30dp"
+                    android:layout_marginEnd="60dp"
                     android:layout_marginBottom="10dp"
                     android:background="@drawable/cv" />
 

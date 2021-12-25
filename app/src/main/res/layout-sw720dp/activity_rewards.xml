@@ -32,7 +32,7 @@
                 android:gravity="center"
                 android:text="@string/zero"
                 android:textColor="@color/white"
-                android:textSize="70sp"
+                android:textSize="120sp"
                 android:fontFamily="@font/geeks_job_regular"/>
 
             <LinearLayout
@@ -48,7 +48,7 @@
                     android:gravity="center"
                     android:text="@string/chance"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="32sp"
                     android:layout_margin="10dp"
                     android:textStyle="bold"
                     android:fontFamily="@font/geeks_job_regular"
@@ -62,7 +62,7 @@
                     android:gravity="center"
                     android:text="@string/twenty"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="32sp"
                     android:layout_margin="10dp"
                     android:textStyle="bold"
                     android:fontFamily="@font/geeks_job_regular"/>
@@ -122,8 +122,8 @@
 
                 <ImageView
                     android:contentDescription="@string/timer"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="180dp"
+                    android:layout_height="180dp"
                     android:background="@drawable/ic_baseline_timer_128"
                     android:backgroundTint="@color/white"/>
 
@@ -132,7 +132,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="24sp"
+                    android:textSize="32sp"
                     android:text="@string/timer"
                     android:textStyle="bold"
                     android:layout_marginTop="10dp"/>

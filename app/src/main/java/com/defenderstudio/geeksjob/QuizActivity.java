@@ -107,21 +107,9 @@ public class QuizActivity extends AppCompatActivity {
 
         CardView curriculumButton = findViewById(R.id.curriculum);
         CardView tournamentButton = findViewById(R.id.tournament);
-        TextView curriculumText = findViewById(R.id.curriculum_text);
-        TextView tournamentText = findViewById(R.id.tournament_text);
-        ImageView online = findViewById(R.id.online);
         TextView totalUsers = findViewById(R.id.total_users);
         TextView onlineUsers = findViewById(R.id.online_users);
 
-
-        ImageView curriculumImage = findViewById(R.id.curriculum_image);
-        ImageView tournamentImage = findViewById(R.id.tournament_image);
-
-        curriculumText.setTextSize(convertFromDp(45));
-        tournamentText.setTextSize(convertFromDp(45));
-
-        imageSizeSetter(curriculumImage);
-        imageSizeSetter(tournamentImage);
 
 //==================================================================================================
         // Setting all the OnClickListener for all the buttons
@@ -146,8 +134,6 @@ public class QuizActivity extends AppCompatActivity {
            startActivity(intent);
            finish();
        });
-
-
         tournamentButton.setOnClickListener(v ->
                 tournamentQuestionLoadingIntent("Tournament", "Tournament", tournamentList)
         );
@@ -204,12 +190,10 @@ public class QuizActivity extends AppCompatActivity {
         if (tournamentDatabaseLoadWithAsyncTask != null) {
             tournamentDatabaseLoadWithAsyncTask.cancel(true);
         }
+        if (databaseReference != null && listener != null) {
+            databaseReference.removeEventListener(listener);
+        }
         super.onDestroy();
-    }
-
-    public float convertFromDp(int input) {
-        final float scale = getResources().getDisplayMetrics().density;
-        return ((input - 0.8f) / scale);
     }
 
     class tournamentDatabaseLoadWithAsyncTask extends AsyncTask<TournamentQuestions, Void, Void> {
@@ -261,12 +245,6 @@ public class QuizActivity extends AppCompatActivity {
     private interface totalUsers {
         void info(long info);
     }
-
-    private void imageSizeSetter(ImageView imageView) {
-        imageView.getLayoutParams().width = (int) convertFromDp(280);
-        imageView.getLayoutParams().height = (int) convertFromDp(280);
-    }
-
     void stopRepeatingTask() {
         handler.removeCallbacks(statusChecker);
     }

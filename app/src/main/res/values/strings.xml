@@ -252,5 +252,5 @@
     <string name="online">Online</string>
     <string name="status">Status</string>
     <string name="total_users">Total User</string>
-    <string name="online_users">Users Online</string>
+    <string name="online_users">User Online</string>
 </resources>

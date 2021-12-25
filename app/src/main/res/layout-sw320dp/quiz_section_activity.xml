@@ -91,7 +91,7 @@
                             android:gravity="center"
                             android:background="@drawable/online" />
                     </LinearLayout>
-
+                    
                     <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
@@ -153,8 +153,8 @@
 
                 <ImageView
                     android:id="@+id/tournament_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
@@ -206,8 +206,8 @@
 
                 <ImageView
                     android:id="@+id/curriculum_image"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:layout_gravity="center"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"

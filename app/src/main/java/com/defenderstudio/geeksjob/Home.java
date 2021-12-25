@@ -151,11 +151,11 @@ public class Home extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         if (databaseReference != null && listener != null) {
             databaseReference.removeEventListener(listener);
         }
         fragmentView = null;
+        super.onDestroyView();
     }
 
     @Override

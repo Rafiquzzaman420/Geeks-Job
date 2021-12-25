@@ -17,7 +17,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GeeksJob"
         tools:ignore="LockedOrientationActivity"
-        android:largeHeap="true">
+        android:largeHeap="true"
+        android:resizeableActivity="true">
         <activity
             android:name=".LeaderBoard"
             android:exported="false"
