@@ -12,7 +12,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Interpolator;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -39,7 +38,6 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 import com.unity3d.ads.IUnityAdsListener;
-import com.unity3d.ads.IUnityAdsLoadListener;
 import com.unity3d.ads.IUnityAdsShowListener;
 import com.unity3d.ads.UnityAds;
 import com.unity3d.services.banners.BannerView;
@@ -56,10 +54,6 @@ import java.util.concurrent.TimeUnit;
 public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarnedRewardListener {
 
     private static long START_TIME_IN_MILLIS;
-    private final String unityGameID = "4478761";
-    private final String bannerPlacement = "Banner_Android";
-    private final String interstitialPlacement = "Interstitial_Android";
-    private final String rewardedPlacement = "Rewarded_Android";
     TextView topicName, question, score;
     Button option1,
             option2,
@@ -147,6 +141,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         startConnectionRepeatingTask();
         // TODO: NEED TO INITIALIZE AS MAIN AD HERE
         // Initializing Unity Ad
+        String unityGameID = "4478761";
         UnityAds.initialize(this, unityGameID, TESTMODE, null);
 
         handler = new Handler();
@@ -160,18 +155,15 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         leaveButton.setTextSize(convertFromDp(30));
         leaveButton.setBackgroundColor(getResources().getColor(R.color.red));
 
-        rewardedAdButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                progressDialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
-                progressDialog.setCancelable(false);
-                progressDialog.setMessage("Loading. Please wait...");
-                progressDialog.show();
-                new Handler().postDelayed(() -> {
-                    rewardedInterstitialAd();
-                    progressDialog.dismiss();
-                }, 3000);
-            }
+        rewardedAdButton.setOnClickListener(view -> {
+            progressDialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
+            progressDialog.setCancelable(false);
+            progressDialog.setMessage("Loading. Please wait...");
+            progressDialog.show();
+            new Handler().postDelayed(() -> {
+                rewardedInterstitialAd();
+                progressDialog.dismiss();
+            }, 3000);
         });
 
 
@@ -223,6 +215,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
+        String bannerPlacement = "Banner_Android";
         bannerAdView = new BannerView(this, bannerPlacement, new UnityBannerSize(320, 70));
         bannerAdView.setListener(bannerListener);
         bannerViewLayout = findViewById(R.id.bannerAdView);
@@ -344,6 +337,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         };
 
         UnityAds.setListener(unityAdsListener);
+        String interstitialPlacement = "Interstitial_Android";
         UnityAds.load(interstitialPlacement);
 
         if (UnityAds.isReady()) {
@@ -399,6 +393,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         };
 
         UnityAds.setListener(unityAdsListener);
+        String rewardedPlacement = "Rewarded_Android";
         UnityAds.load(rewardedPlacement);
 
         if (UnityAds.isReady()) {
