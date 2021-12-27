@@ -16,6 +16,7 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -164,19 +165,19 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
 
         rewardedAdButton = findViewById(R.id.rewardButton);
-        rewardedAdButton.setTextSize(convertFromDp(30));
         submitButton = findViewById(R.id.submit);
-        submitButton.setTextSize(convertFromDp(30));
         leaveButton = findViewById(R.id.leave);
-        leaveButton.setTextSize(convertFromDp(30));
         leaveButton.setBackgroundColor(getResources().getColor(R.color.red));
+        rewardedAdButton.setBackgroundColor(getResources().getColor(R.color.red));
 
         rewardedAdButton.setOnClickListener(view -> {
+
             progressDialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
             progressDialog.setCancelable(false);
             progressDialog.setMessage("Loading. Please wait...");
             progressDialog.show();
             new Handler().postDelayed(() -> {
+
                 rewardedInterstitialAd();
                 progressDialog.dismiss();
             }, 3000);
@@ -235,20 +236,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         bannerViewLayout = findViewById(R.id.bannerAdView);
         bannerViewLayout.addView(bannerAdView);
         bannerAdView.load();
-
-
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-        //==============================================================================================
-        // Calling important methods from here
-        //==============================================================================================
 
 // Takes action when leave button or back button is clicked
         onLeaveButtonClicked();
@@ -360,6 +347,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
     private void rewardedInterstitialAd() {
+
         unityAdsListener = new IUnityAdsListener() {
             @Override
             public void onUnityAdsReady(String s) {
@@ -373,20 +361,22 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
             @Override
             public void onUnityAdsFinish(String s, UnityAds.FinishState finishState) {
+
                 if (finishState.equals(UnityAds.FinishState.COMPLETED)) {
                     ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this,
                             R.style.ProgressDialogStyle);
                     dialog.setMessage("Loading...");
                     dialog.setCancelable(false);
                     dialog.show();
-                    timerTimeSendToServer();
-                    startTimer(START_TIME_IN_MILLIS);
-                    blockRewardButton();
                     rewardInformationToServer();
+                    timerTimeSendToServer();
+                    blockRewardButton();
+                    resetTimer();
                     new Handler().postDelayed(() -> {
-                        resetTimer();
+                        startTimer(START_TIME_IN_MILLIS);
                         dialog.dismiss();
                     }, 3000);
+
                     Toast.makeText(getApplicationContext(), "Rewards received!",
                             Toast.LENGTH_SHORT).show();
                 } else if (finishState.equals(UnityAds.FinishState.SKIPPED)) {
@@ -411,7 +401,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         if (UnityAds.isReady()) {
             UnityAds.show(QuestionAnsActivity.this, rewardedPlacement, unityAdsShowListener);
         } else {
-            Toast.makeText(getApplicationContext(), "Ad not loaded yet!",
+            Toast.makeText(getApplicationContext(), "Please try again!",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -902,126 +892,16 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         new Handler().postDelayed(penaltyDialog::dismiss, 10000);
     }
 
-    public void tournamentWrongAnswer(Button button, ArrayList<TournamentQuestions> arrayList) {
+    public void wrongAnswer(Button button) {
         button.setBackgroundColor(getResources().getColor(R.color.red));
         button.setClickable(false);
         button.setTextColor(getResources().getColor(R.color.white));
-        submitButton.setOnClickListener(v -> {
-            correctCount++;
-            if ((index < arrayList.size() - 1)) {
-                index++;
-                tournamentQuestions = arrayList.get(index);
-                resetButtonColor();
-                setTournamentQuestions();
-                enableButton();
-                scoreUpdate();
-
-            } else {
-                disableButton();
-            }
-        });
+        submitButton.setBackgroundColor(getResources().getColor(R.color.red));
+        submitButton.setClickable(false);
+        penaltyDialogOnWrongAnswer();
+        interstitialAdLoader();
     }
 
-
-    public void setHscWrongAnswer(Button button, ArrayList<HSC> arrayList) {
-        button.setBackgroundColor(getResources().getColor(R.color.red));
-        button.setClickable(false);
-        button.setTextColor(getResources().getColor(R.color.white));
-        submitButton.setOnClickListener(v -> {
-            correctCount++;
-            if ((index < arrayList.size() - 1)) {
-                index++;
-                hsc = arrayList.get(index);
-                resetButtonColor();
-                setHSCQuestionData();
-                enableButton();
-                scoreUpdate();
-
-            } else {
-                disableButton();
-            }
-        });
-    }
-
-    public void setSscWrongAnswer(Button button, ArrayList<SSC> arrayList) {
-        button.setBackgroundColor(getResources().getColor(R.color.red));
-        button.setClickable(false);
-        button.setTextColor(getResources().getColor(R.color.white));
-        submitButton.setOnClickListener(v -> {
-            correctCount++;
-            if ((index < arrayList.size() - 1)) {
-                index++;
-                ssc = arrayList.get(index);
-                resetButtonColor();
-                setSSCQuestionData();
-                enableButton();
-                scoreUpdate();
-
-            } else {
-                disableButton();
-            }
-        });
-    }
-
-    public void setMedicalWrongAnswer(Button button, ArrayList<Medical> arrayList) {
-        button.setBackgroundColor(getResources().getColor(R.color.red));
-        button.setClickable(false);
-        button.setTextColor(getResources().getColor(R.color.white));
-        submitButton.setOnClickListener(v -> {
-            correctCount++;
-            if ((index < arrayList.size() - 1)) {
-                index++;
-                medical = arrayList.get(index);
-                resetButtonColor();
-                setMedicalQuestionData();
-                enableButton();
-                scoreUpdate();
-
-            } else {
-                disableButton();
-            }
-        });
-    }
-
-    public void setUniversityWrongAnswer(Button button, ArrayList<University> arrayList) {
-        button.setBackgroundColor(getResources().getColor(R.color.red));
-        button.setClickable(false);
-        button.setTextColor(getResources().getColor(R.color.white));
-        submitButton.setOnClickListener(v -> {
-            correctCount++;
-            if ((index < arrayList.size() - 1)) {
-                index++;
-                university = arrayList.get(index);
-                resetButtonColor();
-                setUniversityQuestionData();
-                enableButton();
-                scoreUpdate();
-
-            } else {
-                disableButton();
-            }
-        });
-    }
-
-    public void setCompetitionWrongAnswer(Button button, ArrayList<Competition> arrayList) {
-        button.setBackgroundColor(getResources().getColor(R.color.red));
-        button.setClickable(false);
-        button.setTextColor(getResources().getColor(R.color.white));
-        submitButton.setOnClickListener(v -> {
-            correctCount++;
-            if ((index < arrayList.size() - 1)) {
-                index++;
-                competition = arrayList.get(index);
-                resetButtonColor();
-                setCompetitionQuestionData();
-                enableButton();
-                scoreUpdate();
-
-            } else {
-                disableButton();
-            }
-        });
-    }
 
     //==============================================================================================
     // When true, this method will enable all the question buttons
@@ -1086,10 +966,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             if (hsc.getOption1().equals(hsc.getAnswer())) {
                 setHscButtonClickMethod(option1, arrayList);
             } else {
-                setHscWrongAnswer(option1, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option1);
             }
         });
         option2.setOnClickListener(view -> {
@@ -1097,10 +974,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setHscButtonClickMethod(option2, arrayList);
 
             } else {
-                setHscWrongAnswer(option2, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option2);
             }
         });
         option3.setOnClickListener(view -> {
@@ -1108,10 +982,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setHscButtonClickMethod(option3, arrayList);
 
             } else {
-                setHscWrongAnswer(option3, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option3);
             }
         });
         option4.setOnClickListener(view -> {
@@ -1119,10 +990,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setHscButtonClickMethod(option4, arrayList);
 
             } else {
-                setHscWrongAnswer(option4, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option4);
             }
         });
     }
@@ -1136,10 +1004,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             if (ssc.getOption1().equals(ssc.getAnswer())) {
                 setSscButtonClickMethod(option1, arrayList);
             } else {
-                setSscWrongAnswer(option1, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option1);
             }
         });
         option2.setOnClickListener(view -> {
@@ -1147,10 +1012,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setSscButtonClickMethod(option2, arrayList);
 
             } else {
-                setSscWrongAnswer(option2, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option2);
             }
         });
         option3.setOnClickListener(view -> {
@@ -1158,10 +1020,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setSscButtonClickMethod(option3, arrayList);
 
             } else {
-                setSscWrongAnswer(option3, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option3);
             }
         });
         option4.setOnClickListener(view -> {
@@ -1169,10 +1028,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setSscButtonClickMethod(option4, arrayList);
 
             } else {
-                setSscWrongAnswer(option4, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option4);
             }
         });
     }
@@ -1187,10 +1043,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             if (medical.getOption1().equals(medical.getAnswer())) {
                 setMedicalButtonClickMethod(option1, arrayList);
             } else {
-                setMedicalWrongAnswer(option1, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option1);
             }
         });
         option2.setOnClickListener(view -> {
@@ -1198,10 +1051,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setMedicalButtonClickMethod(option2, arrayList);
 
             } else {
-                setMedicalWrongAnswer(option2, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option2);
             }
         });
         option3.setOnClickListener(view -> {
@@ -1209,10 +1059,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setMedicalButtonClickMethod(option3, arrayList);
 
             } else {
-                setMedicalWrongAnswer(option3, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option3);
             }
         });
         option4.setOnClickListener(view -> {
@@ -1220,10 +1067,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setMedicalButtonClickMethod(option4, arrayList);
 
             } else {
-                setMedicalWrongAnswer(option4, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option4);
             }
         });
     }
@@ -1237,10 +1081,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             if (university.getOption1().equals(university.getAnswer())) {
                 setUniversityButtonClickMethod(option1, arrayList);
             } else {
-                setUniversityWrongAnswer(option1, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option1);
             }
         });
         option2.setOnClickListener(view -> {
@@ -1248,10 +1089,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setUniversityButtonClickMethod(option2, arrayList);
 
             } else {
-                setUniversityWrongAnswer(option2, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option2);
             }
         });
         option3.setOnClickListener(view -> {
@@ -1259,10 +1097,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setUniversityButtonClickMethod(option3, arrayList);
 
             } else {
-                setUniversityWrongAnswer(option3, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option3);
             }
         });
         option4.setOnClickListener(view -> {
@@ -1270,10 +1105,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setUniversityButtonClickMethod(option4, arrayList);
 
             } else {
-                setUniversityWrongAnswer(option4, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option4);
             }
         });
     }
@@ -1287,10 +1119,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             if (competition.getOption1().equals(competition.getAnswer())) {
                 setCompetitionButtonClickMethod(option1, arrayList);
             } else {
-                setCompetitionWrongAnswer(option1, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option1);
             }
         });
         option2.setOnClickListener(view -> {
@@ -1298,10 +1127,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setCompetitionButtonClickMethod(option2, arrayList);
 
             } else {
-                setCompetitionWrongAnswer(option2, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option2);
             }
         });
         option3.setOnClickListener(view -> {
@@ -1309,10 +1135,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setCompetitionButtonClickMethod(option3, arrayList);
 
             } else {
-                setCompetitionWrongAnswer(option3, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option3);
             }
         });
         option4.setOnClickListener(view -> {
@@ -1320,10 +1143,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setCompetitionButtonClickMethod(option4, arrayList);
 
             } else {
-                setCompetitionWrongAnswer(option4, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option4);
             }
         });
     }
@@ -1384,17 +1204,21 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         new CountDownTimer(timeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
+
                 String duration = String.format(Locale.ENGLISH, "%02d:%02d",
                         TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished) -
                                 TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millisUntilFinished)),
                         TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished) -
                                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millisUntilFinished)));
 
-                rewardedAdButton = findViewById(R.id.rewardButton);
-                rewardedAdButton.setVisibility(View.GONE);
                 rewardTimer = findViewById(R.id.rewardTimer);
                 rewardTimer.setVisibility(View.VISIBLE);
+
+                rewardedAdButton = findViewById(R.id.rewardButton);
+                rewardedAdButton.setVisibility(View.GONE);
+
                 rewardTimer.setText(duration);
+
                 rewardTimer.invalidate();
             }
 
@@ -1412,15 +1236,17 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
     private void blockRewardButton() {
-        rewardedAdButton = findViewById(R.id.rewardButton);
-        rewardedAdButton.setClickable(false);
-        rewardedAdButton.setVisibility(View.GONE);
+
+//        rewardedAdButton = findViewById(R.id.rewardButton);
+//        rewardedAdButton.setClickable(false);
+//        rewardedAdButton.setVisibility(View.GONE);
         rewardTimer = findViewById(R.id.rewardTimer);
         rewardTimer.setClickable(false);
         rewardTimer.setBackgroundColor(getResources().getColor(R.color.red));
     }
 
     private void freeRewardButton() {
+
         rewardTimer = findViewById(R.id.rewardTimer);
         rewardTimer.setVisibility(View.GONE);
         rewardedAdButton = findViewById(R.id.rewardButton);
@@ -1439,7 +1265,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             if ((value - currentTime) > 0) {
                 START_TIME_IN_MILLIS = value - currentTime;
             }
-            // Otherwise it'll set the starting time to 24 Hours or 86400000 milliseconds
             else {
                 START_TIME_IN_MILLIS = 150000;
             }
@@ -1515,10 +1340,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             if (tournamentQuestions.getOption1().equals(tournamentQuestions.getAnswer())) {
                 setTournamentButtonClickMethod(option1, arrayList);
             } else {
-                tournamentWrongAnswer(option1, arrayList);
-                submitButton.setBackgroundColor(getResources().getColor(R.color.red));
-                penaltyDialogOnWrongAnswer();
-                interstitialAdLoader();
+                wrongAnswer(option1);
             }
         });
         option2.setOnClickListener(view -> {
@@ -1526,7 +1348,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setTournamentButtonClickMethod(option2, arrayList);
 
             } else {
-                tournamentWrongAnswer(option2, arrayList);
+                wrongAnswer(option2);
+                submitButton.setClickable(false);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
                 interstitialAdLoader();
@@ -1537,7 +1360,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setTournamentButtonClickMethod(option3, arrayList);
 
             } else {
-                tournamentWrongAnswer(option3, arrayList);
+                wrongAnswer(option3);
+                submitButton.setClickable(false);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
                 interstitialAdLoader();
@@ -1548,7 +1372,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 setTournamentButtonClickMethod(option4, arrayList);
 
             } else {
-                tournamentWrongAnswer(option4, arrayList);
+                wrongAnswer(option4);
+                submitButton.setClickable(false);
                 submitButton.setBackgroundColor(getResources().getColor(R.color.red));
                 penaltyDialogOnWrongAnswer();
                 interstitialAdLoader();
