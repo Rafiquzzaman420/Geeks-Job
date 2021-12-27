@@ -26,6 +26,8 @@ public class NoticeBoard extends AppCompatActivity {
     TextView noticeHeader1, noticeHeader2, userNoticeHeader,
             noticeBody1, noticeBody2, userNoticeBody;
     FirebaseUser userInfo;
+    DatabaseReference noticeBody, noticeHeader, databaseReference;
+    ValueEventListener eventListener, noticeBodyListener, noticeHeaderListener;
     private String googleUserId;
 
     @Override
@@ -97,17 +99,17 @@ public class NoticeBoard extends AppCompatActivity {
     }
 
     private void noticeboardInfoCollector(String child, noticeOneInfoCollector collector) {
-        DatabaseReference noticeHeader = FirebaseDatabase.getInstance().getReference().
+        noticeHeader = FirebaseDatabase.getInstance().getReference().
                 child("Notice Board").
                 child(child).
                 child("Notice Header");
 
-        DatabaseReference noticeBody = FirebaseDatabase.getInstance().getReference().
+        noticeBody = FirebaseDatabase.getInstance().getReference().
                 child("Notice Board").
                 child(child).
                 child("Notice Body");
 
-        noticeHeader.addValueEventListener(new ValueEventListener() {
+        noticeHeaderListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String noticeHeader = snapshot.getValue(String.class);
@@ -117,9 +119,9 @@ public class NoticeBoard extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
-        });
+        };
 
-        noticeBody.addValueEventListener(new ValueEventListener() {
+        noticeBodyListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String noticeBody = snapshot.getValue(String.class);
@@ -129,15 +131,16 @@ public class NoticeBoard extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
-        });
-
+        };
+        noticeHeader.addValueEventListener(noticeHeaderListener);
+        noticeBody.addValueEventListener(noticeBodyListener);
     }
 
     private void noticeBoardInfoChecker(noticeInfoChecker info) {
-        DatabaseReference noticeInfo = FirebaseDatabase.getInstance().getReference().
+        databaseReference = FirebaseDatabase.getInstance().getReference().
                 child("Notice Board").
                 child("Cards");
-        noticeInfo.addValueEventListener(new ValueEventListener() {
+        eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String infoValue = snapshot.getValue(String.class);
@@ -151,24 +154,25 @@ public class NoticeBoard extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
-        });
+        };
+        databaseReference.addValueEventListener(eventListener);
     }
 
     private void userNoticeValidator(userNoticeCollector noticeCollector) {
         userInfo = FirebaseAuth.getInstance().getCurrentUser();
         assert userInfo != null;
         googleUserId = userInfo.getUid();
-        DatabaseReference userNotice = FirebaseDatabase.getInstance().getReference().
+        databaseReference = FirebaseDatabase.getInstance().getReference().
                 child("Notice Board").
                 child(googleUserId).child("ID");
 
-        userNotice.addValueEventListener(new ValueEventListener() {
+        eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 try {
                     String value = snapshot.getValue(String.class);
                     noticeCollector.noticeCollector(value);
-                }catch (Exception e){
+                } catch (Exception e) {
                     noticeCollector.noticeCollector("");
                 }
             }
@@ -176,7 +180,8 @@ public class NoticeBoard extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
-        });
+        };
+        databaseReference.addValueEventListener(eventListener);
     }
 
     private void getNoticeBoardCardViewInfo(String child, TextView noticeViewHead, TextView noticeViewBody) {
@@ -187,7 +192,6 @@ public class NoticeBoard extends AppCompatActivity {
                     noticeViewHead.setText(noticeHeader);
                 }
             }
-
 
             @Override
             public void noticeBody(String noticeBody) {
@@ -200,6 +204,16 @@ public class NoticeBoard extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (databaseReference != null
+                && noticeBody != null
+                && noticeHeader != null
+                && eventListener != null
+                && noticeHeaderListener != null
+                && noticeBodyListener != null) {
+            databaseReference.removeEventListener(eventListener);
+            noticeHeader.removeEventListener(noticeHeaderListener);
+            noticeBody.removeEventListener(noticeBodyListener);
+        }
         super.onDestroy();
     }
 

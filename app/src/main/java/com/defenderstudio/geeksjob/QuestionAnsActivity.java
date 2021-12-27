@@ -83,8 +83,11 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     IUnityAdsListener unityAdsListener;
     IUnityAdsShowListener unityAdsShowListener;
     int index = 0;
+    View view;
     long correctCount = 0;
-    private Handler handler;
+    Handler handler = new Handler();
+    DatabaseReference databaseReference;
+    ValueEventListener valueEventListener;
 
     Runnable statusChecker = new Runnable() {
         @Override
@@ -92,11 +95,12 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             try {
                 interstitialAdLoader();
             } finally {
-                int interval = 180000;
+                int interval = 150000;
                 handler.postDelayed(statusChecker, interval);
             }
         }
     };
+
     private boolean dialogShown = false;
     Runnable connectionStatusChecker = () -> {
         try {
@@ -137,15 +141,27 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.question_ans_activity);
-
         startConnectionRepeatingTask();
         // TODO: NEED TO INITIALIZE AS MAIN AD HERE
         // Initializing Unity Ad
         String unityGameID = "4478761";
         UnityAds.initialize(this, unityGameID, TESTMODE, null);
 
+
         handler = new Handler();
+
         startRepeatingTask();
+
+        view = getWindow().getDecorView();
+        int NavigationHide = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+
+        view.setSystemUiVisibility(NavigationHide);
+
 
         rewardedAdButton = findViewById(R.id.rewardButton);
         rewardedAdButton.setTextSize(convertFromDp(30));
@@ -165,8 +181,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 progressDialog.dismiss();
             }, 3000);
         });
-
-
         //==============================================================================================
         // Hooking up all the views with ID's
         //==============================================================================================
@@ -206,7 +220,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                 }, 3000);
             } else {
                 // Otherwise it'll set the starting time to 5 Minutes or 300000 milliseconds
-                START_TIME_IN_MILLIS = 180000;
+                START_TIME_IN_MILLIS = 150000;
                 dialog.dismiss();
             }
         });
@@ -226,7 +240,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
         //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -361,26 +374,25 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             @Override
             public void onUnityAdsFinish(String s, UnityAds.FinishState finishState) {
                 if (finishState.equals(UnityAds.FinishState.COMPLETED)) {
-                    blockRewardButton();
-                    rewardInformationToServer();
-                    timerTimeSendToServer();
                     ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this,
                             R.style.ProgressDialogStyle);
                     dialog.setMessage("Loading...");
                     dialog.setCancelable(false);
                     dialog.show();
+                    timerTimeSendToServer();
+                    startTimer(START_TIME_IN_MILLIS);
+                    blockRewardButton();
+                    rewardInformationToServer();
                     new Handler().postDelayed(() -> {
                         resetTimer();
                         dialog.dismiss();
                     }, 3000);
                     Toast.makeText(getApplicationContext(), "Rewards received!",
                             Toast.LENGTH_SHORT).show();
-                    startTimer(START_TIME_IN_MILLIS);
-                }else if (finishState.equals(UnityAds.FinishState.SKIPPED)){
+                } else if (finishState.equals(UnityAds.FinishState.SKIPPED)) {
                     Toast.makeText(getApplicationContext(), "Reward not received for skipping ad!",
                             Toast.LENGTH_SHORT).show();
-                }
-                else if (finishState.equals(UnityAds.FinishState.ERROR)){
+                } else if (finishState.equals(UnityAds.FinishState.ERROR)) {
                     Toast.makeText(getApplicationContext(), "Something's not right!",
                             Toast.LENGTH_SHORT).show();
                 }
@@ -398,7 +410,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
         if (UnityAds.isReady()) {
             UnityAds.show(QuestionAnsActivity.this, rewardedPlacement, unityAdsShowListener);
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(), "Ad not loaded yet!",
                     Toast.LENGTH_SHORT).show();
         }
@@ -570,10 +582,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     }
 
+    // TODO : NEED TO CHANGE ALL THE DATABASE REFERENCE CODE HERE!
     private void internetConnectionCheckerWithServer(internetConnectionCheck internetConnectionCheck) {
-        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference AnsQuizAmountReference = firebaseDatabase.child("/.info/connected");
-        AnsQuizAmountReference.addValueEventListener(new ValueEventListener() {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("/.info/connected");
+        valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Boolean connected = snapshot.getValue(Boolean.class);
@@ -588,7 +600,8 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        databaseReference.addListenerForSingleValueEvent(valueEventListener);
     }
 
     //==============================================================================================
@@ -1325,11 +1338,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 //==============================================================================================
     private void userTimerInformationCallBack(userTimerInformation timerInformation) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         assert firebaseUser != null;
-        DatabaseReference userTimerReference = databaseReference.child("AllUsers").
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("AllUsers").
                 child("Users Reward Timer").child("Users").child(firebaseUser.getUid()).child("End Time");
-        userTimerReference.addValueEventListener(new ValueEventListener() {
+        valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Long longValue = snapshot.getValue(Long.class);
@@ -1347,12 +1359,13 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        databaseReference.addListenerForSingleValueEvent(valueEventListener);
     }
 
     private void timerTimeSendToServer() {
         long currentTime = Calendar.getInstance().getTimeInMillis();
-        long timerTime = currentTime + 180000;
+        long timerTime = currentTime + 150000;
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -1428,7 +1441,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             }
             // Otherwise it'll set the starting time to 24 Hours or 86400000 milliseconds
             else {
-                START_TIME_IN_MILLIS = 180000;
+                START_TIME_IN_MILLIS = 150000;
             }
         });
 

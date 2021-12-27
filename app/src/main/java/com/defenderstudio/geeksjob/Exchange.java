@@ -33,11 +33,12 @@ public class Exchange extends Fragment {
 
     DatabaseReference databaseReference;
     ValueEventListener eventListener;
-    View fragmentView;
+    View view;
     FirebaseUser firebaseUser;
     private EditText bkashAccount;
     private TextView pointAmount;
     private CardView submitButton;
+    ProgressBar progressBar;
 
     public Exchange() {
         // Required empty public constructor
@@ -53,7 +54,7 @@ public class Exchange extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_exchange, container, false);
+        view = inflater.inflate(R.layout.fragment_exchange, container, false);
         bkashAccount = view.findViewById(R.id.bkashAccountNumber);
         submitButton = view.findViewById(R.id.submit_exchange);
         pointAmount = view.findViewById(R.id.pointAmount);
@@ -120,7 +121,7 @@ public class Exchange extends Fragment {
         });
 
         submitButton.setOnClickListener(v -> {
-            ProgressBar progressBar = view.findViewById(R.id.progress_exchange);
+            progressBar = view.findViewById(R.id.progress_exchange);
             progressBar.setVisibility(View.VISIBLE);
 
             String bkashAccountNumber = bkashAccount.getText().toString().trim();
@@ -143,6 +144,8 @@ public class Exchange extends Fragment {
                     DatabaseReference name = FirebaseDatabase.getInstance().getReference("Winning Persons").
                             child("User").child(firebaseUser.getUid()).child("UserInformation").child("Name");
                     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                    name.setValue(user.getDisplayName());
 
                 } else {
                     bkashAccount.setError("Enter a phone number");
@@ -189,11 +192,19 @@ public class Exchange extends Fragment {
 
     @Override
     public void onDestroyView() {
-        super.onDestroyView();
         if (databaseReference != null && eventListener != null) {
             databaseReference.removeEventListener(eventListener);
         }
-        fragmentView = null;
+        view = null;
+        super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (databaseReference != null && eventListener != null) {
+            databaseReference.removeEventListener(eventListener);
+        }
+        view = null;
         super.onDestroy();
     }
 

@@ -3,16 +3,13 @@ package com.defenderstudio.geeksjob;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,13 +24,6 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -53,70 +43,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     TextView user_name_text_view;
     ImageView user_image;
     GoogleSignInClient googleSignInClient;
-    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+    FirebaseUser firebaseUser;
     String BREAK = "BREAK";
     String updating = "Updating";
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference, userSignInInfoReference;
     ValueEventListener eventListener;
     ProgressDialog progressDialog;
-    private boolean dialogShown = false;
-    Runnable statusChecker = () -> {
-        try {
-            Dialog dialog = new Dialog(MainActivity.this, R.style.dialogue);
-            dialog.setContentView(R.layout.connection_alert);
-            dialog.setCancelable(false);
-            dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-            internetConnectionCheckerWithServer(connection -> {
-                if (connection) {
-                    dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
-                        if (isOnline() && dialogShown) {
-                            dialog.dismiss();
-                            dialogShown = false;
-                        }
-                    });
-                }
-                // If Internet connection is gone
-                if (!isOnline() && !connection) {
-                    if (!dialogShown) {
-                        dialogShown = true;
-                        dialog.show();
-                    }
-                }
-            });
-
-
-        } catch (Exception ignored) {
-        } finally {
-            int interval = 1000;
-            new Handler().postDelayed(this::startRepeatingTask, interval);
-        }
-    };
+    Handler handler = new Handler();
+    Dialog dialog;
+    View headerView;
     private DrawerLayout drawerLayout;
-    private Handler handler;
-    private InterstitialAd mInterstitialAd;
-    Runnable adStatusChecker = new Runnable() {
-        @Override
-        public void run() {
-            try {
-                interstitialAdLoader();
-            } finally {
-                int interval = 180000;
-                handler.postDelayed(statusChecker, interval);
-            }
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         FirebaseAuth.getInstance().getCurrentUser();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        handler = new Handler();
-        startRepeatingTask();
-        startAdRepeatingTask();
 
         readVersionInformationFromFirebase(value -> {
             // Always use application BuildConfig from package
@@ -126,7 +70,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 progressDialog.setCancelable(false);
                 progressDialog.setMessage("Checking version...");
                 progressDialog.show();
-                new Handler().postDelayed(() -> {
+                handler.postDelayed(() -> {
                     userSignInInformationSendToServer(BREAK);
                     userSignOutInformationSendToServer();
                     FirebaseAuth.getInstance().signOut();
@@ -138,7 +82,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     startActivity(logOut);
                     finish();
                 }, 2000);
-
             }
         });
 
@@ -149,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     progressDialog.setCancelable(false);
                     progressDialog.setMessage("Checking validity of your account...");
                     progressDialog.show();
-                    new Handler().postDelayed(() -> {
+                    handler.postDelayed(() -> {
                         userSignInInformationSendToServer(BREAK);
                         userSignOutInformationSendToServer();
                         FirebaseAuth.getInstance().signOut();
@@ -157,7 +100,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Toast.makeText(getApplicationContext(),
                                 "Your Account has been banned!",
                                 Toast.LENGTH_LONG).show();
-                        Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
+                        Intent logOut = new Intent(getApplicationContext(), SignInActivity.class);
                         startActivity(logOut);
                         finish();
                     }, 2000);
@@ -166,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
 
 
-        readUpdateInformationFromFirebase(value -> new Handler().postDelayed(() -> {
+        readUpdateInformationFromFirebase(value -> handler.postDelayed(() -> {
             if (value != null) {
                 if (value.equals(updating)) {
                     FirebaseAuth.getInstance().signOut();
@@ -201,9 +144,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         });
-//
-//            progressDialog.dismiss();
-//        }, 2000);
 
         NavigationView navigationView = findViewById(R.id.navigation_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -229,7 +169,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         }
         try {
-            View headerView = navigationView.getHeaderView(0);
+            headerView = navigationView.getHeaderView(0);
             user_name_text_view = headerView.findViewById(R.id.user_name);
             user_image = headerView.findViewById(R.id.user_image);
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -246,24 +186,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         } catch (Exception e) {
             Toast.makeText(getApplicationContext(), "Error Occurred...", Toast.LENGTH_LONG).show();
         }
-    }
-
-
-    void startRepeatingTask() {
-        statusChecker.run();
-    }
-
-    void stopRepeatingTask() {
-        handler.removeCallbacks(statusChecker);
-        handler.removeCallbacks(adStatusChecker);
-    }
-
-    private boolean isOnline() {
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return connectivityManager.getActiveNetworkInfo() != null &&
-                connectivityManager.getActiveNetworkInfo().isConnected();
     }
 
     @Override
@@ -311,7 +233,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             case R.id.share:
                 Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
                 sharingIntent.setType("text/plain");
-                // TODO : NEED TO CHANGE THE SHAREBODY HERE. CHANGE SHAREBODY WITH THE APPLICATION GOOGLE PLAY ADDRESS
                 String shareBody = "Download Geeks Job and Win Real Money. Link: https://play.google.com/store/apps/details?id=com.defenderstudio.geeksjob";
                 sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Share");
                 sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBody);
@@ -337,6 +258,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             finish();
                         });
                 Toast.makeText(getApplicationContext(), "Signed out successfully", Toast.LENGTH_SHORT).show();
+                break;
 
         }
         drawerLayout.closeDrawer(GravityCompat.START);
@@ -353,9 +275,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         assert firebaseUser != null;
-        DatabaseReference userSignInInfoReference = databaseReference.child("User Information").
+        userSignInInfoReference = databaseReference.child("User Information").
                 child("Users").child("Sign In Info").child(firebaseUser.getUid()).child("Info");
-        userSignInInfoReference.addValueEventListener(new ValueEventListener() {
+        eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String stringValue = snapshot.getValue(String.class);
@@ -370,11 +292,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        userSignInInfoReference.addListenerForSingleValueEvent(eventListener);
     }
 
     private void userSignOutInformationSendToServer() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
+        firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         assert firebaseUser != null;
         DatabaseReference signOutInfoReference = databaseReference.child("User Information").
                 child("Users").child("Sign In Info").child(firebaseUser.getUid()).child("Info");
@@ -406,7 +330,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 String stringValue = snapshot.getValue(String.class);
                 try {
                     readUpdateInformation.readUpdateInfo(stringValue);
-                } catch (Exception ignored) {
+                } catch (Exception e) {
                     readUpdateInformation.readUpdateInfo("Running");
                 }
             }
@@ -416,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         };
-        databaseReference.addValueEventListener(eventListener);
+        databaseReference.addListenerForSingleValueEvent(eventListener);
     }
 
     private void readVersionInformationFromFirebase(MainActivity.readVersionInformation readVersionInformation) {
@@ -436,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         };
-        databaseReference.addValueEventListener(eventListener);
+        databaseReference.addListenerForSingleValueEvent(eventListener);
     }
 
     private void readBannedInformationFromFirebase(MainActivity.userBanInformation userBanInformation) {
@@ -455,96 +379,38 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         };
-        databaseReference.addValueEventListener(eventListener);
-    }
-
-    private void internetConnectionCheckerWithServer(MainActivity.internetConnectionCheck internetConnectionCheck) {
-        databaseReference = FirebaseDatabase.getInstance().getReference("/.info/connected");
-        eventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                Boolean connected = snapshot.getValue(Boolean.class);
-                try {
-                    internetConnectionCheck.connectionInfo(connected);
-                } catch (Exception e) {
-                    internetConnectionCheck.connectionInfo(false);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        };
-        databaseReference.addValueEventListener(eventListener);
+        databaseReference.addListenerForSingleValueEvent(eventListener);
     }
 
 
     @Override
     protected void onDestroy() {
-        stopRepeatingTask();
-        if (databaseReference != null && eventListener != null) {
+        closingCodes();
+        super.onDestroy();
+    }
+
+    private void closingCodes() {
+        handler.removeCallbacksAndMessages(null);
+        dialog = new Dialog(MainActivity.this, R.style.dialogue);
+        if (dialog.isShowing()) {
+            dialog.dismiss();
+        }
+        if (databaseReference != null && userSignInInfoReference != null && eventListener != null) {
             databaseReference.removeEventListener(eventListener);
+            userSignInInfoReference.removeEventListener(eventListener);
         }
         progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
-
-        super.onDestroy();
-    }
-    // TODO : PROBLEM MAY BE WITH THE RUNNABLE INTERFACES I THINK :)
-
-    //Main Account ID: ca-app-pub-5052828179386026/7359645574
-    // Dummy ID: ca-app-pub-3940256099942544/1033173712
-
-    private void interstitialAdLoader() {
-        AdRequest adRequest = new AdRequest.Builder().build();
-        MobileAds.initialize(this, initializationStatus -> {
-            // TODO : Need to change the Ad ID here
-            InterstitialAd.load(this, "ca-app-pub-5052828179386026/7359645574", adRequest,
-                    new InterstitialAdLoadCallback() {
-                        @Override
-                        public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                            // The mInterstitialAd reference will be null until
-                            // an ad is loaded.
-                            // TODO : Need to show the Ad only when the user makes a mistake
-                            mInterstitialAd = interstitialAd;
-                            mInterstitialAd.show(MainActivity.this);
-                            mInterstitialAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                                @Override
-                                public void onAdDismissedFullScreenContent() {
-                                    // Called when fullscreen content is dismissed.
-                                }
-
-                                @Override
-                                public void onAdFailedToShowFullScreenContent(@NonNull AdError adError) {
-                                    // Called when fullscreen content failed to show.
-                                }
-
-                                @Override
-                                public void onAdShowedFullScreenContent() {
-                                    // Called when fullscreen content is shown.
-                                    // Make sure to set your reference to null so you don't
-                                    // show it a second time.
-                                    mInterstitialAd = null;
-                                }
-                            });
-                        }
-
-                        @Override
-                        public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                            // Handle the error
-                            mInterstitialAd = null;
-                        }
-                    });
-        });
-
+        headerView = null;
     }
 
-    void startAdRepeatingTask() {
-        adStatusChecker.run();
+    @Override
+    protected void onStop() {
+        closingCodes();
+        super.onStop();
     }
-
 
     private interface userBanInformation {
         void userBanInfo(Boolean value);
@@ -558,13 +424,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         void readUpdateInfo(String value);
     }
 
-
     public interface readVersionInformation {
         void readVersionInfo(Double value);
     }
-
-    private interface internetConnectionCheck {
-        void connectionInfo(Boolean connection);
-    }
-
 }

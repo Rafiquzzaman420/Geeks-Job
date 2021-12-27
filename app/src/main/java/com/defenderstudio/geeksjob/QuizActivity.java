@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,48 +31,18 @@ public class QuizActivity extends AppCompatActivity {
     public static ArrayList<TournamentQuestions> tournamentList;
 
     private final int index = 0;
-
+    ProgressDialog dialog;
     List<TournamentQuestions> tournamentQuestionsList = new ArrayList<>();
 
     TournamentQuestions tournamentQuestions;
     private tournamentDatabaseLoadWithAsyncTask tournamentDatabaseLoadWithAsyncTask;
 
-    private boolean dialogShown = false;
-    private Handler handler;
     String TotalUser = "Total Users";
     String OnlineUser = "Online Users";
 
     DatabaseReference databaseReference;
     ValueEventListener listener;
 
-    Runnable statusChecker = () -> {
-        try {
-            Dialog dialog = new Dialog(QuizActivity.this, R.style.dialogue);
-            dialog.setContentView(R.layout.connection_alert);
-            dialog.setCancelable(false);
-            dialog.getWindow().addFlags(WindowManager.LayoutParams.FLAG_BLUR_BEHIND);
-
-            dialog.findViewById(R.id.connection_retry).setOnClickListener(v -> {
-                if (isOnline() && dialogShown) {
-                    dialog.dismiss();
-                    dialogShown = false;
-                }
-            });
-            // If Internet connection is gone
-
-            if (!isOnline()) {
-                if (!dialogShown) {
-                    dialogShown = true;
-                    dialog.show();
-                }
-            }
-
-        } catch (Exception ignored) {
-        } finally {
-            int interval = 1000;
-            new Handler().postDelayed(this::startConnectionRepeatingTask, interval);
-        }
-    };
 
     public QuizActivity() {
     }
@@ -85,14 +54,6 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.quiz_section_activity);
-
-        handler = new Handler();
-        startConnectionRepeatingTask();
-
-        MobileAds.initialize(
-                this,
-                initializationStatus -> {
-                });
 
         tournamentList = new ArrayList<>();
         tournamentQuestionsList = tournamentList;
@@ -154,20 +115,8 @@ public class QuizActivity extends AppCompatActivity {
 
     //==============================================================================================
 
-    void startConnectionRepeatingTask() {
-        statusChecker.run();
-    }
-
-    private boolean isOnline() {
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        return connectivityManager.getActiveNetworkInfo() != null &&
-                connectivityManager.getActiveNetworkInfo().isConnected();
-    }
-
     public void tournamentQuestionLoadingIntent(String message, String topicName, ArrayList<TournamentQuestions> arrayList) {
-        ProgressDialog dialog = new ProgressDialog(QuizActivity.this, R.style.ProgressDialogStyle);
+        dialog = new ProgressDialog(QuizActivity.this, R.style.ProgressDialogStyle);
         dialog.setMessage(message + " Quiz loading...");
         dialog.setCancelable(false);
         dialog.show();
@@ -186,14 +135,27 @@ public class QuizActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        stopRepeatingTask();
+        closingCodes();
+        super.onDestroy();
+    }
+
+    private void closingCodes(){
         if (tournamentDatabaseLoadWithAsyncTask != null) {
             tournamentDatabaseLoadWithAsyncTask.cancel(true);
         }
         if (databaseReference != null && listener != null) {
             databaseReference.removeEventListener(listener);
         }
-        super.onDestroy();
+        dialog = new ProgressDialog(QuizActivity.this, R.style.ProgressDialogStyle);
+        if (dialog.isShowing()){
+            dialog.dismiss();
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        closingCodes();
+        super.onStop();
     }
 
     class tournamentDatabaseLoadWithAsyncTask extends AsyncTask<TournamentQuestions, Void, Void> {
@@ -218,7 +180,7 @@ public class QuizActivity extends AppCompatActivity {
                 public void onCancelled(@NonNull DatabaseError error) {
                 }
             };
-            databaseReference.addValueEventListener(listener);
+            databaseReference.addListenerForSingleValueEvent(listener);
             return null;
         }
     }
@@ -239,13 +201,10 @@ public class QuizActivity extends AppCompatActivity {
             public void onCancelled (@NonNull DatabaseError error){
             }
         };
-        databaseReference.addValueEventListener(listener);
+        databaseReference.addListenerForSingleValueEvent(listener);
 
     }
     private interface totalUsers {
         void info(long info);
-    }
-    void stopRepeatingTask() {
-        handler.removeCallbacks(statusChecker);
     }
 }

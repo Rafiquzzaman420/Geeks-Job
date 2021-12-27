@@ -40,7 +40,7 @@ public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private ProgressBar progressBar;
     private GoogleSignInClient googleSignInClient;
-
+View view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,11 +49,19 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
 
 
+        view = getWindow().getDecorView();
+        int NavigationHide = View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                | View.SYSTEM_UI_FLAG_FULLSCREEN
+                | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+
+        view.setSystemUiVisibility(NavigationHide);
+
         CardView signInButton = findViewById(R.id.sign_in_button);
         ImageView appLogo = findViewById(R.id.appLogo);
         companyNameTextView = findViewById(R.id.company_name_sign_in);
-        TextView SignInButtonText = findViewById(R.id.sign_in_button_text);
-        ImageView googleImage = findViewById(R.id.googleImage);
 
         Animation right_animation = AnimationUtils.loadAnimation(this, R.anim.company_name_anim);
         progressBar = findViewById(R.id.progressbar_sign_in);

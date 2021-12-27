@@ -43,8 +43,11 @@ public class Rewards extends AppCompatActivity {
     boolean TESTMODE = true;
     IUnityAdsListener unityAdsListener;
     IUnityAdsShowListener unityAdsShowListener;
+    DatabaseReference databaseReference;
+    ValueEventListener eventListener;
     private long chancesLeft;
     private boolean dialogShown = false;
+    Handler handler = new Handler();
 
     Runnable statusChecker = () -> {
         try {
@@ -408,11 +411,10 @@ public class Rewards extends AppCompatActivity {
     //==============================================================================================================================
     private void userTimerInformationCallBack(Rewards.userInfoCallBack userInfoCallBack) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         assert firebaseUser != null;
-        DatabaseReference userTimerReference = databaseReference.child("AllUsers").
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("AllUsers").
                 child("Users Timer").child("Users").child(firebaseUser.getUid()).child("End Time");
-        userTimerReference.addValueEventListener(new ValueEventListener() {
+        eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Long longValue = snapshot.getValue(Long.class);
@@ -429,16 +431,16 @@ public class Rewards extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        databaseReference.addListenerForSingleValueEvent(eventListener);
     }
 
     private void userChancesLeftCallBack(Rewards.userChancesLeft userChancesLeft) {
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
         assert firebaseUser != null;
-        DatabaseReference userTimerReference = databaseReference.child("AllUsers").
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("AllUsers").
                 child("Users Chances Left").child("Users").child(firebaseUser.getUid()).child("Chances");
-        userTimerReference.addValueEventListener(new ValueEventListener() {
+        eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Long longValue = snapshot.getValue(Long.class);
@@ -455,7 +457,8 @@ public class Rewards extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        databaseReference.addListenerForSingleValueEvent(eventListener);
     }
 
     private void userChancesLeftSendToServer(long chances) {
@@ -522,13 +525,16 @@ public class Rewards extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        handler.removeCallbacks(statusChecker);
+        if (databaseReference != null && eventListener != null) {
+            databaseReference.removeEventListener(eventListener);
+        }
         super.onDestroy();
     }
 
     private void internetConnectionCheckerWithServer(Rewards.internetConnectionCheck internetConnectionCheck) {
-        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference AnsQuizAmountReference = firebaseDatabase.child("/.info/connected");
-        AnsQuizAmountReference.addValueEventListener(new ValueEventListener() {
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("/.info/connected");
+        eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Boolean connected = snapshot.getValue(Boolean.class);
@@ -543,7 +549,8 @@ public class Rewards extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        };
+        databaseReference.addListenerForSingleValueEvent(eventListener);
     }
 
     private interface userInfoCallBack {

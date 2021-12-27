@@ -10,11 +10,8 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.view.View;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,7 +44,10 @@ public class LeaderBoard extends AppCompatActivity {
     ImageView firstUser, secondUser, thirdUser;
     TextView leaderBoardTimer;
     ConstraintLayout constraintLayout;
+    ValueEventListener eventListener;
     private boolean dialogShown = false;
+    Handler handler;
+
     Runnable statusChecker = () -> {
         try {
             Dialog dialog = new Dialog(LeaderBoard.this, R.style.dialogue);
@@ -82,6 +82,8 @@ public class LeaderBoard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.leaderboard_activity);
 
+        handler = new Handler();
+
         startConnectionRepeatingTask();
         firstUser = findViewById(R.id.first_user);
         secondUser = findViewById(R.id.second_user);
@@ -90,20 +92,18 @@ public class LeaderBoard extends AppCompatActivity {
 
         long currentTime = Calendar.getInstance().getTimeInMillis();
         getTimerInformation(time -> {
-            if (time <= currentTime){
+            if (time <= currentTime) {
                 FirebaseAuth.getInstance().signOut();
                 Intent signOutIntent = new Intent(LeaderBoard.this, SignInActivity.class);
                 startActivity(signOutIntent);
                 finish();
                 Toast.makeText(getApplicationContext(), "Calculating Result. Please try again later...", Toast.LENGTH_LONG).show();
-            }
-            else{
-                startTimer((time-currentTime));
+            } else {
+                startTimer((time - currentTime));
             }
         });
 
         constraintLayout = findViewById(R.id.constraint_layout_leader_board);
-        parameterSetter(constraintLayout);
 
         firstUser.getLayoutParams().height = (int) convertFromDp(200);
         secondUser.getLayoutParams().height = (int) convertFromDp(200);
@@ -135,7 +135,6 @@ public class LeaderBoard extends AppCompatActivity {
 
             leaderBoardAdapter = new LeaderBoardAdapter(LeaderBoard.this, leaderBoardUserArrayList);
             recyclerView.setAdapter(leaderBoardAdapter);
-
             databaseReference.orderByChild("pointsValue").addValueEventListener(new ValueEventListener() {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
@@ -164,7 +163,8 @@ public class LeaderBoard extends AppCompatActivity {
             });
             try {
                 progressDialog.dismiss();
-            }catch (Exception ignored){}
+            } catch (Exception ignored) {
+            }
         }, 3000);
 
     }
@@ -195,37 +195,30 @@ public class LeaderBoard extends AppCompatActivity {
         return ((input - 0.8f) / scale);
     }
 
-    private void parameterSetter(View view) {
-        ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
-        layoutParams.height = (int) convertFromDp(700);
-        layoutParams.width = LinearLayout.LayoutParams.MATCH_PARENT;
-        view.setLayoutParams(layoutParams);
+    private void stopRepeatingTask(){
+        handler.removeCallbacks(statusChecker);
     }
 
     private void getTimerInformation(getTimerInfo getTimerInfo) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference databaseReference = database.getReference().child("Tournament Timer").child("Time left");
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference = database.getReference().child("Tournament Timer").child("Time left");
+        eventListener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Long value = snapshot.getValue(Long.class);
                 try {
                     getTimerInfo.getInfo(value);
-                }catch (Exception e){
-                    getTimerInfo.getInfo((long)0);
+                } catch (Exception e) {
+                    getTimerInfo.getInfo((long) 0);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
             }
-        });
+        };
+        databaseReference.addValueEventListener(eventListener);
     }
-
-    private interface getTimerInfo {
-        void getInfo(Long time);
-    }
-
 
     private void startTimer(long timeLeftInMillis) {
 
@@ -257,11 +250,35 @@ public class LeaderBoard extends AppCompatActivity {
     }
 
     @Override
+    protected void onStop() {
+        stopRepeatingTask();
+        if (databaseReference != null && eventListener != null) {
+            databaseReference.removeEventListener(eventListener);
+        }
+        recyclerView.setAdapter(null);
+        ProgressDialog progressDialog = new ProgressDialog(LeaderBoard.this, R.style.ProgressDialogStyle);
+        if (progressDialog.isShowing()) {
+            progressDialog.dismiss();
+        }
+
+        super.onStop();
+    }
+
+    @Override
     protected void onDestroy() {
+        stopRepeatingTask();
+        if (databaseReference != null && eventListener != null) {
+            databaseReference.removeEventListener(eventListener);
+        }
+        recyclerView.setAdapter(null);
         ProgressDialog progressDialog = new ProgressDialog(LeaderBoard.this, R.style.ProgressDialogStyle);
         if (progressDialog.isShowing()) {
             progressDialog.dismiss();
         }
         super.onDestroy();
+    }
+
+    private interface getTimerInfo {
+        void getInfo(Long time);
     }
 }

@@ -33,18 +33,12 @@ public class Home extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     DatabaseReference databaseReference;
     ValueEventListener listener;
-    View fragmentView;
+    View view;
     FirebaseUser firebaseUser;
 
     public Home() {
         // Required empty public constructor
     }
-
-    // This callback will only be called when MyFragment is at least Started.
-
-
-    // The callback can be enabled or disabled here or in handleOnBackPressed()
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -55,7 +49,7 @@ public class Home extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.home_fragment, container, false);
+        view = inflater.inflate(R.layout.home_fragment, container, false);
         CardView leaderBoardActivity = view.findViewById(R.id.leader_board_activity);
         CardView quizActivity = view.findViewById(R.id.quiz_intent);
         ImageView userImageView = view.findViewById(R.id.userImageInHomeFragment);
@@ -142,7 +136,7 @@ public class Home extends Fragment {
 
             }
         };
-        databaseReference.addValueEventListener(listener);
+        databaseReference.addListenerForSingleValueEvent(listener);
     }
 
     public interface userPointInfoCallBack {
@@ -154,8 +148,17 @@ public class Home extends Fragment {
         if (databaseReference != null && listener != null) {
             databaseReference.removeEventListener(listener);
         }
-        fragmentView = null;
+        view = null;
         super.onDestroyView();
+    }
+
+    @Override
+    public void onDestroy() {
+        if (databaseReference != null && listener != null) {
+            databaseReference.removeEventListener(listener);
+        }
+        view = null;
+        super.onDestroy();
     }
 
     @Override

@@ -64,7 +64,7 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".QuizActivity"
-            android:noHistory="false"
+            android:noHistory="true"
             android:screenOrientation="portrait" />
 
         <activity

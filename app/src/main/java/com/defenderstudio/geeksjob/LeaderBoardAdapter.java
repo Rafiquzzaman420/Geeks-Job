@@ -21,6 +21,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
 
     Context context;
     ArrayList<LeaderBoardUser> list;
+    View view;
 
     public LeaderBoardAdapter(Context context, ArrayList<LeaderBoardUser> list) {
         this.context = context;
@@ -30,7 +31,7 @@ public class LeaderBoardAdapter extends RecyclerView.Adapter<LeaderBoardAdapter.
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.leader_board, parent, false);
+        view = LayoutInflater.from(context).inflate(R.layout.leader_board, parent, false);
         return new ViewHolder(view);
     }
 
