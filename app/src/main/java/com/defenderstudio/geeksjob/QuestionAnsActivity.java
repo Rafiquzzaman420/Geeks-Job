@@ -16,7 +16,6 @@ import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -1236,10 +1235,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
     private void blockRewardButton() {
-
-//        rewardedAdButton = findViewById(R.id.rewardButton);
-//        rewardedAdButton.setClickable(false);
-//        rewardedAdButton.setVisibility(View.GONE);
         rewardTimer = findViewById(R.id.rewardTimer);
         rewardTimer.setClickable(false);
         rewardTimer.setBackgroundColor(getResources().getColor(R.color.red));
@@ -1264,8 +1259,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
             // If time is greater than 0, then it will set the timer start value to START_TIME_IN_MILLIS
             if ((value - currentTime) > 0) {
                 START_TIME_IN_MILLIS = value - currentTime;
-            }
-            else {
+            } else {
                 START_TIME_IN_MILLIS = 150000;
             }
         });
@@ -1385,11 +1379,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     protected void onDestroy() {
         stopRepeatingTask();
         super.onDestroy();
-    }
-
-    public float convertFromDp(int input) {
-        final float scale = getResources().getDisplayMetrics().density;
-        return ((input - 0.8f) / scale);
     }
 
     void stopRepeatingTask() {
