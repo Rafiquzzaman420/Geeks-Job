@@ -38,7 +38,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        android:textSize="20sp"
+        android:textSize="32sp"
         android:gravity="center"
         android:layout_weight=".7"
         android:text="@string/userName"
@@ -50,7 +50,7 @@
         android:layout_height="match_parent"
         android:layout_margin="20dp"
         android:layout_weight=".3"
-        android:textSize="20sp"
+        android:textSize="24sp"
         android:gravity="center"
         android:textColor="@color/light_gray"/>
 
@@ -78,7 +78,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginBottom="20dp"
-                android:textSize="20sp"
+                android:textSize="32sp"
                 android:gravity="center"
                 android:layout_weight=".7"
                 android:text="@string/email"
@@ -89,7 +89,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="20dp"
-                android:textSize="20sp"
+                android:textSize="24sp"
                 android:layout_weight=".3"
                 android:gravity="center"
                 android:textColor="@color/light_gray"/>
@@ -119,7 +119,7 @@
                     android:gravity="center"
                     android:text="@string/withdrawal"
                     android:textColor="@color/light_gray"
-                    android:textSize="20sp"
+                    android:textSize="32sp"
                     android:textStyle="bold"
                     android:translationZ="5dp" />
 
@@ -160,7 +160,7 @@
                         android:gravity="center"
                         android:text="@string/points_Info"
                         android:textColor="@color/light_gray"
-                        android:textSize="20sp"
+                        android:textSize="32sp"
                         android:textStyle="bold" />
 
                     <TextView
@@ -172,11 +172,11 @@
                         android:gravity="center"
                         android:text="@string/zero"
                         android:textColor="@color/blue"
-                        android:textSize="24sp" />
+                        android:textSize="46dp" />
 
                     <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
                         android:background="@drawable/dollar"
                         android:gravity="center"
                         android:layout_marginEnd="20dp"/>
@@ -188,7 +188,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="180dp"
                 android:layout_gravity="center"
                 android:layout_margin="20sp"
                 android:orientation="horizontal">
@@ -202,23 +202,24 @@
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="15dp"
                     android:layout_marginBottom="15dp"
-                    android:paddingStart="20sp"
-                    android:paddingEnd="20sp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="40dp"
                     android:hint="@string/bkash"
                     android:inputType="numberDecimal"
                     android:maxLength="11"
+                    android:longClickable="false"
                     android:maxLines="1"
                     android:background="@drawable/edittext_background"
-                    android:textColor="@color/blue"
-                    android:textColorHint="#9a9a9a"
+                    android:textColor="@color/purple"
+                    android:textColorHint="@color/light_gray"
                     android:textCursorDrawable="@null"
-                    android:textSize="15sp" />
+                    android:textSize="30sp" />
             </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight=".85">
+            android:layout_weight=".9">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/submit_exchange"
@@ -243,7 +244,7 @@
                     android:gravity="center"
                     android:text="@string/submit"
                     android:textColor="@color/white"
-                    android:textSize="30sp" />
+                    android:textSize="40sp" />
 
             </androidx.cardview.widget.CardView>
 

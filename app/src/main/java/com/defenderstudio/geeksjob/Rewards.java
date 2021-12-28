@@ -45,11 +45,11 @@ public class Rewards extends AppCompatActivity {
     IUnityAdsShowListener unityAdsShowListener;
     DatabaseReference databaseReference;
     ValueEventListener eventListener;
+    CountDownTimer countDownTimer;
+    Handler handler = new Handler();
     private long chancesLeft;
     private boolean dialogShown = false;
-    Handler handler = new Handler();
-
-    Runnable statusChecker = () -> {
+    Runnable statusChecker= () -> {
         try {
             Dialog dialog = new Dialog(Rewards.this, R.style.dialogue);
             dialog.setContentView(R.layout.connection_alert);
@@ -77,7 +77,7 @@ public class Rewards extends AppCompatActivity {
         } catch (Exception ignored) {
         } finally {
             int interval = 1000;
-            new Handler().postDelayed(this::startConnectionRepeatingTask, interval);
+            handler.postDelayed(this::startConnectionRepeatingTask, interval);
         }
     };
 
@@ -97,7 +97,7 @@ public class Rewards extends AppCompatActivity {
             if (value == 0) {
                 informationValidationAfterGettingZero();
             } else {
-                START_TIME_IN_MILLIS = 28800000;
+                START_TIME_IN_MILLIS = 21600000;
                 freeRewardButton();
             }
         });
@@ -172,7 +172,7 @@ public class Rewards extends AppCompatActivity {
 
                 }, 3000);
             } else {
-                START_TIME_IN_MILLIS = 28800000;
+                START_TIME_IN_MILLIS = 21600000;
                 dialog.dismiss();
             }
         });
@@ -182,7 +182,7 @@ public class Rewards extends AppCompatActivity {
     private void startTimer(long timeLeftInMillis) {
         blockRewardButton();
 
-        new CountDownTimer(timeLeftInMillis, 1000) {
+        countDownTimer = new CountDownTimer(timeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 String duration = String.format(Locale.ENGLISH, "%02d:%02d:%02d",
@@ -238,7 +238,7 @@ public class Rewards extends AppCompatActivity {
             }
             // Otherwise it'll set the starting time to 24 Hours or 86400000 milliseconds
             else {
-                START_TIME_IN_MILLIS = 28800000;
+                START_TIME_IN_MILLIS = 21600000;
             }
         });
 
@@ -393,7 +393,7 @@ public class Rewards extends AppCompatActivity {
 
     private void timerTimeSendToServer() {
         long currentTime = Calendar.getInstance().getTimeInMillis();
-        long timerTime = currentTime + 28800000;
+        long timerTime = currentTime + 21600000;
 
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -525,6 +525,9 @@ public class Rewards extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (countDownTimer != null) {
+            countDownTimer.cancel();
+        }
         handler.removeCallbacks(statusChecker);
         if (databaseReference != null && eventListener != null) {
             databaseReference.removeEventListener(eventListener);

@@ -3,7 +3,6 @@ package com.defenderstudio.geeksjob;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -61,45 +60,36 @@ public class Exchange extends Fragment {
         TextView userName = view.findViewById(R.id.user_name_in_exchange);
         TextView userEmail = view.findViewById(R.id.user_email_in_exchange);
 
-        TextView withdrawalAmountText = view.findViewById(R.id.withdrawal_amount_text);
-        TextView coinsAmount = view.findViewById(R.id.coins_amount_text);
-        TextView submitButtonText = view.findViewById(R.id.submit_button_in_exchange);
-
         userName.setText(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getDisplayName());
         userEmail.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
 
         setSubmitButton(view);
-        bkashAccount.setLongClickable(false);
-        bkashAccount.setTextIsSelectable(false);
-        bkashAccount.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
-            @Override
-            public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
-                return false;
-            }
+        if (bkashAccount.isSuggestionsEnabled()) {
+            bkashAccount.setCustomSelectionActionModeCallback(new ActionMode.Callback() {
+                @Override
+                public boolean onCreateActionMode(ActionMode actionMode, Menu menu) {
+                    return false;
+                }
 
-            @Override
-            public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
-                return false;
-            }
+                @Override
+                public boolean onPrepareActionMode(ActionMode actionMode, Menu menu) {
+                    return false;
+                }
 
-            @Override
-            public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
-                return false;
-            }
+                @Override
+                public boolean onActionItemClicked(ActionMode actionMode, MenuItem menuItem) {
+                    return false;
+                }
 
-            @Override
-            public void onDestroyActionMode(ActionMode actionMode) {
+                @Override
+                public void onDestroyActionMode(ActionMode actionMode) {
 
-            }
-        });
+                }
+            });
 
-
-        bkashAccount.setTextSize(convertFromDp(25));
-        pointAmount.setTextSize(convertFromDp(30));
-        submitButtonText.setTextSize(convertFromDp(35));
-        coinsAmount.setTextSize(convertFromDp(30));
-        withdrawalAmountText.setTextSize(convertFromDp(30));
-
+            bkashAccount.setOnLongClickListener(view -> false);
+            bkashAccount.setTextIsSelectable(false);
+        }
         return view;
     }
 
@@ -182,12 +172,7 @@ public class Exchange extends Fragment {
                 }
             }
         };
-        databaseReference.addValueEventListener(eventListener);
-    }
-
-    public float convertFromDp(int input) {
-        final float scale = requireActivity().getResources().getDisplayMetrics().density;
-        return ((input - 0.7f) / scale);
+        databaseReference.addListenerForSingleValueEvent(eventListener);
     }
 
     @Override

@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -47,6 +48,7 @@ public class LeaderBoard extends AppCompatActivity {
     ValueEventListener eventListener;
     private boolean dialogShown = false;
     Handler handler;
+    CountDownTimer countDownTimer;
 
     Runnable statusChecker = () -> {
         try {
@@ -135,7 +137,7 @@ public class LeaderBoard extends AppCompatActivity {
 
             leaderBoardAdapter = new LeaderBoardAdapter(LeaderBoard.this, leaderBoardUserArrayList);
             recyclerView.setAdapter(leaderBoardAdapter);
-            databaseReference.orderByChild("pointsValue").addValueEventListener(new ValueEventListener() {
+            databaseReference.orderByChild("pointsValue").addListenerForSingleValueEvent(new ValueEventListener() {
                 @SuppressLint("NotifyDataSetChanged")
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -146,10 +148,16 @@ public class LeaderBoard extends AppCompatActivity {
                         assert leaderBoardUser != null;
                     }
                     Glide.with(getApplicationContext()).load(firstPosition).
+                            diskCacheStrategy(DiskCacheStrategy.NONE).
+                            skipMemoryCache(true).
                             apply(RequestOptions.circleCropTransform()).into(firstUser);
                     Glide.with(getApplicationContext()).load(secondPosition).
+                            diskCacheStrategy(DiskCacheStrategy.NONE).
+                            skipMemoryCache(true).
                             apply(RequestOptions.circleCropTransform()).into(secondUser);
                     Glide.with(getApplicationContext()).load(thirdPosition).
+                            diskCacheStrategy(DiskCacheStrategy.NONE).
+                            skipMemoryCache(true).
                             apply(RequestOptions.circleCropTransform()).into(thirdUser);
 
                     Collections.reverse(leaderBoardUserArrayList);
@@ -217,12 +225,12 @@ public class LeaderBoard extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        databaseReference.addValueEventListener(eventListener);
+        databaseReference.addListenerForSingleValueEvent(eventListener);
     }
 
     private void startTimer(long timeLeftInMillis) {
 
-        new CountDownTimer(timeLeftInMillis, 1000) {
+        countDownTimer = new CountDownTimer(timeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
                 String duration = String.format(Locale.ENGLISH, "%02d days %02d Hours %02d Minutes %02d Seconds",
@@ -251,6 +259,7 @@ public class LeaderBoard extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        Glide.get(LeaderBoard.this).clearMemory();
         stopRepeatingTask();
         if (databaseReference != null && eventListener != null) {
             databaseReference.removeEventListener(eventListener);
@@ -266,6 +275,10 @@ public class LeaderBoard extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        Glide.get(LeaderBoard.this).clearMemory();
+        if (countDownTimer != null){
+            countDownTimer.cancel();
+        }
         stopRepeatingTask();
         if (databaseReference != null && eventListener != null) {
             databaseReference.removeEventListener(eventListener);

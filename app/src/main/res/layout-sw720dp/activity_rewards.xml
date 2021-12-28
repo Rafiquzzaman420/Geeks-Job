@@ -1,28 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/notice_board_background"
+    android:background="@drawable/rewards_background"
     android:orientation="vertical"
     tools:context=".Rewards">
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"
-        android:layout_weight=".6"
-        android:elevation="5dp"
-        android:translationZ="10dp"
-        app:cardCornerRadius="20dp"
-        app:cardBackgroundColor="@android:color/transparent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_weight=".5">
 
             <TextView
                 android:id="@+id/rewards_text_view_point"
@@ -32,7 +22,7 @@
                 android:gravity="center"
                 android:text="@string/zero"
                 android:textColor="@color/white"
-                android:textSize="120sp"
+                android:textSize="100sp"
                 android:fontFamily="@font/geeks_job_regular"/>
 
             <LinearLayout
@@ -47,8 +37,8 @@
                     android:layout_weight=".3"
                     android:gravity="center"
                     android:text="@string/chance"
-                    android:textColor="@color/white"
-                    android:textSize="32sp"
+                    android:textColor="@color/purple"
+                    android:textSize="36sp"
                     android:layout_margin="10dp"
                     android:textStyle="bold"
                     android:fontFamily="@font/geeks_job_regular"
@@ -61,8 +51,8 @@
                     android:layout_weight=".7"
                     android:gravity="center"
                     android:text="@string/twenty"
-                    android:textColor="@color/white"
-                    android:textSize="32sp"
+                    android:textColor="@color/purple"
+                    android:textSize="36sp"
                     android:layout_margin="10dp"
                     android:textStyle="bold"
                     android:fontFamily="@font/geeks_job_regular"/>
@@ -72,7 +62,6 @@
 
         </LinearLayout>
 
-    </androidx.cardview.widget.CardView>
 
 
     <LinearLayout
@@ -99,31 +88,19 @@
                 android:textStyle="bold"
                 android:fontFamily="@font/geeks_job_regular"/>
         </LinearLayout>
-
-
-
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:cardCornerRadius="20dp"
-            android:elevation="10dp"
-            android:translationZ="10dp"
-            android:layout_weight=".3"
-            android:layout_marginBottom="20dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            app:cardBackgroundColor="@android:color/transparent">
-
+        
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:gravity="center">
+                android:gravity="center"
+                android:layout_weight=".5"
+                android:background="@drawable/gradient">
 
                 <ImageView
                     android:contentDescription="@string/timer"
-                    android:layout_width="180dp"
-                    android:layout_height="180dp"
+                    android:layout_width="170dp"
+                    android:layout_height="170dp"
                     android:background="@drawable/ic_baseline_timer_128"
                     android:backgroundTint="@color/white"/>
 
@@ -132,16 +109,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/white"
-                    android:textSize="32sp"
+                    android:textSize="36sp"
                     android:text="@string/timer"
                     android:textStyle="bold"
                     android:layout_marginTop="10dp"/>
 
             </LinearLayout>
-
-
-
-        </androidx.cardview.widget.CardView>
 
 
     </LinearLayout>

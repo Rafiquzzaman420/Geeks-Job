@@ -88,6 +88,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     Handler handler = new Handler();
     DatabaseReference databaseReference;
     ValueEventListener valueEventListener;
+    CountDownTimer countDownTimer;
 
     Runnable statusChecker = new Runnable() {
         @Override
@@ -1200,7 +1201,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     private void startTimer(long timeLeftInMillis) {
         blockRewardButton();
 
-        new CountDownTimer(timeLeftInMillis, 1000) {
+       countDownTimer = new CountDownTimer(timeLeftInMillis, 1000) {
             @Override
             public void onTick(long millisUntilFinished) {
 
@@ -1223,7 +1224,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
             @Override
             public void onFinish() {
-
                 // Reset the timer
                 resetTimer();
                 // Setting the Reward button to "Clickable"
@@ -1377,6 +1377,9 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     @Override
     protected void onDestroy() {
+        if (countDownTimer != null){
+            countDownTimer.cancel();
+        }
         stopRepeatingTask();
         super.onDestroy();
     }

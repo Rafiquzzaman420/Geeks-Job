@@ -132,8 +132,8 @@ public class NoticeBoard extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        noticeHeader.addValueEventListener(noticeHeaderListener);
-        noticeBody.addValueEventListener(noticeBodyListener);
+        noticeHeader.addListenerForSingleValueEvent(noticeHeaderListener);
+        noticeBody.addListenerForSingleValueEvent(noticeBodyListener);
     }
 
     private void noticeBoardInfoChecker(noticeInfoChecker info) {
@@ -155,7 +155,7 @@ public class NoticeBoard extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        databaseReference.addValueEventListener(eventListener);
+        databaseReference.addListenerForSingleValueEvent(eventListener);
     }
 
     private void userNoticeValidator(userNoticeCollector noticeCollector) {
@@ -181,7 +181,7 @@ public class NoticeBoard extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         };
-        databaseReference.addValueEventListener(eventListener);
+        databaseReference.addListenerForSingleValueEvent(eventListener);
     }
 
     private void getNoticeBoardCardViewInfo(String child, TextView noticeViewHead, TextView noticeViewBody) {
