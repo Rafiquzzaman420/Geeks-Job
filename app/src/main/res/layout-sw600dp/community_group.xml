@@ -30,7 +30,7 @@
                 android:layout_weight=".9"
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="28sp"
                 android:text="@string/community_group"
                 android:textColor="@color/blue" />
 
@@ -41,7 +41,7 @@
                 android:layout_weight=".7"
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 android:text="@string/group_chat_text"
                 android:textColor="@color/light_gray" />
 
@@ -54,8 +54,8 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/facebook_link"
-                android:textSize="16sp"
                 android:linksClickable="true"
+                android:textSize="24sp"
                 android:textColor="@color/green" />
 
 
@@ -67,8 +67,8 @@
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
                 android:text="@string/telegram_link"
+                android:textSize="24sp"
                 android:linksClickable="true"
-                android:textSize="16sp"
                 android:textColor="@color/green" />
 
 
@@ -79,7 +79,7 @@
                 android:layout_weight=".7"
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
-                android:textSize="16sp"
+                android:textSize="24sp"
                 android:text="@string/tail_text"
                 android:textColor="@color/light_gray" />
 
@@ -90,8 +90,8 @@
                 android:layout_weight=".9"
                 android:fontFamily="@font/geeks_job_medium"
                 android:gravity="center"
+                android:textSize="24sp"
                 android:text="@string/youtube_link"
-                android:textSize="16sp"
                 android:textColor="@color/green" />
 
 

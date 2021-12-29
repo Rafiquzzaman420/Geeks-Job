@@ -111,6 +111,23 @@
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/movingText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="32sp"
+                android:fontFamily="@font/geeks_job_medium"
+                android:ellipsize="marquee"
+                android:fadingEdge="horizontal"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:layout_marginStart="20sp"
+                android:layout_marginEnd="20sp"
+                android:textColor="@color/red"
+                android:text="@string/quiz_notice"
+                android:gravity="center"
+                android:singleLine="true" />
         </LinearLayout>
 
 

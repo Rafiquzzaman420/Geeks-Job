@@ -1,14 +1,13 @@
 package com.defenderstudio.geeksjob;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.view.WindowManager;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,7 +15,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.google.android.gms.ads.MobileAds;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,13 +33,11 @@ public class QuizActivity extends AppCompatActivity {
     List<TournamentQuestions> tournamentQuestionsList = new ArrayList<>();
 
     TournamentQuestions tournamentQuestions;
-    private tournamentDatabaseLoadWithAsyncTask tournamentDatabaseLoadWithAsyncTask;
-
     String TotalUser = "Total Users";
     String OnlineUser = "Online Users";
-
     DatabaseReference databaseReference;
     ValueEventListener listener;
+    private tournamentDatabaseLoadWithAsyncTask tournamentDatabaseLoadWithAsyncTask;
 
 
     public QuizActivity() {
@@ -70,31 +66,37 @@ public class QuizActivity extends AppCompatActivity {
         CardView tournamentButton = findViewById(R.id.tournament);
         TextView totalUsers = findViewById(R.id.total_users);
         TextView onlineUsers = findViewById(R.id.online_users);
-
-
+        TextView movingText = findViewById(R.id.movingText);
+        movingText.setSelected(true);
 //==================================================================================================
         // Setting all the OnClickListener for all the buttons
 //==================================================================================================
-
+        SharedPreferences shareInfo = getSharedPreferences("total_users", Context.MODE_PRIVATE);
         UserInfo(TotalUser, info -> {
-            if (info != 0){
+            if (info >= 0) {
                 totalUsers.setText(String.valueOf(info));
+                if (info >= 50){
+                    shareInfo.edit().putString("FIFTY", "50").apply();
+                }
+                else {
+                    shareInfo.edit().putString("FIFTY", "0").apply();
+                }
             }
         });
 
         UserInfo(OnlineUser, info -> {
-            if (info != 0){
+            if (info >= 0) {
                 onlineUsers.setText(String.valueOf(info));
             }
         });
 
-       curriculumButton.setOnClickListener(view -> {
+        curriculumButton.setOnClickListener(view -> {
 //           Toast.makeText(getApplicationContext(), "Coming Soon!", Toast.LENGTH_SHORT).show();
-           Intent intent = new Intent(QuizActivity.this, Curriculum.class);
-           intent.putExtra("Curriculum", "Curriculum");
-           startActivity(intent);
-           finish();
-       });
+            Intent intent = new Intent(QuizActivity.this, Curriculum.class);
+            intent.putExtra("Curriculum", "Curriculum");
+            startActivity(intent);
+            finish();
+        });
         tournamentButton.setOnClickListener(v ->
                 tournamentQuestionLoadingIntent("Tournament", "Tournament", tournamentList)
         );
@@ -139,7 +141,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-    private void closingCodes(){
+    private void closingCodes() {
         if (tournamentDatabaseLoadWithAsyncTask != null) {
             tournamentDatabaseLoadWithAsyncTask.cancel(true);
         }
@@ -147,7 +149,7 @@ public class QuizActivity extends AppCompatActivity {
             databaseReference.removeEventListener(listener);
         }
         dialog = new ProgressDialog(QuizActivity.this, R.style.ProgressDialogStyle);
-        if (dialog.isShowing()){
+        if (dialog.isShowing()) {
             dialog.dismiss();
         }
     }
@@ -156,6 +158,31 @@ public class QuizActivity extends AppCompatActivity {
     protected void onStop() {
         closingCodes();
         super.onStop();
+    }
+
+    private void UserInfo(String path, totalUsers users) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("Total Users").child(path);
+        listener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                try {
+                    Long info = snapshot.getValue(Long.class);
+                    users.info(info);
+                } catch (Exception e) {
+                    users.info(0);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(listener);
+
+    }
+
+    private interface totalUsers {
+        void info(long info);
     }
 
     class tournamentDatabaseLoadWithAsyncTask extends AsyncTask<TournamentQuestions, Void, Void> {
@@ -183,28 +210,5 @@ public class QuizActivity extends AppCompatActivity {
             databaseReference.addListenerForSingleValueEvent(listener);
             return null;
         }
-    }
-
-    private void UserInfo(String path, totalUsers users) {
-        databaseReference = FirebaseDatabase.getInstance().getReference("Total Users").child(path);
-        listener = new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                try {
-                    Long info = snapshot.getValue(Long.class);
-                    users.info(info);
-                } catch (Exception e) {
-                    users.info(0);
-                }
-            }
-            @Override
-            public void onCancelled (@NonNull DatabaseError error){
-            }
-        };
-        databaseReference.addListenerForSingleValueEvent(listener);
-
-    }
-    private interface totalUsers {
-        void info(long info);
     }
 }

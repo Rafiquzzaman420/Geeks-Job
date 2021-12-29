@@ -11,11 +11,13 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -85,10 +87,12 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     int index = 0;
     View view;
     long correctCount = 0;
+    String fiftyUsers = "50";
     Handler handler = new Handler();
     DatabaseReference databaseReference;
     ValueEventListener valueEventListener;
     CountDownTimer countDownTimer;
+    SharedPreferences infoGetter;
 
     Runnable statusChecker = new Runnable() {
         @Override
@@ -147,8 +151,10 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         // Initializing Unity Ad
         String unityGameID = "4478761";
         UnityAds.initialize(this, unityGameID, TESTMODE, null);
-
-
+        infoGetter = getSharedPreferences("total_users", MODE_PRIVATE);
+        if (!infoGetter.getString("FIFTY", "0").equals(fiftyUsers)){
+            Toast.makeText(getApplicationContext(), "Your points won't be added into Leaderboard!", Toast.LENGTH_SHORT).show();
+        }
         handler = new Handler();
 
         startRepeatingTask();
@@ -163,141 +169,138 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
         view.setSystemUiVisibility(NavigationHide);
 
+            rewardedAdButton = findViewById(R.id.rewardButton);
+            submitButton = findViewById(R.id.submit);
+            leaveButton = findViewById(R.id.leave);
+            leaveButton.setBackgroundColor(getResources().getColor(R.color.red));
+            rewardedAdButton.setBackgroundColor(getResources().getColor(R.color.red));
 
-        rewardedAdButton = findViewById(R.id.rewardButton);
-        submitButton = findViewById(R.id.submit);
-        leaveButton = findViewById(R.id.leave);
-        leaveButton.setBackgroundColor(getResources().getColor(R.color.red));
-        rewardedAdButton.setBackgroundColor(getResources().getColor(R.color.red));
+            rewardedAdButton.setOnClickListener(view -> {
 
-        rewardedAdButton.setOnClickListener(view -> {
-
-            progressDialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
-            progressDialog.setCancelable(false);
-            progressDialog.setMessage("Loading. Please wait...");
-            progressDialog.show();
-            new Handler().postDelayed(() -> {
-
-                rewardedInterstitialAd();
-                progressDialog.dismiss();
-            }, 3000);
-        });
-        //==============================================================================================
-        // Hooking up all the views with ID's
-        //==============================================================================================
-        topicName = findViewById(R.id.topic_name);
-        question = findViewById(R.id.question);
-        score = findViewById(R.id.score);
-        option1 = findViewById(R.id.option1);
-        option2 = findViewById(R.id.option2);
-        option3 = findViewById(R.id.option3);
-        option4 = findViewById(R.id.option4);
-        leaveButton = findViewById(R.id.leave);
-        submitButton = findViewById(R.id.submit);
-
-        topicName.setText(getIntent().getStringExtra("topicName"));
-
-        ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
-        dialog.setMessage("Loading. Please wait...");
-        dialog.setCancelable(false);
-        dialog.show();
-        userTimerInformationCallBack(value -> {
-            // Getting the current time in MILLIS
-            long currentTime = Calendar.getInstance().getTimeInMillis();
-            if ((currentTime - value) >= 0) {
-                rewardTimer = findViewById(R.id.rewardTimer);
-                rewardTimer.setVisibility(View.GONE);
-                rewardedAdButton = findViewById(R.id.rewardButton);
-                rewardedAdButton.setVisibility(View.VISIBLE);
-                rewardedAdButton.setClickable(true);
-                rewardedAdButton.setBackgroundColor(getResources().getColor(R.color.green));
-                dialog.dismiss();
-            } else if ((currentTime - value) < 0) {
-                START_TIME_IN_MILLIS = value - currentTime;
+                progressDialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
+                progressDialog.setCancelable(false);
+                progressDialog.setMessage("Loading. Please wait...");
+                progressDialog.show();
                 new Handler().postDelayed(() -> {
-                    startTimer(START_TIME_IN_MILLIS);
-                    resetTimer();
-                    dialog.dismiss();
+                        rewardedInterstitialAd();
+                    progressDialog.dismiss();
                 }, 3000);
-            } else {
-                // Otherwise it'll set the starting time to 5 Minutes or 300000 milliseconds
-                START_TIME_IN_MILLIS = 150000;
-                dialog.dismiss();
-            }
-        });
+            });
+            //==============================================================================================
+            // Hooking up all the views with ID's
+            //==============================================================================================
+            topicName = findViewById(R.id.topic_name);
+            question = findViewById(R.id.question);
+            score = findViewById(R.id.score);
+            option1 = findViewById(R.id.option1);
+            option2 = findViewById(R.id.option2);
+            option3 = findViewById(R.id.option3);
+            option4 = findViewById(R.id.option4);
+            leaveButton = findViewById(R.id.leave);
+            submitButton = findViewById(R.id.submit);
 
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-        //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            topicName.setText(getIntent().getStringExtra("topicName"));
 
-        String bannerPlacement = "Banner_Android";
-        bannerAdView = new BannerView(this, bannerPlacement, new UnityBannerSize(320, 70));
-        bannerAdView.setListener(bannerListener);
-        bannerViewLayout = findViewById(R.id.bannerAdView);
-        bannerViewLayout.addView(bannerAdView);
-        bannerAdView.load();
+            ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this, R.style.ProgressDialogStyle);
+            dialog.setMessage("Loading. Please wait...");
+            dialog.setCancelable(false);
+            dialog.show();
+            userTimerInformationCallBack(value -> {
+                // Getting the current time in MILLIS
+                long currentTime = Calendar.getInstance().getTimeInMillis();
+                if ((currentTime - value) >= 0) {
+                    rewardTimer = findViewById(R.id.rewardTimer);
+                    rewardTimer.setVisibility(View.GONE);
+                    rewardedAdButton = findViewById(R.id.rewardButton);
+                    rewardedAdButton.setVisibility(View.VISIBLE);
+                    rewardedAdButton.setClickable(true);
+                    rewardedAdButton.setBackgroundColor(getResources().getColor(R.color.green));
+                    dialog.dismiss();
+                } else if ((currentTime - value) < 0) {
+                    START_TIME_IN_MILLIS = value - currentTime;
+                    new Handler().postDelayed(() -> {
+                        startTimer(START_TIME_IN_MILLIS);
+                        resetTimer();
+                        dialog.dismiss();
+                    }, 3000);
+                } else {
+                    // Otherwise it'll set the starting time to 5 Minutes or 300000 milliseconds
+                    START_TIME_IN_MILLIS = 150000;
+                    dialog.dismiss();
+                }
+            });
+
+            //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+            //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+
+            String bannerPlacement = "Banner_Android";
+            bannerAdView = new BannerView(this, bannerPlacement, new UnityBannerSize(320, 70));
+            bannerAdView.setListener(bannerListener);
+            bannerViewLayout = findViewById(R.id.bannerAdView);
+            bannerViewLayout.addView(bannerAdView);
+            bannerAdView.load();
 
 // Takes action when leave button or back button is clicked
-        onLeaveButtonClicked();
+            onLeaveButtonClicked();
 
-        //==============================================================================================
-        // Getting Quiz from the firebase server
-        //==============================================================================================
+            //==============================================================================================
+            // Getting Quiz from the firebase server
+            //==============================================================================================
 
 // Assigning list (Question) into ArrayList
-        tournamentQuestionsList = tournamentList;
-        hscArrayList = hscList;
-        sscArrayList = sscList;
-        medicalArrayList = medicalList;
-        universityArrayList = universityList;
-        competitionArrayList = competitionList;
+            tournamentQuestionsList = tournamentList;
+            hscArrayList = hscList;
+            sscArrayList = sscList;
+            medicalArrayList = medicalList;
+            universityArrayList = universityList;
+            competitionArrayList = competitionList;
 
 // Shuffling all the questions taken from the server
 
-        Collections.shuffle(tournamentQuestionsList);
-        String intentInfo = getIntent().getStringExtra("topicName");
-        switch (intentInfo) {
-            case "HSC":
-                Collections.shuffle(hscArrayList);
-                break;
-            case "SSC":
-                Collections.shuffle(sscArrayList);
-                break;
-            case "Medical":
-                Collections.shuffle(medicalArrayList);
-                break;
-            case "University":
-                Collections.shuffle(universityArrayList);
-                break;
-            case "Competition":
-                Collections.shuffle(competitionArrayList);
-                break;
-        }
+            Collections.shuffle(tournamentQuestionsList);
+            String intentInfo = getIntent().getStringExtra("topicName");
+            switch (intentInfo) {
+                case "HSC":
+                    Collections.shuffle(hscArrayList);
+                    break;
+                case "SSC":
+                    Collections.shuffle(sscArrayList);
+                    break;
+                case "Medical":
+                    Collections.shuffle(medicalArrayList);
+                    break;
+                case "University":
+                    Collections.shuffle(universityArrayList);
+                    break;
+                case "Competition":
+                    Collections.shuffle(competitionArrayList);
+                    break;
+            }
 // Trying to get information from the server. If connection is slow then it'll show error Toast to
 //        the user.
-        // Most important thing in this project I think
-        String topicInfo = getIntent().getStringExtra("topicName");
-        switch (topicInfo) {
-            case "Tournament":
-                tournamentQuestionCall(tournamentList);
-                break;
-            case "HSC":
-                hscQuestionCall(hscList);
-                break;
-            case "SSC":
-                sscQuestionCall(sscList);
-                break;
-            case "Medical":
-                medicalQuestionCall(medicalList);
-                break;
-            case "University":
-                universityQuestionCall(universityList);
-                break;
-            case "Competition":
-                competitionQuestionCall(competitionList);
-                break;
-        }
-
+            // Most important thing in this project I think
+            String topicInfo = getIntent().getStringExtra("topicName");
+            switch (topicInfo) {
+                case "Tournament":
+                    tournamentQuestionCall(tournamentList);
+                    break;
+                case "HSC":
+                    hscQuestionCall(hscList);
+                    break;
+                case "SSC":
+                    sscQuestionCall(sscList);
+                    break;
+                case "Medical":
+                    medicalQuestionCall(medicalList);
+                    break;
+                case "University":
+                    universityQuestionCall(universityList);
+                    break;
+                case "Competition":
+                    competitionQuestionCall(competitionList);
+                    break;
+            }
     }
 
     void startConnectionRepeatingTask() {
@@ -347,7 +350,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
     private void rewardedInterstitialAd() {
-
+        infoGetter = getSharedPreferences("total_users", MODE_PRIVATE);
         unityAdsListener = new IUnityAdsListener() {
             @Override
             public void onUnityAdsReady(String s) {
@@ -361,14 +364,17 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
             @Override
             public void onUnityAdsFinish(String s, UnityAds.FinishState finishState) {
-
                 if (finishState.equals(UnityAds.FinishState.COMPLETED)) {
                     ProgressDialog dialog = new ProgressDialog(QuestionAnsActivity.this,
                             R.style.ProgressDialogStyle);
                     dialog.setMessage("Loading...");
                     dialog.setCancelable(false);
                     dialog.show();
-                    rewardInformationToServer();
+                    if (!infoGetter.getString("FIFTY", "0").equals(fiftyUsers)){
+                        normalRewardInfoToServer();
+                    }else{
+                        rewardInformationToServer();
+                    }
                     timerTimeSendToServer();
                     blockRewardButton();
                     resetTimer();
@@ -504,6 +510,22 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         }
     }
 
+    private void normalScoreUpdate(){
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        assert firebaseUser != null;
+
+// Getting the reference of AnsQuizAmount from the firebase server
+        DatabaseReference AnsQuizAmountReference = firebaseDatabase.child("AllUsers").
+                child("User").child(firebaseUser.getUid()).child("Ans_Quiz_Amount");
+
+        AnsQuizAmountReference.setValue(ServerValue.increment(1));
+
+        DatabaseReference EarnedPointAmount = firebaseDatabase.child("AllUsers").
+                child("User").child(firebaseUser.getUid()).child("Earned_Point_Amount");
+        EarnedPointAmount.setValue(ServerValue.increment(10));
+    }
 
     //==============================================================================================
     // Method to update score directly to the server
@@ -853,6 +875,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
     public void tournamentCorrectAnswer(Button button, ArrayList<TournamentQuestions> arrayList) {
+        infoGetter = getSharedPreferences("total_users", MODE_PRIVATE);
         button.setBackgroundColor(getResources().getColor(R.color.green));
         button.setTextColor(getResources().getColor(R.color.white));
         submitButton.setOnClickListener(v -> {
@@ -868,7 +891,12 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     resetButtonColor();
                     setTournamentQuestions();
                     enableButton();
-                    scoreUpdate();
+                    if (!infoGetter.getString("FIFTY", "0").equals(fiftyUsers)) {
+                        normalScoreUpdate();
+                    }else{
+                        // TODO : NEED TO DO SOME WORK HERE (MAY BE)
+                        scoreUpdate();
+                    }
                     progressDialog.dismiss();
                     // If Internet connection is gone
                     // If Internet connection is gone
@@ -1265,6 +1293,18 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         });
 
     }
+
+    private void normalRewardInfoToServer(){
+        DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
+        FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        assert firebaseUser != null;
+
+        DatabaseReference EarnedPointAmount = firebaseDatabase.child("AllUsers").
+                child("User").child(firebaseUser.getUid()).child("Earned_Point_Amount");
+        EarnedPointAmount.setValue(ServerValue.increment(30));
+    }
+
 
     private void rewardInformationToServer() {
 

@@ -253,4 +253,6 @@
     <string name="status">Status</string>
     <string name="total_users">Total User</string>
     <string name="online_users">User Online</string>
+    <string name="type_a_message">Type a message...</string>
+    <string name="quiz_notice">Notice: There must be at least 50 (Fifty) users in the tournament. Unless no points will be added in the Leaderboard!</string>
 </resources>
