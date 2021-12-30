@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,17 +63,16 @@ public class QuizActivity extends AppCompatActivity {
 
         CardView curriculumButton = findViewById(R.id.curriculum);
         CardView tournamentButton = findViewById(R.id.tournament);
-        TextView totalUsers = findViewById(R.id.total_users);
         TextView onlineUsers = findViewById(R.id.online_users);
         TextView movingText = findViewById(R.id.movingText);
         movingText.setSelected(true);
 //==================================================================================================
         // Setting all the OnClickListener for all the buttons
 //==================================================================================================
-        SharedPreferences shareInfo = getSharedPreferences("total_users", Context.MODE_PRIVATE);
-        UserInfo(TotalUser, info -> {
+        SharedPreferences shareInfo = getSharedPreferences("online_users", Context.MODE_PRIVATE);
+        UserInfo(info -> {
             if (info >= 0) {
-                totalUsers.setText(String.valueOf(info));
+                onlineUsers.setText(String.valueOf(info));
                 if (info >= 50){
                     shareInfo.edit().putString("FIFTY", "50").apply();
                 }
@@ -84,18 +82,12 @@ public class QuizActivity extends AppCompatActivity {
             }
         });
 
-        UserInfo(OnlineUser, info -> {
-            if (info >= 0) {
-                onlineUsers.setText(String.valueOf(info));
-            }
-        });
-
         curriculumButton.setOnClickListener(view -> {
-//           Toast.makeText(getApplicationContext(), "Coming Soon!", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(QuizActivity.this, Curriculum.class);
-            intent.putExtra("Curriculum", "Curriculum");
-            startActivity(intent);
-            finish();
+           Toast.makeText(getApplicationContext(), "Coming Soon!", Toast.LENGTH_SHORT).show();
+//            Intent intent = new Intent(QuizActivity.this, Curriculum.class);
+//            intent.putExtra("Curriculum", "Curriculum");
+//            startActivity(intent);
+//            finish();
         });
         tournamentButton.setOnClickListener(v ->
                 tournamentQuestionLoadingIntent("Tournament", "Tournament", tournamentList)
@@ -160,8 +152,8 @@ public class QuizActivity extends AppCompatActivity {
         super.onStop();
     }
 
-    private void UserInfo(String path, totalUsers users) {
-        databaseReference = FirebaseDatabase.getInstance().getReference("Total Users").child(path);
+    private void UserInfo(onlineUsers users) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("Total Users").child("Online Users");
         listener = new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -181,7 +173,7 @@ public class QuizActivity extends AppCompatActivity {
 
     }
 
-    private interface totalUsers {
+    private interface onlineUsers {
         void info(long info);
     }
 

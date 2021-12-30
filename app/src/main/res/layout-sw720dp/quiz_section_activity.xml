@@ -24,51 +24,17 @@
             android:orientation="vertical">
 
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="30dp"
-                android:layout_marginTop="50dp"
-                android:layout_marginEnd="30dp"
-                android:layout_marginBottom="25dp"
-                android:layout_weight=".5"
-                android:translationZ="10dp"
-                android:elevation="10dp">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:gravity="center"
-                        android:textSize="36sp"
-                        android:layout_weight=".35"
-                        android:text="@string/total_users"/>
-
-                    <TextView
-                        android:id="@+id/total_users"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight=".7"
-                        android:gravity="center"
-                        android:text="@string/zero"
-                        android:textSize="24sp" />
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="200dp"
                 android:layout_marginStart="30dp"
-                android:layout_marginTop="25dp"
+                android:layout_marginTop="200dp"
                 android:layout_marginEnd="30dp"
                 android:layout_marginBottom="50dp"
-                android:layout_weight=".5"
                 android:translationZ="10dp"
+                app:cardCornerRadius="100dp"
                 android:elevation="10dp">
 
                 <LinearLayout
@@ -76,36 +42,36 @@
                     android:layout_height="match_parent"
                     android:orientation="horizontal">
 
+
+                    <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:textSize="40sp"
+                    android:layout_weight=".35"
+                    android:text="@string/online_users"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
+                        android:layout_margin="10dp"
                         android:layout_weight=".8"
-                        android:gravity="center"
-                        android:layout_margin="10dp">
+                        android:gravity="center">
 
                         <ImageView
                             android:id="@+id/online"
-                            android:layout_width="20dp"
-                            android:layout_height="20dp"
-                            android:gravity="center"
-                            android:background="@drawable/online" />
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:background="@drawable/online"
+                            android:gravity="center" />
                     </LinearLayout>
-                    
-                    <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:textSize="36sp"
-                    android:layout_weight=".35"
-                    android:text="@string/online_users"/>
 
-                <TextView
+                    <TextView
                     android:id="@+id/online_users"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:textSize="24sp"
+                    android:textSize="40sp"
                     android:layout_weight=".7"
                     android:text="@string/zero" />
 

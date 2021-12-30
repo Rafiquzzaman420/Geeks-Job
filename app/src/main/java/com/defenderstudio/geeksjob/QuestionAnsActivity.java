@@ -151,7 +151,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         // Initializing Unity Ad
         String unityGameID = "4478761";
         UnityAds.initialize(this, unityGameID, TESTMODE, null);
-        infoGetter = getSharedPreferences("total_users", MODE_PRIVATE);
+        infoGetter = getSharedPreferences("online_users", MODE_PRIVATE);
         if (!infoGetter.getString("FIFTY", "0").equals(fiftyUsers)){
             Toast.makeText(getApplicationContext(), "Your points won't be added into Leaderboard!", Toast.LENGTH_SHORT).show();
         }
@@ -350,7 +350,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
     private void rewardedInterstitialAd() {
-        infoGetter = getSharedPreferences("total_users", MODE_PRIVATE);
+        infoGetter = getSharedPreferences("online_users", MODE_PRIVATE);
         unityAdsListener = new IUnityAdsListener() {
             @Override
             public void onUnityAdsReady(String s) {
@@ -594,7 +594,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
 
     }
 
-    // TODO : NEED TO CHANGE ALL THE DATABASE REFERENCE CODE HERE!
     private void internetConnectionCheckerWithServer(internetConnectionCheck internetConnectionCheck) {
         databaseReference = FirebaseDatabase.getInstance().getReference().child("/.info/connected");
         valueEventListener = new ValueEventListener() {
@@ -745,6 +744,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     // If answer is correct, then this method will invoke
     //==============================================================================================
     public void setHscCorrectAnswer(Button button, ArrayList<HSC> arrayList) {
+        infoGetter = getSharedPreferences("online_users", MODE_PRIVATE);
         button.setBackgroundColor(getResources().getColor(R.color.green));
         button.setTextColor(getResources().getColor(R.color.white));
         submitButton.setOnClickListener(v -> {
@@ -760,7 +760,11 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     resetButtonColor();
                     setHSCQuestionData();
                     enableButton();
-                    scoreUpdate();
+                    if (!infoGetter.getString("FIFTY", "0").equals(fiftyUsers)) {
+                        normalScoreUpdate();
+                    }else{
+                        scoreUpdate();
+                    }
                     progressDialog.dismiss();
                 }, 1000);
 
@@ -771,6 +775,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
     public void setSscCorrectAnswer(Button button, ArrayList<SSC> arrayList) {
+        infoGetter = getSharedPreferences("online_users", MODE_PRIVATE);
         button.setBackgroundColor(getResources().getColor(R.color.green));
         button.setTextColor(getResources().getColor(R.color.white));
         submitButton.setOnClickListener(v -> {
@@ -786,7 +791,11 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     resetButtonColor();
                     setSSCQuestionData();
                     enableButton();
-                    scoreUpdate();
+                    if (!infoGetter.getString("FIFTY", "0").equals(fiftyUsers)) {
+                        normalScoreUpdate();
+                    }else{
+                        scoreUpdate();
+                    }
                     progressDialog.dismiss();
                 }, 1000);
 
@@ -797,6 +806,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
     public void setMedicalCorrectAnswer(Button button, ArrayList<Medical> arrayList) {
+        infoGetter = getSharedPreferences("online_users", MODE_PRIVATE);
         button.setBackgroundColor(getResources().getColor(R.color.green));
         button.setTextColor(getResources().getColor(R.color.white));
         submitButton.setOnClickListener(v -> {
@@ -812,7 +822,11 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     resetButtonColor();
                     setMedicalQuestionData();
                     enableButton();
-                    scoreUpdate();
+                    if (!infoGetter.getString("FIFTY", "0").equals(fiftyUsers)) {
+                        normalScoreUpdate();
+                    }else{
+                        scoreUpdate();
+                    }
                     progressDialog.dismiss();
                 }, 1000);
 
@@ -823,6 +837,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
     public void setUniversityCorrectAnswer(Button button, ArrayList<University> arrayList) {
+        infoGetter = getSharedPreferences("online_users", MODE_PRIVATE);
         button.setBackgroundColor(getResources().getColor(R.color.green));
         button.setTextColor(getResources().getColor(R.color.white));
         submitButton.setOnClickListener(v -> {
@@ -838,7 +853,11 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     resetButtonColor();
                     setUniversityQuestionData();
                     enableButton();
-                    scoreUpdate();
+                    if (!infoGetter.getString("FIFTY", "0").equals(fiftyUsers)) {
+                        normalScoreUpdate();
+                    }else{
+                        scoreUpdate();
+                    }
                     progressDialog.dismiss();
                 }, 1000);
 
@@ -849,6 +868,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
     public void setCompetitionCorrectAnswer(Button button, ArrayList<Competition> arrayList) {
+        infoGetter = getSharedPreferences("online_users", MODE_PRIVATE);
         button.setBackgroundColor(getResources().getColor(R.color.green));
         button.setTextColor(getResources().getColor(R.color.white));
         submitButton.setOnClickListener(v -> {
@@ -864,7 +884,11 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     resetButtonColor();
                     setCompetitionQuestionData();
                     enableButton();
-                    scoreUpdate();
+                    if (!infoGetter.getString("FIFTY", "0").equals(fiftyUsers)) {
+                        normalScoreUpdate();
+                    }else{
+                        scoreUpdate();
+                    }
                     progressDialog.dismiss();
                 }, 1000);
 
@@ -875,7 +899,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
     }
 
     public void tournamentCorrectAnswer(Button button, ArrayList<TournamentQuestions> arrayList) {
-        infoGetter = getSharedPreferences("total_users", MODE_PRIVATE);
+        infoGetter = getSharedPreferences("online_users", MODE_PRIVATE);
         button.setBackgroundColor(getResources().getColor(R.color.green));
         button.setTextColor(getResources().getColor(R.color.white));
         submitButton.setOnClickListener(v -> {
@@ -894,7 +918,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
                     if (!infoGetter.getString("FIFTY", "0").equals(fiftyUsers)) {
                         normalScoreUpdate();
                     }else{
-                        // TODO : NEED TO DO SOME WORK HERE (MAY BE)
                         scoreUpdate();
                     }
                     progressDialog.dismiss();
@@ -1066,7 +1089,6 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         submitButton.setClickable(false);
         submitButton.setBackgroundColor(getResources().getColor(R.color.red));
         setMedicalQuestionData();
-        // TODO : NEED TO DO SOME WORK HERE!
         option1.setOnClickListener(v -> {
             if (medical.getOption1().equals(medical.getAnswer())) {
                 setMedicalButtonClickMethod(option1, arrayList);

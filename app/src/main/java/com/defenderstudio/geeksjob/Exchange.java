@@ -3,6 +3,7 @@ package com.defenderstudio.geeksjob;
 import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.view.ActionMode;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -34,10 +35,10 @@ public class Exchange extends Fragment {
     ValueEventListener eventListener;
     View view;
     FirebaseUser firebaseUser;
+    ProgressBar progressBar;
     private EditText bkashAccount;
     private TextView pointAmount;
     private CardView submitButton;
-    ProgressBar progressBar;
 
     public Exchange() {
         // Required empty public constructor
@@ -114,38 +115,60 @@ public class Exchange extends Fragment {
             progressBar = view.findViewById(R.id.progress_exchange);
             progressBar.setVisibility(View.VISIBLE);
 
-            String bkashAccountNumber = bkashAccount.getText().toString().trim();
+            boolean bkashNumbersOnly = TextUtils.isDigitsOnly(bkashAccount.getText());
+            if (bkashNumbersOnly) {
+                int phoneNumber = bkashAccount.getText().toString().length();
+                if (phoneNumber == 11) {
+                    String bkashAccountNumber = bkashAccount.getText().toString().trim();
+                    databaseReference = FirebaseDatabase.getInstance().getReference();
+                    FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
 
-            databaseReference = FirebaseDatabase.getInstance().getReference();
-            FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
+                    assert firebaseUser != null;
+                    DatabaseReference bkashNumber = databaseReference.child("Winning Persons").
+                            child("User").child(firebaseUser.getUid()).child("UserInformation").child("BkashAccount");
 
-            assert firebaseUser != null;
-            DatabaseReference bkashNumber = databaseReference.child("Winning Persons").
-                    child("User").child(firebaseUser.getUid()).child("UserInformation").child("BkashAccount");
+                    new Handler().postDelayed(() -> userPointInfoCallBack(value -> {
+                        if (value >= 10000 && (!bkashAccountNumber.isEmpty())) {
 
-            new Handler().postDelayed(() -> userPointInfoCallBack(value -> {
-                if (value >= 10000 && (!bkashAccountNumber.isEmpty())) {
+                            // TODO : NEED TO DO SOME WORK HERE
 
-                    // TODO : NEED TO DO SOME WORK HERE
+                            bkashNumber.setValue(bkashAccountNumber);
+                            databaseReference = FirebaseDatabase.getInstance().getReference("Winning Persons").
+                                    child("User").child(firebaseUser.getUid()).child("UserInformation").child("Amount");
+                            DatabaseReference name = FirebaseDatabase.getInstance().getReference("Winning Persons").
+                                    child("User").child(firebaseUser.getUid()).child("UserInformation").child("Name");
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                    bkashNumber.setValue(bkashAccountNumber);
-                    databaseReference = FirebaseDatabase.getInstance().getReference("Winning Persons").
-                            child("User").child(firebaseUser.getUid()).child("UserInformation").child("Amount");
-                    DatabaseReference name = FirebaseDatabase.getInstance().getReference("Winning Persons").
-                            child("User").child(firebaseUser.getUid()).child("UserInformation").child("Name");
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            name.setValue(user.getDisplayName());
+                            databaseReference.setValue(String.valueOf(value));
+                            Toast.makeText(requireActivity().getApplicationContext(),
+                                    "Successfully Submitted",
+                                    Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
 
-                    name.setValue(user.getDisplayName());
 
-                } else {
-                    bkashAccount.setError("Enter a phone number");
-                    bkashAccount.requestFocus();
-                    Toast.makeText(requireActivity().getApplicationContext(),
-                            "Complete the required fields!",
-                            Toast.LENGTH_LONG).show();
+                        } else {
+                            bkashAccount.setError("Enter a phone number");
+                            bkashAccount.requestFocus();
+                            Toast.makeText(requireActivity().getApplicationContext(),
+                                    "Complete the required fields!",
+                                    Toast.LENGTH_LONG).show();
+                            progressBar.setVisibility(View.GONE);
+                        }
+                    }), 3000);
+                }else{
                     progressBar.setVisibility(View.GONE);
+                    Toast.makeText(requireActivity().getApplicationContext(),
+                            "Number must be 11 digits!",
+                            Toast.LENGTH_SHORT).show();
                 }
-            }), 3000);
+            }else{
+                progressBar.setVisibility(View.GONE);
+                Toast.makeText(requireActivity().getApplicationContext(),
+                        "Only numbers are allowed!",
+                        Toast.LENGTH_SHORT).show();
+            }
+
         });
     }
 

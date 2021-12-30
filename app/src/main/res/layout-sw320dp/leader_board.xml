@@ -73,10 +73,9 @@
 
                     <ImageView
                         android:id="@+id/trophy"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
                         android:layout_gravity="center"
-                        android:layout_weight=".7"
                         android:visibility="gone"
                         android:layout_margin="5dp"
                         android:contentDescription="@string/user_position" />

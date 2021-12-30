@@ -71,27 +71,26 @@
                         android:textStyle="bold"
                         android:visibility="gone" />
 
-                    <ImageView
-                        android:id="@+id/trophy"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center"
-                        android:layout_weight=".7"
-                        android:visibility="gone"
-                        android:layout_margin="5dp"
-                        android:contentDescription="@string/user_position" />
-
                     <TextView
                         android:id="@+id/user_name_competition"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginEnd="10dp"
                         android:layout_weight=".3"
                         android:gravity="center"
                         android:text="@string/not_applicable"
                         android:textColor="@color/white"
                         android:textSize="26sp"
                         android:fontFamily="@font/geeks_job_regular"/>
+                    <ImageView
+                        android:id="@+id/trophy"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="center"
+                        android:visibility="gone"
+                        android:layout_margin="5dp"
+                        android:contentDescription="@string/user_position" />
+
                 </LinearLayout>
 
                 <LinearLayout
