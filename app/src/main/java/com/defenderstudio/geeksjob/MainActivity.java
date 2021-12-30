@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -110,15 +111,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 
         readUpdateInformationFromFirebase(value -> handler.postDelayed(() -> {
+            firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
             if (value != null) {
                 if (value.equals(updating)) {
-                    FirebaseAuth.getInstance().signOut();
-                    Toast.makeText(getApplicationContext(),
-                            "Constructing Quiz Result. Please Try again later...",
-                            Toast.LENGTH_LONG).show();
-                    Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
-                    startActivity(logOut);
-                    finish();
+                    developerAccess(stringValue -> {
+                        if (!stringValue.equals(firebaseUser.getUid())){
+                            progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
+                            progressDialog.setCancelable(false);
+                            progressDialog.setMessage("Checking app status...");
+                            progressDialog.show();
+                            handler.postDelayed(() -> {
+                                FirebaseAuth.getInstance().signOut();
+                                Toast.makeText(getApplicationContext(),
+                                        "App is being updated. Please wait and try again later...",
+                                        Toast.LENGTH_LONG).show();
+                                Intent logOut = new Intent(MainActivity.this, SignInActivity.class);
+                                startActivity(logOut);
+                                finish();
+                            }, 3000);
+
+                        }
+                    });
                 }
             }
         }, 3000));
@@ -296,6 +309,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         userSignInInfoReference.addListenerForSingleValueEvent(eventListener);
     }
 
+    private void developerAccess(giveDeveloperAccess access){
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+        userSignInInfoReference = databaseReference.child("Application Status").
+                child("Developer Access");
+        eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                String stringValue = snapshot.getValue(String.class);
+                try {
+                    access.access(stringValue);
+                } catch (Exception e) {
+                    access.access("null");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+        userSignInInfoReference.addListenerForSingleValueEvent(eventListener);
+    }
+
     private void userSignOutInformationSendToServer() {
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -418,6 +454,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private interface userSignInInformation {
         void userSignInInfo(String value);
+    }
+
+    public interface giveDeveloperAccess{
+        void access(String value);
     }
 
     public interface readUpdateInformation {
