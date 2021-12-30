@@ -211,44 +211,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="15dp"
-                android:text="@string/faq_fourth_question"
-                android:textColor="@color/blue"
-                android:textSize="22sp"
-                android:fontFamily="@font/geeks_job_regular"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:text="@string/faq_fourth_answer"
-                android:textColor="@color/light_gray"
-                android:textSize="18sp"
-                android:fontFamily="@font/geeks_job_regular"/>
-        </LinearLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="10dp"
-        app:cardBackgroundColor="@color/white"
-        app:cardCornerRadius="10dp"
-        android:elevation="10dp"
-        android:translationZ="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="15dp"
                 android:text="@string/faq_fifth_question"
                 android:textColor="@color/blue"
                 android:textSize="22sp"
