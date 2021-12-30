@@ -150,7 +150,7 @@ public class QuestionAnsActivity extends AppCompatActivity implements OnUserEarn
         // TODO: NEED TO INITIALIZE AS MAIN AD HERE
         // Initializing Unity Ad
         String unityGameID = "4478761";
-        UnityAds.initialize(this, unityGameID, TESTMODE, null);
+        UnityAds.initialize(QuestionAnsActivity.this, unityGameID);
         infoGetter = getSharedPreferences("online_users", MODE_PRIVATE);
         if (!infoGetter.getString("FIFTY", "0").equals(fiftyUsers)){
             Toast.makeText(getApplicationContext(), "Your points won't be added into Leaderboard!", Toast.LENGTH_SHORT).show();

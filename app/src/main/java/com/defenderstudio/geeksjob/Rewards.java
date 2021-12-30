@@ -87,7 +87,7 @@ public class Rewards extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rewards);
         // TODO: NEED TO INITIALIZE AS MAIN AD HERE
-        UnityAds.initialize(this, unityGameID, TESTMODE, null);
+        UnityAds.initialize(Rewards.this, unityGameID);
         startConnectionRepeatingTask();
         blockRewardButton();
         TextView chancesLeftText = findViewById(R.id.chancesLeft);
