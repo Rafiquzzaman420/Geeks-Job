@@ -3,7 +3,9 @@ package com.defenderstudio.geeksjob;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -65,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         readVersionInformationFromFirebase(value -> {
             // Always use application BuildConfig from package
-            long appVersion = 10;
+            long appVersion = 11;
             if (value != appVersion) {
                 progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
                 progressDialog.setCancelable(false);
@@ -135,6 +137,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 }
             }
         }, 3000));
+
+        SharedPreferences shareInfo = getSharedPreferences("online_users", Context.MODE_PRIVATE);
+        UserInfo(info -> {
+            if (info >= 0) {
+                if (info >= 50){
+                    shareInfo.edit().putString("FIFTY", "50").apply();
+                }
+                else {
+                    shareInfo.edit().putString("FIFTY", "0").apply();
+                }
+            }
+        });
+
 
         @SuppressLint("HardwareIds")
         String ANDROID_ID = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
@@ -466,5 +481,27 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     public interface readVersionInformation {
         void readVersionInfo(Double value);
+    }
+    private void UserInfo(onlineUsers users) {
+        databaseReference = FirebaseDatabase.getInstance().getReference("Total Users").child("Online Users");
+        eventListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                try {
+                    Long info = snapshot.getValue(Long.class);
+                    users.info(info);
+                } catch (Exception e) {
+                    users.info((long)0);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        };
+        databaseReference.addListenerForSingleValueEvent(eventListener);
+    }
+    private interface onlineUsers {
+        void info(Long info);
     }
 }

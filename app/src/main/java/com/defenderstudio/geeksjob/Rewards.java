@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -41,15 +42,18 @@ public class Rewards extends AppCompatActivity {
     private final String rewardedPlacement = "Rewarded_Android";
     int initialPointValue = 0;
     boolean TESTMODE = true;
+    String fiftyUsers = "50";
     IUnityAdsListener unityAdsListener;
     IUnityAdsShowListener unityAdsShowListener;
     DatabaseReference databaseReference;
     ValueEventListener eventListener;
     CountDownTimer countDownTimer;
     Handler handler = new Handler();
+    ProgressDialog progressDialog;
+    SharedPreferences infoGetter;
     private long chancesLeft;
     private boolean dialogShown = false;
-    Runnable statusChecker= () -> {
+    Runnable statusChecker = () -> {
         try {
             Dialog dialog = new Dialog(Rewards.this, R.style.dialogue);
             dialog.setContentView(R.layout.connection_alert);
@@ -88,19 +92,31 @@ public class Rewards extends AppCompatActivity {
         setContentView(R.layout.activity_rewards);
         // TODO: NEED TO INITIALIZE AS MAIN AD HERE
         UnityAds.initialize(Rewards.this, unityGameID);
-        startConnectionRepeatingTask();
-        blockRewardButton();
-        TextView chancesLeftText = findViewById(R.id.chancesLeft);
-        userChancesLeftCallBack(value -> {
-            chancesLeftText.setText(String.valueOf(value));
-            chancesLeft = value;
-            if (value == 0) {
-                informationValidationAfterGettingZero();
-            } else {
-                START_TIME_IN_MILLIS = 21600000;
-                freeRewardButton();
+        infoGetter = getSharedPreferences("online_users", MODE_PRIVATE);
+        progressDialog = new ProgressDialog(Rewards.this, R.style.ProgressDialogStyle);
+        progressDialog.setCancelable(false);
+        progressDialog.setMessage("Loading information...");
+        progressDialog.show();
+        new Handler().postDelayed(() -> {
+            startConnectionRepeatingTask();
+            blockRewardButton();
+            TextView chancesLeftText = findViewById(R.id.chancesLeft);
+            userChancesLeftCallBack(value -> {
+                chancesLeftText.setText(String.valueOf(value));
+                chancesLeft = value;
+                if (value == 0) {
+                    informationValidationAfterGettingZero();
+                } else {
+                    START_TIME_IN_MILLIS = 21600000;
+                    freeRewardButton();
+                }
+            });
+            progressDialog.dismiss();
+            if (!infoGetter.getString("FIFTY", "0").equals(fiftyUsers)) {
+                Toast.makeText(getApplicationContext(), "Your points won't be added to Leader board!", Toast.LENGTH_SHORT).show();
             }
-        });
+        }, 3000);
+
 
         Button rewardButton = findViewById(R.id.rewardedAdButton);
         rewardButton.setBackgroundColor(getResources().getColor(R.color.green));
@@ -248,10 +264,10 @@ public class Rewards extends AppCompatActivity {
     //==============================================================================================================================
     // Updating Users point information in Client Side
     //==============================================================================================================================
-    private void UserPointsValueUpdate() {
+    private void UserPointsValueUpdate(boolean users) {
         TextView rewardsPointText = findViewById(R.id.rewards_text_view_point);
         rewardsPointText.setText(String.valueOf(initialPointValue));
-        scoreUpdate();
+        scoreUpdate(users);
         rewardsPointText.invalidate();
     }
     //==============================================================================================================================
@@ -283,6 +299,7 @@ public class Rewards extends AppCompatActivity {
     // Shows Ad to the user
     //==============================================================================================================================
     private void rewardedAd() {
+        infoGetter = getSharedPreferences("online_users", MODE_PRIVATE);
         unityAdsListener = new IUnityAdsListener() {
             @Override
             public void onUnityAdsReady(String s) {
@@ -316,14 +333,14 @@ public class Rewards extends AppCompatActivity {
                         // Method to send timer information directly to the server
                         timerTimeSendToServer();
 
-                        ProgressDialog dialog = new ProgressDialog(Rewards.this,
+                        progressDialog = new ProgressDialog(Rewards.this,
                                 R.style.ProgressDialogStyle);
-                        dialog.setMessage("Loading. Please wait...");
-                        dialog.setCancelable(false);
-                        dialog.show();
+                        progressDialog.setMessage("Loading. Please wait...");
+                        progressDialog.setCancelable(false);
+                        progressDialog.show();
                         new Handler().postDelayed(() -> {
                             resetTimer();
-                            dialog.dismiss();
+                            progressDialog.dismiss();
                         }, 3000);
                         startTimer(START_TIME_IN_MILLIS);
                     }
@@ -335,13 +352,12 @@ public class Rewards extends AppCompatActivity {
                     DatabaseReference EarnedPointAmountReference = firebaseDatabase.child("AllUsers").
                             child("User").child(firebaseUser.getUid()).child("Earned_Point_Amount");
 
-                    EarnedPointAmountReference.setValue(ServerValue.increment(50));
 
                     Toast.makeText(getApplicationContext(), "Rewards Received!",
                             Toast.LENGTH_SHORT).show();
-
+                    EarnedPointAmountReference.setValue(ServerValue.increment(50));
                     initialPointValue = initialPointValue + 50;
-                    UserPointsValueUpdate();
+                    UserPointsValueUpdate(infoGetter.getString("FIFTY", "0").equals(fiftyUsers));
                 } else if (finishState.equals(UnityAds.FinishState.SKIPPED)) {
                     Toast.makeText(getApplicationContext(), "Reward not received for skipping ad!",
                             Toast.LENGTH_SHORT).show();
@@ -474,7 +490,8 @@ public class Rewards extends AppCompatActivity {
 
     }
 
-    private void scoreUpdate() {
+    // If users are more than fifty then this boolean value is true
+    private void scoreUpdate(boolean users) {
         DatabaseReference firebaseDatabase = FirebaseDatabase.getInstance().getReference();
         FirebaseUser firebaseUser = FirebaseAuth.getInstance().getCurrentUser();
         assert firebaseUser != null;
@@ -516,11 +533,11 @@ public class Rewards extends AppCompatActivity {
                         replace("]", " ") + " " +
                         firebaseUser.getUid().substring(firebaseUser.getUid().length() - 4)).child("imageUrl");
 
+        if (users) {
+            userImageStringValue.setValue(photo);
 
-        userImageStringValue.setValue(photo);
-
-        pointsValue.setValue(ServerValue.increment(50));
-
+            pointsValue.setValue(ServerValue.increment(50));
+        }
     }
 
     @Override
@@ -559,7 +576,6 @@ public class Rewards extends AppCompatActivity {
     private interface userInfoCallBack {
         void userInfo(Long value);
     }
-
 
     private interface userChancesLeft {
         void userChancesLeftMethod(Long value);

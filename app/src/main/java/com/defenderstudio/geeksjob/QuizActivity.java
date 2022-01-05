@@ -161,7 +161,7 @@ public class QuizActivity extends AppCompatActivity {
                     Long info = snapshot.getValue(Long.class);
                     users.info(info);
                 } catch (Exception e) {
-                    users.info(0);
+                    users.info((long)0);
                 }
             }
 
@@ -174,7 +174,7 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private interface onlineUsers {
-        void info(long info);
+        void info(Long info);
     }
 
     class tournamentDatabaseLoadWithAsyncTask extends AsyncTask<TournamentQuestions, Void, Void> {

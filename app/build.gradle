@@ -11,8 +11,8 @@ android {
         applicationId "com.defenderstudio.geeksjob"
         minSdkVersion 21
         targetSdkVersion 32
-        versionCode 10
-        versionName '1.9'
+        versionCode 12
+        versionName '2.1'
         multiDexEnabled true
 
 
