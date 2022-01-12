@@ -76,7 +76,7 @@
                     android:gravity="center"
                     android:text="@string/questionVIew"
                     android:textColor="@color/white"
-                    android:textSize="20sp"
+                    android:textSize="19sp"
                     android:padding="10dp">
 
                 </TextView>
@@ -107,7 +107,7 @@
                 android:gravity="center"
                 android:text="@string/answer_one"
                 android:textColor="@color/blue"
-                android:textSize="20sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:theme="@style/white.GeeksJob"
                 android:elevation="5dp"
@@ -127,7 +127,7 @@
                 android:gravity="center"
                 android:text="@string/answer_two"
                 android:textColor="@color/blue"
-                android:textSize="20sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:theme="@style/white.GeeksJob" />
 
@@ -145,7 +145,7 @@
                 android:gravity="center"
                 android:text="@string/answer_three"
                 android:textColor="@color/blue"
-                android:textSize="20sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:theme="@style/white.GeeksJob" />
 
@@ -164,7 +164,7 @@
                 android:gravity="center"
                 android:text="@string/answer_four"
                 android:textColor="@color/blue"
-                android:textSize="20sp"
+                android:textSize="13sp"
                 android:textStyle="bold"
                 android:theme="@style/white.GeeksJob" />
 
@@ -237,7 +237,7 @@
                     android:text="@string/initial_number"
                     android:textAppearance="@style/geeks_job_large"
                     android:textColor="@color/blue"
-                    android:textSize="20sp"
+                    android:textSize="21sp"
                     android:textStyle="bold"
                     android:theme="@style/purple.GeeksJob" />
 

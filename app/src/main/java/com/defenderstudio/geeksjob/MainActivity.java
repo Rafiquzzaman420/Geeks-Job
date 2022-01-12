@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         readVersionInformationFromFirebase(value -> {
             // Always use application BuildConfig from package
-            long appVersion = 11;
+            long appVersion = 13;
             if (value != appVersion) {
                 progressDialog = new ProgressDialog(MainActivity.this, R.style.ProgressDialogStyle);
                 progressDialog.setCancelable(false);
